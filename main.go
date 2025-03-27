@@ -2,9 +2,10 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/yx1126/go-admin/configs"
+	config "github.com/yx1126/go-admin/configs"
 )
 
 func main() {
@@ -14,5 +15,5 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.Run()
+	r.Run(":" + strconv.Itoa(config.Config.Server.Port))
 }

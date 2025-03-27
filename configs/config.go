@@ -1,17 +1,37 @@
 package config
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/go-ini/ini"
+	"gopkg.in/yaml.v3"
 )
 
+type Mysql struct {
+	Ip       string `yaml:"ip" json:"ip"`
+	Port     int    `yaml:"port" json:"port"`
+	User     string `yaml:"user" json:"user"`
+	Password string `yaml:"password" json:"password"`
+	Database string `yaml:"database" json:"database"`
+}
+
+type Server struct {
+	Port int `yaml:"port" json:"port"`
+}
+
+type ConfigContext struct {
+	Mysql  Mysql  `yaml:"mysql" json:"mysql"`
+	Server Server `yaml:"server" json:"server"`
+}
+
+var Config *ConfigContext
+
 func init() {
-	conf, err := ini.Load("./conf.ini")
+	conf, err := os.ReadFile("./conf.yaml")
 	if err != nil {
-		fmt.Printf("Failed to read file %v\n", err)
-		os.Exit(1)
+		panic(err)
 	}
-	fmt.Print("config init", conf)
+	err = yaml.Unmarshal(conf, &Config)
+	if err != nil {
+		panic(err)
+	}
 }
