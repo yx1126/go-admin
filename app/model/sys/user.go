@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/yx1126/go-admin/app/model"
+	"gorm.io/gorm"
 )
 
 type SysUser struct {
@@ -21,6 +22,7 @@ type SysUser struct {
 	LoginIp     string
 	LoginDate   time.Time
 	Remark      string
+	DeleteTime  gorm.DeletedAt
 	model.BaseModel
 }
 

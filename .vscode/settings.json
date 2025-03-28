@@ -1,0 +1,10 @@
+{
+    "files.autoSave": "afterDelay",
+    "[yaml]": {
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": true,
+        "editor.autoIndent": "advanced",
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+}

@@ -6,19 +6,19 @@ import (
 
 type SysMenu struct {
 	Id         int `gorm:"primaryKey;autoIncrement"`
-	ParentId   int
+	ParentId   *int
 	Name       string
 	Type       int
 	Link       string
 	Title      string
-	IsCache    int
+	IsCache    int `gorm:"default:0"`
 	Icon       string
 	Path       string
-	IsIframe   int
+	IsIframe   int `gorm:"default:0"`
 	Component  string
 	Permission string
-	Sort       int
-	Visible    int
+	Sort       *int
+	Visible    int `gorm:"default:0"`
 	model.BaseModel
 }
 

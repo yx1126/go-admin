@@ -7,11 +7,13 @@ import (
 )
 
 type Mysql struct {
-	Ip       string `yaml:"ip" json:"ip"`
-	Port     int    `yaml:"port" json:"port"`
-	User     string `yaml:"user" json:"user"`
-	Password string `yaml:"password" json:"password"`
-	Database string `yaml:"database" json:"database"`
+	Ip           string `yaml:"ip" json:"ip"`
+	Port         int    `yaml:"port" json:"port"`
+	User         string `yaml:"user" json:"user"`
+	Password     string `yaml:"password" json:"password"`
+	Database     string `yaml:"database" json:"database"`
+	MaxIdleConns int    `yaml:"maxIdleConns" json:"maxIdleConns"`
+	MaxOpenConns int    `yaml:"maxOpenConns" json:"maxOpenConns"`
 }
 
 type Server struct {
