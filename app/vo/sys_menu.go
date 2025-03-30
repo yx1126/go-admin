@@ -7,37 +7,38 @@ import (
 )
 
 type CreateMenuVo struct {
-	ParentId   *int   `json:"parentId"`
+	ParentId   *uint  `json:"parentId"`
 	Name       string `json:"name" binding:"required"`
-	Type       int    `json:"type" binding:"required_with=0,omitempty,gte=0,lte=3"`
+	Type       string `json:"type" binding:"required_with=0,omitempty,gte=0,lte=3"`
 	Link       string `json:"link" binding:"omitempty,url"`
 	Title      string `json:"title" binding:"required"`
-	IsCache    int    `json:"isCache"`
+	IsCache    string `json:"isCache"`
 	Icon       string `json:"icon"`
 	Path       string `json:"path" binding:"required"`
-	IsIframe   int    `json:"isIframe"`
+	IsIframe   string `json:"isIframe"`
 	Component  string `json:"component"`
 	Permission string `json:"permission"`
 	Sort       *int   `json:"sort"`
-	Visible    int    `json:"visible"`
+	Visible    string `json:"visible"`
+	Status     string `json:"status"`
 	model.BaseModel
 }
 
 type MenuVo struct {
 	ID         uint      `json:"id"`
-	ParentId   int       `json:"parentId"`
+	ParentId   uint      `json:"parentId"`
 	Name       string    `json:"name"`
-	Type       int       `json:"type"`
+	Type       string    `json:"type"`
 	Link       string    `json:"link"`
 	Title      string    `json:"title"`
-	IsCache    int       `json:"isCache"`
+	IsCache    string    `json:"isCache"`
 	Icon       string    `json:"icon"`
 	Path       string    `json:"path"`
-	IsIframe   int       `json:"isIframe"`
+	IsIframe   string    `json:"isIframe"`
 	Component  string    `json:"component"`
 	Permission string    `json:"permission"`
 	Sort       int       `json:"sort"`
-	Visible    int       `json:"visible"`
+	Visible    string    `json:"visible"`
 	CreatedBy  string    `json:"createBy"`
 	CreatedAt  time.Time `json:"createdAt"`
 	UpdatedBy  string    `json:"updateBy"`
@@ -47,4 +48,9 @@ type MenuVo struct {
 type MenuTreeVo struct {
 	MenuVo
 	Children []MenuVo `json:"children"`
+}
+
+type MenuQueryVo struct {
+	Name   string `json:"name"`
+	Status string `json:"status"`
 }

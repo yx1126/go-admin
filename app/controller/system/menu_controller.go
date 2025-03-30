@@ -23,3 +23,7 @@ func (*MenuController) Create(c *gin.Context) {
 	}
 	response.NewSuccess(nil).Json(c)
 }
+
+func (*MenuController) QueryList(c *gin.Context) {
+	
+}
