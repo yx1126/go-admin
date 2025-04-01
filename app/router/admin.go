@@ -13,6 +13,7 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 		{
 			menu := system.Group("menu")
 			menuCtrl := systemCtrl.MenuController{}
+			menu.GET("", menuCtrl.QueryTreeList)
 			menu.POST("", menuCtrl.Create)
 		}
 	}

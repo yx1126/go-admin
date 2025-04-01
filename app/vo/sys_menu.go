@@ -26,7 +26,7 @@ type CreateMenuVo struct {
 
 type MenuVo struct {
 	ID         uint      `json:"id"`
-	ParentId   uint      `json:"parentId"`
+	ParentId   *uint     `json:"parentId"`
 	Name       string    `json:"name"`
 	Type       string    `json:"type"`
 	Link       string    `json:"link"`
@@ -37,7 +37,7 @@ type MenuVo struct {
 	IsIframe   string    `json:"isIframe"`
 	Component  string    `json:"component"`
 	Permission string    `json:"permission"`
-	Sort       int       `json:"sort"`
+	Sort       *int      `json:"sort"`
 	Visible    string    `json:"visible"`
 	CreatedBy  string    `json:"createBy"`
 	CreatedAt  time.Time `json:"createdAt"`
@@ -47,7 +47,18 @@ type MenuVo struct {
 
 type MenuTreeVo struct {
 	MenuVo
-	Children []MenuVo `json:"children"`
+	Children []MenuTreeVo `json:"children"`
+}
+
+func (m *MenuTreeVo) GetID() int {
+	return int(m.ID)
+}
+func (m *MenuTreeVo) GetParentID() *int {
+	parentID := int(*m.ParentId)
+	return &parentID
+}
+func (m *MenuTreeVo) SetChildren(children []MenuTreeVo) {
+	m.Children = children
 }
 
 type MenuQueryVo struct {

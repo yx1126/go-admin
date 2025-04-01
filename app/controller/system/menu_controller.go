@@ -24,6 +24,14 @@ func (*MenuController) Create(c *gin.Context) {
 	response.NewSuccess(nil).Json(c)
 }
 
-func (*MenuController) QueryList(c *gin.Context) {
-	
+func (*MenuController) QueryTreeList(c *gin.Context) {
+	menuList, err := (&service.MenuService{}).QueryMenuTree(vo.MenuQueryVo{
+		Name:   c.Query("name"),
+		Status: c.Query("status"),
+	})
+	if err != nil {
+		response.NewError(err.Error()).Json(c)
+		return
+	}
+	response.NewSuccess(menuList).Json(c)
 }
