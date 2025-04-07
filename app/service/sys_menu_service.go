@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/yx1126/go-admin/DB"
 	model "github.com/yx1126/go-admin/app/model/sys"
+	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
 )
 
@@ -30,12 +31,12 @@ func (m *MenuService) CreateMenu(menu vo.CreateMenuVo) error {
 func (m *MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
 	query := DB.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id")
-	if menu.Name != "" {
-		query.Where("name LIKE ?", "&"+menu.Name+"%")
+	if menu.Title != "" {
+		query.Where("title LIKE ?", "%"+menu.Title+"%")
 	}
 	if menu.Status != "" {
 		query.Where("status = ?", menu.Status)
 	}
 	result := query.Find(&menuList)
-	return menuList, result.Error
+	return util.ListToTree(menuList, 0), result.Error
 }

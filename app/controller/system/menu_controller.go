@@ -26,7 +26,7 @@ func (*MenuController) Create(c *gin.Context) {
 
 func (*MenuController) QueryTreeList(c *gin.Context) {
 	menuList, err := (&service.MenuService{}).QueryMenuTree(vo.MenuQueryVo{
-		Name:   c.Query("name"),
+		Title:  c.Query("title"),
 		Status: c.Query("status"),
 	})
 	if err != nil {
