@@ -24,6 +24,21 @@ func (*MenuController) Create(c *gin.Context) {
 	response.NewSuccess(nil).Json(c)
 }
 
+func (*MenuController) Update(c *gin.Context) {
+	var menu vo.UpdateMenuVo
+	err := c.ShouldBindJSON(&menu)
+	if err != nil {
+		response.NewError(err.Error()).Json(c)
+		return
+	}
+	err = (&service.MenuService{}).UpdateMenu(menu)
+	if err != nil {
+		response.NewError(err.Error()).Json(c)
+		return
+	}
+	response.NewSuccess(nil).Json(c)
+}
+
 func (*MenuController) QueryTreeList(c *gin.Context) {
 	menuList, err := (&service.MenuService{}).QueryMenuTree(vo.MenuQueryVo{
 		Title:  c.Query("title"),

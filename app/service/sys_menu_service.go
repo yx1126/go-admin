@@ -28,6 +28,26 @@ func (m *MenuService) CreateMenu(menu vo.CreateMenuVo) error {
 	return result.Error
 }
 
+func (m *MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
+	result := DB.Gorm.Model(&model.SysMenu{}).Where("id = ?", menu.Id).Updates(&model.SysMenu{
+		ParentId:   menu.ParentId,
+		Name:       menu.Name,
+		Type:       menu.Type,
+		Link:       menu.Link,
+		Title:      menu.Title,
+		IsCache:    menu.IsCache,
+		Icon:       menu.Icon,
+		Path:       menu.Path,
+		IsIframe:   menu.IsIframe,
+		Component:  menu.Component,
+		Permission: menu.Permission,
+		Sort:       menu.Sort,
+		Visible:    menu.Visible,
+		Status:     menu.Status,
+	})
+	return result.Error
+}
+
 func (m *MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
 	query := DB.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id")

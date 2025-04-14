@@ -16,6 +16,7 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 			menu.GET("", menuCtrl.QueryTreeList)
 			menu.GET("/selectTree", menuCtrl.QuerySelectTreeList)
 			menu.POST("", menuCtrl.Create)
+			menu.PUT("", menuCtrl.Update)
 		}
 	}
 }

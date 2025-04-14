@@ -3,7 +3,7 @@ mysql:
   port: 3306
   user: root
   password: 123456
-  database: temp-admin
+  database: go-admin
   # 连接池最大连接数
   maxIdleConns: 10
   # 连接池最大打开连接数
