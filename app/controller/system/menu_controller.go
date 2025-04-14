@@ -35,3 +35,12 @@ func (*MenuController) QueryTreeList(c *gin.Context) {
 	}
 	response.NewSuccess(menuList).Json(c)
 }
+
+func (*MenuController) QuerySelectTreeList(c *gin.Context) {
+	menuList, err := (&service.MenuService{}).QueryMenuSelectTree()
+	if err != nil {
+		response.NewError(err.Error()).Json(c)
+		return
+	}
+	response.NewSuccess(menuList).Json(c)
+}

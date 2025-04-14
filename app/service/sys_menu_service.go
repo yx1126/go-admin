@@ -40,3 +40,10 @@ func (m *MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error
 	result := query.Find(&menuList)
 	return util.ListToTree(menuList, 0), result.Error
 }
+
+func (m *MenuService) QueryMenuSelectTree() ([]vo.MenuTreeVo, error) {
+	menuList := make([]vo.MenuTreeVo, 0)
+	query := DB.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id").Where("type != 3")
+	result := query.Find(&menuList)
+	return util.ListToTree(menuList, 0), result.Error
+}
