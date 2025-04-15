@@ -9,6 +9,17 @@ import (
 
 type MenuController struct{}
 
+func (*MenuController) QueryTreeList(c *gin.Context) {
+	response.New((&service.MenuService{}).QueryMenuTree(vo.MenuQueryVo{
+		Title:  c.Query("title"),
+		Status: c.Query("status"),
+	})).Json(c)
+}
+
+func (*MenuController) QuerySelectTreeList(c *gin.Context) {
+	response.New((&service.MenuService{}).QueryMenuSelectTree()).Json(c)
+}
+
 func (*MenuController) Create(c *gin.Context) {
 	var menu vo.CreateMenuVo
 	err := c.ShouldBindJSON(&menu)
@@ -16,12 +27,7 @@ func (*MenuController) Create(c *gin.Context) {
 		response.NewError(err.Error()).Json(c)
 		return
 	}
-	err = (&service.MenuService{}).CreateMenu(menu)
-	if err != nil {
-		response.NewError(err.Error()).Json(c)
-		return
-	}
-	response.NewSuccess(nil).Json(c)
+	response.New(nil, (&service.MenuService{}).CreateMenu(menu)).Json(c)
 }
 
 func (*MenuController) Update(c *gin.Context) {
@@ -31,31 +37,21 @@ func (*MenuController) Update(c *gin.Context) {
 		response.NewError(err.Error()).Json(c)
 		return
 	}
-	err = (&service.MenuService{}).UpdateMenu(menu)
-	if err != nil {
-		response.NewError(err.Error()).Json(c)
-		return
-	}
-	response.NewSuccess(nil).Json(c)
+	response.New(nil, (&service.MenuService{}).UpdateMenu(menu)).Json(c)
 }
 
-func (*MenuController) QueryTreeList(c *gin.Context) {
-	menuList, err := (&service.MenuService{}).QueryMenuTree(vo.MenuQueryVo{
-		Title:  c.Query("title"),
-		Status: c.Query("status"),
-	})
+func (*MenuController) Delete(c *gin.Context) {
+	var ids []int
+	err := c.ShouldBindJSON(&ids)
 	if err != nil {
 		response.NewError(err.Error()).Json(c)
 		return
 	}
-	response.NewSuccess(menuList).Json(c)
-}
-
-func (*MenuController) QuerySelectTreeList(c *gin.Context) {
-	menuList, err := (&service.MenuService{}).QueryMenuSelectTree()
-	if err != nil {
-		response.NewError(err.Error()).Json(c)
-		return
+	for _, id := range ids {
+		if count := (&service.MenuService{}).MenuHasChildren(id); count > 0 {
+			response.NewError(nil).SetMsg("存在子菜单，不允许删除").Json(c)
+			return
+		}
 	}
-	response.NewSuccess(menuList).Json(c)
+	response.New(nil, (&service.MenuService{}).DeleteMenus(ids)).Json(c)
 }

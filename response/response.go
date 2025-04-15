@@ -47,6 +47,13 @@ func (r *Response) Json(c *gin.Context) {
 	})
 }
 
+func New(data interface{}, err error) *Response {
+	if err != nil {
+		return NewError(err.Error())
+	}
+	return NewSuccess(data)
+}
+
 func NewSuccess(data interface{}) *Response {
 	return &Response{
 		Code:    200,
