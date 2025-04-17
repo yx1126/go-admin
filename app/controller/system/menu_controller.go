@@ -27,6 +27,10 @@ func (*MenuController) Create(c *gin.Context) {
 		response.NewError(err.Error()).Json(c)
 		return
 	}
+	if (&service.MenuService{}).MenuHasSameName(menu.Name, nil) {
+		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
+		return
+	}
 	response.New(nil, (&service.MenuService{}).CreateMenu(menu)).Json(c)
 }
 
@@ -35,6 +39,11 @@ func (*MenuController) Update(c *gin.Context) {
 	err := c.ShouldBindJSON(&menu)
 	if err != nil {
 		response.NewError(err.Error()).Json(c)
+		return
+	}
+	menuId := int(menu.Id)
+	if (&service.MenuService{}).MenuHasSameName(menu.Name, &menuId) {
+		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
 		return
 	}
 	response.New(nil, (&service.MenuService{}).UpdateMenu(menu)).Json(c)
@@ -48,7 +57,7 @@ func (*MenuController) Delete(c *gin.Context) {
 		return
 	}
 	for _, id := range ids {
-		if count := (&service.MenuService{}).MenuHasChildren(id); count > 0 {
+		if (&service.MenuService{}).MenuHasChildren(id) {
 			response.NewError(nil).SetMsg("存在子菜单，不允许删除").Json(c)
 			return
 		}

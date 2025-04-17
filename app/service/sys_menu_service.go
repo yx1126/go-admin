@@ -73,10 +73,24 @@ func (m *MenuService) DeleteMenus(ids []int) error {
 	return DB.Gorm.Model(&model.SysMenu{}).Delete(&model.SysMenu{}, ids).Error
 }
 
-func (m *MenuService) MenuHasChildren(parentId int) (count int64) {
+func (m *MenuService) MenuHasChildren(parentId int) bool {
+	var count int64
 	result := DB.Gorm.Model(&model.SysMenu{}).Where("parent_id = ?", parentId).Count(&count)
 	if result.Error != nil {
 		count = 0
 	}
-	return
+	return count > 0
+}
+
+func (m *MenuService) MenuHasSameName(name string, id *int) bool {
+	var count int64
+	query := DB.Gorm.Model(&model.SysMenu{}).Where("name = ?", name)
+	if id != nil {
+		query.Where("id != ?", id)
+	}
+	result := query.Count(&count)
+	if result.Error != nil {
+		count = 0
+	}
+	return count > 0
 }
