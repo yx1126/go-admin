@@ -9,14 +9,14 @@ import (
 
 type MenuController struct{}
 
-func (*MenuController) QueryTreeList(c *gin.Context) {
+func (*MenuController) QueryTree(c *gin.Context) {
 	response.New((&service.MenuService{}).QueryMenuTree(vo.MenuQueryVo{
 		Title:  c.Query("title"),
 		Status: c.Query("status"),
 	})).Json(c)
 }
 
-func (*MenuController) QuerySelectTreeList(c *gin.Context) {
+func (*MenuController) QuerySelectTree(c *gin.Context) {
 	response.New((&service.MenuService{}).QueryMenuSelectTree()).Json(c)
 }
 
@@ -39,6 +39,10 @@ func (*MenuController) Update(c *gin.Context) {
 	err := c.ShouldBindJSON(&menu)
 	if err != nil {
 		response.NewError(err.Error()).Json(c)
+		return
+	}
+	if menu.Id == menu.ParentId {
+		response.NewError(nil).SetMsg("请选择正确的父级菜单").Json(c)
 		return
 	}
 	menuId := int(menu.Id)

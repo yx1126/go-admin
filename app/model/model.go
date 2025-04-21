@@ -6,9 +6,9 @@ import (
 )
 
 type BaseModel struct {
-	gorm.Model
-	CreatedAt datetime.Datetime
-	UpdatedAt datetime.Datetime
-	CreatedBy string `json:"createBy"`
-	UpdatedBy string `json:"updateBy"`
+	CreatedAt datetime.Datetime `json:"createdAt"`
+	UpdatedAt datetime.Datetime `json:"updatedAt"`
+	CreatedBy string            `json:"createdBy"`
+	UpdatedBy string            `json:"updatedBy"`
+	DeletedAt gorm.DeletedAt    `json:"-" gorm:"index"`
 }

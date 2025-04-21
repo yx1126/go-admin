@@ -9,7 +9,7 @@ import (
 
 type MenuService struct{}
 
-func (m *MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error) {
+func (*MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
 	query := DB.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id")
 	parentId := 0
@@ -25,14 +25,14 @@ func (m *MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error
 	return util.ListToTree(menuList, parentId), result.Error
 }
 
-func (m *MenuService) QueryMenuSelectTree() ([]vo.MenuTreeVo, error) {
+func (*MenuService) QueryMenuSelectTree() ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
 	query := DB.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id").Where("type != 3")
 	result := query.Find(&menuList)
 	return util.ListToTree(menuList, 0), result.Error
 }
 
-func (m *MenuService) CreateMenu(menu vo.CreateMenuVo) error {
+func (*MenuService) CreateMenu(menu vo.CreateMenuVo) error {
 	return DB.Gorm.Model(&model.SysMenu{}).Create(&model.SysMenu{
 		ParentId:   menu.ParentId,
 		Name:       menu.Name,
@@ -50,7 +50,7 @@ func (m *MenuService) CreateMenu(menu vo.CreateMenuVo) error {
 	}).Error
 }
 
-func (m *MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
+func (*MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
 	return DB.Gorm.Model(&model.SysMenu{}).Where("id = ?", menu.Id).Updates(&model.SysMenu{
 		ParentId:   menu.ParentId,
 		Name:       menu.Name,
@@ -69,11 +69,11 @@ func (m *MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
 	}).Error
 }
 
-func (m *MenuService) DeleteMenus(ids []int) error {
+func (*MenuService) DeleteMenus(ids []int) error {
 	return DB.Gorm.Model(&model.SysMenu{}).Delete(&model.SysMenu{}, ids).Error
 }
 
-func (m *MenuService) MenuHasChildren(parentId int) bool {
+func (*MenuService) MenuHasChildren(parentId int) bool {
 	var count int64
 	result := DB.Gorm.Model(&model.SysMenu{}).Where("parent_id = ?", parentId).Count(&count)
 	if result.Error != nil {
@@ -82,7 +82,7 @@ func (m *MenuService) MenuHasChildren(parentId int) bool {
 	return count > 0
 }
 
-func (m *MenuService) MenuHasSameName(name string, id *int) bool {
+func (*MenuService) MenuHasSameName(name string, id *int) bool {
 	var count int64
 	query := DB.Gorm.Model(&model.SysMenu{}).Where("name = ?", name)
 	if id != nil {

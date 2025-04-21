@@ -15,7 +15,7 @@ func ListToTree[T TreeNode[T]](data []T, parentId int) []T {
 	if parentId == -1 {
 		parentId = data[0].GetParentID()
 		for _, v := range data[1:] {
-			if parentId < v.GetParentID() {
+			if v.GetParentID() < parentId {
 				parentId = v.GetParentID()
 			}
 		}
