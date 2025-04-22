@@ -2,7 +2,7 @@ package systemcontroller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/yx1126/go-admin/app/service"
+	service "github.com/yx1126/go-admin/app/service/system"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/response"
 )

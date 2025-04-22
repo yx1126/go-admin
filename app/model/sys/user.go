@@ -8,7 +8,7 @@ import (
 )
 
 type SysUser struct {
-	UserId      int `gorm:"primaryKey;autoIncrement"`
+	Id          int `gorm:"primaryKey;autoIncrement"`
 	DeptId      int
 	UserName    string
 	NickName    string

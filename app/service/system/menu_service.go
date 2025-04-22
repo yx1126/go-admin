@@ -88,8 +88,8 @@ func (*MenuService) MenuHasSameName(name string, id *int) bool {
 	if id != nil {
 		query.Where("id != ?", id)
 	}
-	result := query.Count(&count)
-	if result.Error != nil {
+
+	if result := query.Count(&count); result.Error != nil {
 		count = 0
 	}
 	return count > 0
