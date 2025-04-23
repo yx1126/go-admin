@@ -7,11 +7,10 @@ import (
 type SysDictData struct {
 	Id        uint `gorm:"primaryKey;autoIncrement"`
 	DictId    uint
-	Sort      int
+	Sort      int `gorm:"default:0"`
 	Label     string
 	Value     string
 	Type      string
-	NodeType  string `gorm:"default:0"`
 	CssClass  string
 	ListClass string
 	IsDefault string `gorm:"default:0"`

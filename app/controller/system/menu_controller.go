@@ -9,6 +9,7 @@ import (
 
 type MenuController struct{}
 
+// 菜单树查询
 func (*MenuController) QueryTree(c *gin.Context) {
 	response.New((&service.MenuService{}).QueryMenuTree(vo.MenuQueryVo{
 		Title:  c.Query("title"),
@@ -16,10 +17,12 @@ func (*MenuController) QueryTree(c *gin.Context) {
 	})).Json(c)
 }
 
+// 菜单下拉列表查询
 func (*MenuController) QuerySelectTree(c *gin.Context) {
 	response.New((&service.MenuService{}).QueryMenuSelectTree()).Json(c)
 }
 
+// 菜单新增
 func (*MenuController) Create(c *gin.Context) {
 	var menu vo.CreateMenuVo
 	err := c.ShouldBindJSON(&menu)
@@ -34,6 +37,7 @@ func (*MenuController) Create(c *gin.Context) {
 	response.New(nil, (&service.MenuService{}).CreateMenu(menu)).Json(c)
 }
 
+// 菜单更新
 func (*MenuController) Update(c *gin.Context) {
 	var menu vo.UpdateMenuVo
 	err := c.ShouldBindJSON(&menu)
@@ -53,6 +57,7 @@ func (*MenuController) Update(c *gin.Context) {
 	response.New(nil, (&service.MenuService{}).UpdateMenu(menu)).Json(c)
 }
 
+// 菜单删除
 func (*MenuController) Delete(c *gin.Context) {
 	var ids []int
 	err := c.ShouldBindJSON(&ids)

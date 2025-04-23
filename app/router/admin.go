@@ -31,6 +31,7 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 				// 字典数据
 				dictData := dict.Group("/data")
 				dictData.GET("", dictTypeCtrl.QueryDictDataList)
+				dictData.GET("/:dictType", dictTypeCtrl.QueryDictDataListByType)
 				dictData.POST("", dictTypeCtrl.CreateData)
 				dictData.PUT("", dictTypeCtrl.UpdateData)
 				dictData.DELETE("", dictTypeCtrl.DeleteData)
