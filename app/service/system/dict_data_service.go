@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/yx1126/go-admin/db"
 	model "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
 	"github.com/yx1126/go-admin/app/vo"
+	"github.com/yx1126/go-admin/db"
 )
 
 type SysDictDataService struct{}
@@ -28,6 +28,7 @@ func (*SysDictDataService) QueryDictDataListByType(dictType string) ([]vo.DictDa
 		Select("sys_dict_data.*", "t.type as dict_type", "t.node_type").
 		Order("sort,id").
 		Joins("LEFT JOIN sys_dict_type as t ON sys_dict_data.dict_id = t.id").
+		Where("sys_dict_data.status = 1").
 		Where("t.type = ?", dictType).
 		Find(&dictDataList)
 	return dictDataList, result.Error

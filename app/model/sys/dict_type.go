@@ -5,12 +5,14 @@ import (
 )
 
 type SysDictType struct {
-	Id       uint `gorm:"primaryKey;autoIncrement"`
-	Name     string
-	Type     string
+	Id   uint `gorm:"primaryKey;autoIncrement"`
+	Name string
+	Type string
+	// 0-文本；1-标签
 	NodeType string `gorm:"default:0"`
-	Status   string `gorm:"default:1"`
-	Remark   string
+	// 0-停用；1-正常
+	Status string `gorm:"default:1"`
+	Remark string
 	model.BaseModel
 }
 
