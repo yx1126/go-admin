@@ -5,7 +5,7 @@ import (
 )
 
 type SysDictType struct {
-	Id   uint `gorm:"primaryKey;autoIncrement"`
+	Id   int `gorm:"primaryKey;autoIncrement"`
 	Name string
 	Type string
 	// 0-文本；1-标签

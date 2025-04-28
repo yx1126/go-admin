@@ -3,7 +3,7 @@ package vo
 import "github.com/yx1126/go-admin/app/model"
 
 type DictTypeListVo struct {
-	Id       uint   `json:"id"`
+	Id       int    `json:"id"`
 	Name     string `json:"name"`
 	Type     string `json:"type"`
 	NodeType string `json:"nodeType"`
@@ -21,13 +21,13 @@ type CreateDictType struct {
 }
 
 type UpdateDictType struct {
-	Id uint `json:"id"`
+	Id int `json:"id"`
 	CreateDictType
 }
 
 type DictDataListVo struct {
-	Id        uint   `json:"id"`
-	DictId    uint   `json:"dictId"`
+	Id        int    `json:"id"`
+	DictId    int    `json:"dictId"`
 	Sort      int    `json:"sort"`
 	Label     string `json:"label"`
 	Value     string `json:"value"`
@@ -45,7 +45,7 @@ type DictDataListVo struct {
 }
 
 type CreateDictData struct {
-	DictId    uint   `json:"dictId" binding:"required"`
+	DictId    int    `json:"dictId" binding:"required"`
 	Sort      int    `json:"sort"`
 	Label     string `json:"label" binding:"required"`
 	Value     string `json:"value" binding:"required"`
@@ -58,6 +58,6 @@ type CreateDictData struct {
 }
 
 type UpdateDictData struct {
-	Id uint `json:"id"`
+	Id int `json:"id"`
 	CreateDictData
 }

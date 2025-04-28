@@ -5,8 +5,8 @@ import (
 )
 
 type SysDictData struct {
-	Id        uint `gorm:"primaryKey;autoIncrement"`
-	DictId    uint
+	Id        int `gorm:"primaryKey;autoIncrement"`
+	DictId    int
 	Sort      int `gorm:"default:0"`
 	Label     string
 	Value     string

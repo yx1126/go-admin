@@ -1,28 +1,25 @@
 package model
 
 import (
-	"time"
-
 	"github.com/yx1126/go-admin/app/model"
-	"gorm.io/gorm"
+	"github.com/yx1126/go-admin/app/util/datetime"
 )
 
 type SysUser struct {
-	Id          int `gorm:"primaryKey;autoIncrement"`
-	DeptId      int
-	UserName    string
-	NickName    string
-	UserType    string `gorm:"default:00"`
-	Email       string
-	Phonenumber string
-	Sex         string `gorm:"default:2"`
-	Avatar      string
-	Password    string
-	Status      string `gorm:"default:0"`
-	LoginIp     string
-	LoginDate   time.Time
-	Remark      string
-	DeleteTime  gorm.DeletedAt
+	Id        int `gorm:"primaryKey;autoIncrement"`
+	DeptId    int
+	UserName  string
+	NickName  string
+	UserType  string `gorm:"default:00"`
+	Email     string
+	Phone     string
+	Sex       string `gorm:"default:2"`
+	Avatar    string
+	Password  string
+	LoginIp   string
+	LoginDate datetime.Datetime
+	Status    string `gorm:"default:1"`
+	Remark    string
 	model.BaseModel
 }
 

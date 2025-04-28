@@ -10,8 +10,8 @@ type MenuQueryVo struct {
 }
 
 type MenuVo struct {
-	ID         uint   `json:"id"`
-	ParentId   uint   `json:"parentId"`
+	ID         int    `json:"id"`
+	ParentId   int    `json:"parentId"`
 	Name       string `json:"name"`
 	Type       uint   `json:"type"`
 	Link       string `json:"link"`
@@ -47,7 +47,7 @@ func (m MenuTreeVo) SetChildren(children []MenuTreeVo) MenuTreeVo {
 }
 
 type CreateMenuVo struct {
-	ParentId   uint   `json:"parentId"`
+	ParentId   int    `json:"parentId"`
 	Name       string `json:"name" binding:"required"`
 	Type       uint   `json:"type" binding:"required_with=0,omitempty,gte=0,lte=3"`
 	Link       string `json:"link" binding:"omitempty,url"`
@@ -64,6 +64,6 @@ type CreateMenuVo struct {
 }
 
 type UpdateMenuVo struct {
-	Id uint `json:"id"`
+	Id int `json:"id"`
 	CreateMenuVo
 }

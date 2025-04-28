@@ -5,8 +5,8 @@ import (
 )
 
 type SysMenu struct {
-	Id       uint `gorm:"primaryKey;autoIncrement"`
-	ParentId uint `gorm:"default:0"`
+	Id       int `gorm:"primaryKey;autoIncrement"`
+	ParentId int `gorm:"default:0"`
 	Name     string
 	Title    string
 	// 0-目录；1-菜单；2-超链接；3-按钮

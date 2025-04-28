@@ -1,17 +1,17 @@
 package service
 
 import (
+	"github.com/yx1126/go-admin/DB"
 	model "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
-	"github.com/yx1126/go-admin/db"
 )
 
 type MenuService struct{}
 
 func (*MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
-	query := db.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id")
+	query := DB.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id")
 	parentId := 0
 	if menu.Title != "" {
 		parentId = -1
@@ -27,13 +27,13 @@ func (*MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error) 
 
 func (*MenuService) QueryMenuSelectTree() ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
-	query := db.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id").Where("type != 3")
+	query := DB.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id").Where("type != 3")
 	result := query.Find(&menuList)
 	return util.ListToTree(menuList, 0), result.Error
 }
 
 func (*MenuService) CreateMenu(menu vo.CreateMenuVo) error {
-	return db.Gorm.Model(&model.SysMenu{}).Create(&model.SysMenu{
+	return DB.Gorm.Model(&model.SysMenu{}).Create(&model.SysMenu{
 		ParentId:   menu.ParentId,
 		Name:       menu.Name,
 		Type:       menu.Type,
@@ -51,7 +51,7 @@ func (*MenuService) CreateMenu(menu vo.CreateMenuVo) error {
 }
 
 func (*MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
-	return db.Gorm.Model(&model.SysMenu{}).Where("id = ?", menu.Id).Updates(&model.SysMenu{
+	return DB.Gorm.Model(&model.SysMenu{}).Where("id = ?", menu.Id).Updates(&model.SysMenu{
 		ParentId:   menu.ParentId,
 		Name:       menu.Name,
 		Type:       menu.Type,
@@ -70,12 +70,12 @@ func (*MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
 }
 
 func (*MenuService) DeleteMenus(ids []int) error {
-	return db.Gorm.Model(&model.SysMenu{}).Delete(&model.SysMenu{}, ids).Error
+	return DB.Gorm.Model(&model.SysMenu{}).Delete(&model.SysMenu{}, ids).Error
 }
 
 func (*MenuService) MenuHasChildren(parentId int) bool {
 	var count int64
-	result := db.Gorm.Model(&model.SysMenu{}).Where("parent_id = ?", parentId).Count(&count)
+	result := DB.Gorm.Model(&model.SysMenu{}).Where("parent_id = ?", parentId).Count(&count)
 	if result.Error != nil {
 		count = 0
 	}
@@ -84,7 +84,7 @@ func (*MenuService) MenuHasChildren(parentId int) bool {
 
 func (*MenuService) MenuHasSameName(name string, id *int) bool {
 	var count int64
-	query := db.Gorm.Model(&model.SysMenu{}).Where("name = ?", name)
+	query := DB.Gorm.Model(&model.SysMenu{}).Where("name = ?", name)
 	if id != nil {
 		query.Where("id != ?", id)
 	}
