@@ -27,7 +27,7 @@ func (*MenuController) Create(c *gin.Context) {
 	var menu vo.CreateMenuVo
 	err := c.ShouldBindJSON(&menu)
 	if err != nil {
-		response.NewError(err.Error()).Json(c)
+		response.NewError(err).Json(c)
 		return
 	}
 	if (&service.MenuService{}).MenuHasSameName(menu.Name, nil) {
@@ -42,7 +42,7 @@ func (*MenuController) Update(c *gin.Context) {
 	var menu vo.UpdateMenuVo
 	err := c.ShouldBindJSON(&menu)
 	if err != nil {
-		response.NewError(err.Error()).Json(c)
+		response.NewError(err).Json(c)
 		return
 	}
 	if menu.Id == menu.ParentId {
@@ -62,7 +62,7 @@ func (*MenuController) Delete(c *gin.Context) {
 	var ids []int
 	err := c.ShouldBindJSON(&ids)
 	if err != nil {
-		response.NewError(err.Error()).Json(c)
+		response.NewError(err).Json(c)
 		return
 	}
 	for _, id := range ids {

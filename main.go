@@ -13,5 +13,5 @@ func main() {
 	DB.InitGorm()
 	r := gin.Default()
 	router.Register(r)
-	r.Run(":" + strconv.Itoa(config.Config.Server.Port))
+	r.Run(":" + strconv.Itoa(config.Server.Port))
 }

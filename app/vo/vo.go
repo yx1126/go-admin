@@ -1,6 +1,6 @@
 package vo
 
 type PagingVo struct {
-	Page int `json:"page"`
-	Size int `json:"size"`
+	Page int `json:"page" form:"page"`
+	Size int `json:"size" form:"size"`
 }

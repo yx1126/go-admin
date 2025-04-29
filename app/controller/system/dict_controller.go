@@ -52,7 +52,7 @@ func (*DictController) Delete(c *gin.Context) {
 	var ids []int
 	err := c.ShouldBindJSON(&ids)
 	if err != nil {
-		response.NewError(err.Error()).Json(c)
+		response.NewError(err).Json(c)
 		return
 	}
 	response.New(nil, (&service.SysDictTypeService{}).DeleteDictType(ids)).Json(c)
@@ -110,7 +110,7 @@ func (*DictController) DeleteData(c *gin.Context) {
 	var ids []int
 	err := c.ShouldBindJSON(&ids)
 	if err != nil {
-		response.NewError(err.Error()).Json(c)
+		response.NewError(err).Json(c)
 		return
 	}
 	response.New(nil, (&service.SysDictDataService{}).DeleteDictData(ids)).Json(c)

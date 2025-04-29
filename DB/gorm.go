@@ -13,7 +13,7 @@ import (
 var Gorm *gorm.DB
 
 func InitGorm() {
-	ms := config.Config.Mysql
+	ms := config.Mysql
 	dsn := ms.User + ":" + ms.Password + "@tcp(" + ms.Ip + ":" + strconv.Itoa(ms.Port) + ")/" + ms.Database + "?charset=utf8mb4&parseTime=True&loc=Local"
 	fmt.Println("dsn: ", dsn)
 	var err error

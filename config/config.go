@@ -6,7 +6,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type Mysql struct {
+type MysqlConfig struct {
 	Ip           string `yaml:"ip" json:"ip"`
 	Port         int    `yaml:"port" json:"port"`
 	User         string `yaml:"user" json:"user"`
@@ -16,18 +16,26 @@ type Mysql struct {
 	MaxOpenConns int    `yaml:"maxOpenConns" json:"maxOpenConns"`
 }
 
-type Server struct {
+type ServerConfig struct {
 	Port int `yaml:"port" json:"port"`
 }
 
-type ConfigContext struct {
-	Mysql  Mysql  `yaml:"mysql" json:"mysql"`
-	Server Server `yaml:"server" json:"server"`
+type UserConfig struct {
+	Password string `yaml:"password" json:"password"`
 }
 
-var Config *ConfigContext
+type ConfigContext struct {
+	Mysql  MysqlConfig  `yaml:"mysql" json:"mysql"`
+	Server ServerConfig `yaml:"server" json:"server"`
+	User   UserConfig   `yaml:"user" json:"user"`
+}
+
+var Mysql *MysqlConfig
+var Server *ServerConfig
+var User *UserConfig
 
 func init() {
+	var Config *ConfigContext
 	conf, err := os.ReadFile("./conf.yaml")
 	if err != nil {
 		panic(err)
@@ -36,4 +44,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	Mysql = &Config.Mysql
+	Server = &Config.Server
+	User = &Config.User
 }

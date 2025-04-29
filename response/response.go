@@ -10,7 +10,7 @@ type Paging struct {
 	Total int         `json:"total"`
 	Page  int         `json:"page"`
 	Size  int         `json:"size"`
-	List  interface{} `json:"list"`
+	Data  interface{} `json:"data"`
 }
 
 type Response struct {
@@ -49,7 +49,7 @@ func (r *Response) Json(c *gin.Context) {
 
 func New(data interface{}, err error) *Response {
 	if err != nil {
-		return NewError(err.Error())
+		return NewError(err)
 	}
 	return NewSuccess(data)
 }
@@ -62,10 +62,15 @@ func NewSuccess(data interface{}) *Response {
 	}
 }
 
-func NewError(data interface{}) *Response {
-	return &Response{
-		Code:    500,
-		Data:    data,
-		Message: "失败！",
+func NewError(err error) *Response {
+	res := &Response{
+		Code: 500,
+		Data: nil,
 	}
+	if err != nil {
+		res.Message = err.Error()
+	} else {
+		res.Message = "失败！"
+	}
+	return res
 }

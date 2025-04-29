@@ -11,3 +11,8 @@ mysql:
 
 server:
   port: 9000
+
+# 用户
+user:
+  # 默认密码
+  password: "123456"

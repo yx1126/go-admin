@@ -9,7 +9,14 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 	// 系统设置模块
 	system := g.Group("/system")
 	{
-		// 菜单
+		// 用户管理
+		user := system.Group("/user")
+		userCtrl := systemCtrl.UserController{}
+		user.GET("", userCtrl.QueryUserList)
+		user.POST("", userCtrl.Create)
+		user.PUT("", userCtrl.Update)
+		user.DELETE("", userCtrl.Delete)
+		// 菜单管理
 		{
 			menu := system.Group("/menu")
 			menuCtrl := systemCtrl.MenuController{}
