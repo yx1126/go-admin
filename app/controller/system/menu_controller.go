@@ -2,7 +2,8 @@ package systemcontroller
 
 import (
 	"github.com/gin-gonic/gin"
-	service "github.com/yx1126/go-admin/app/service/system"
+	systemservice "github.com/yx1126/go-admin/app/service/system"
+	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/response"
 )
@@ -11,15 +12,16 @@ type MenuController struct{}
 
 // 菜单树查询
 func (*MenuController) QueryTree(c *gin.Context) {
-	response.New((&service.MenuService{}).QueryMenuTree(vo.MenuQueryVo{
+	menuList, err := (&systemservice.MenuService{}).QueryMenuList(vo.MenuQueryParam{
 		Title:  c.Query("title"),
 		Status: c.Query("status"),
-	})).Json(c)
+	})
+	response.New(util.ListToTree(menuList, 0), err).Json(c)
 }
 
 // 菜单下拉列表查询
 func (*MenuController) QuerySelectTree(c *gin.Context) {
-	response.New((&service.MenuService{}).QueryMenuSelectTree()).Json(c)
+	response.New((&systemservice.MenuService{}).QueryMenuSelectTree()).Json(c)
 }
 
 // 菜单新增
@@ -30,11 +32,11 @@ func (*MenuController) Create(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	if (&service.MenuService{}).MenuHasSameName(menu.Name, nil) {
+	if (&systemservice.MenuService{}).MenuHasSameName(menu.Name, nil) {
 		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
 		return
 	}
-	response.New(nil, (&service.MenuService{}).CreateMenu(menu)).Json(c)
+	response.New(nil, (&systemservice.MenuService{}).CreateMenu(menu)).Json(c)
 }
 
 // 菜单更新
@@ -50,11 +52,11 @@ func (*MenuController) Update(c *gin.Context) {
 		return
 	}
 	menuId := int(menu.Id)
-	if (&service.MenuService{}).MenuHasSameName(menu.Name, &menuId) {
+	if (&systemservice.MenuService{}).MenuHasSameName(menu.Name, &menuId) {
 		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
 		return
 	}
-	response.New(nil, (&service.MenuService{}).UpdateMenu(menu)).Json(c)
+	response.New(nil, (&systemservice.MenuService{}).UpdateMenu(menu)).Json(c)
 }
 
 // 菜单删除
@@ -66,10 +68,10 @@ func (*MenuController) Delete(c *gin.Context) {
 		return
 	}
 	for _, id := range ids {
-		if (&service.MenuService{}).MenuHasChildren(id) {
+		if (&systemservice.MenuService{}).MenuHasChildren(id) {
 			response.NewError(nil).SetMsg("存在子菜单，不允许删除").Json(c)
 			return
 		}
 	}
-	response.New(nil, (&service.MenuService{}).DeleteMenus(ids)).Json(c)
+	response.New(nil, (&systemservice.MenuService{}).DeleteMenus(ids)).Json(c)
 }

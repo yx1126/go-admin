@@ -10,3 +10,10 @@ func UpdateOmitScope(columns ...string) func(DB *gorm.DB) *gorm.DB {
 		return DB.Select("*").Omit(defOmit...)
 	}
 }
+
+// 分页
+func PagingScope(page, size int) func(DB *gorm.DB) *gorm.DB {
+	return func(DB *gorm.DB) *gorm.DB {
+		return DB.Offset((page - 1) * size).Limit(size)
+	}
+}

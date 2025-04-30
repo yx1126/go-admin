@@ -1,4 +1,4 @@
-package service
+package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"

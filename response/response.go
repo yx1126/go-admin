@@ -10,7 +10,7 @@ type Paging struct {
 	Total int         `json:"total"`
 	Page  int         `json:"page"`
 	Size  int         `json:"size"`
-	Data  interface{} `json:"data"`
+	List  interface{} `json:"list"`
 }
 
 type Response struct {

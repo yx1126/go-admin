@@ -4,7 +4,7 @@ import (
 	"github.com/yx1126/go-admin/app/model"
 )
 
-type MenuQueryVo struct {
+type MenuQueryParam struct {
 	Title  string `json:"title"`
 	Status string `json:"status"`
 }

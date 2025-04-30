@@ -1,4 +1,4 @@
-package service
+package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
@@ -9,20 +9,17 @@ import (
 
 type MenuService struct{}
 
-func (*MenuService) QueryMenuTree(menu vo.MenuQueryVo) ([]vo.MenuTreeVo, error) {
+func (*MenuService) QueryMenuList(menu vo.MenuQueryParam) ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
 	query := DB.Gorm.Model(&model.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id")
-	parentId := 0
 	if menu.Title != "" {
-		parentId = -1
 		query.Where("title LIKE ?", "%"+menu.Title+"%")
 	}
 	if menu.Status != "" {
-		parentId = -1
 		query.Where("status = ?", menu.Status)
 	}
 	result := query.Find(&menuList)
-	return util.ListToTree(menuList, parentId), result.Error
+	return menuList, result.Error
 }
 
 func (*MenuService) QueryMenuSelectTree() ([]vo.MenuTreeVo, error) {

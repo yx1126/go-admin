@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	service "github.com/yx1126/go-admin/app/service/system"
+	systemservice "github.com/yx1126/go-admin/app/service/system"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/response"
 )
@@ -13,7 +13,7 @@ type DictController struct{}
 
 // 字典类型查询
 func (*DictController) QueryAllList(c *gin.Context) {
-	response.New((&service.SysDictTypeService{}).QueryDictTypeAllList()).Json(c)
+	response.New((&systemservice.SysDictTypeService{}).QueryDictTypeAllList()).Json(c)
 }
 
 // 字典类型新增
@@ -24,11 +24,11 @@ func (*DictController) Create(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	if ok := (&service.SysDictTypeService{}).DictTypeHasSameType(dictType.Type, nil); ok {
+	if ok := (&systemservice.SysDictTypeService{}).DictTypeHasSameType(dictType.Type, nil); ok {
 		response.NewError(nil).SetMsg("字典类型已存在").Json(c)
 		return
 	}
-	response.New(nil, (&service.SysDictTypeService{}).CreateDictType(dictType)).Json(c)
+	response.New(nil, (&systemservice.SysDictTypeService{}).CreateDictType(dictType)).Json(c)
 }
 
 // 字典类型更新
@@ -40,11 +40,11 @@ func (*DictController) Update(c *gin.Context) {
 		return
 	}
 	dictTypeId := int(dictType.Id)
-	if ok := (&service.SysDictTypeService{}).DictTypeHasSameType(dictType.Type, &dictTypeId); ok {
+	if ok := (&systemservice.SysDictTypeService{}).DictTypeHasSameType(dictType.Type, &dictTypeId); ok {
 		response.NewError(nil).SetMsg("字典类型已存在").Json(c)
 		return
 	}
-	response.New(nil, (&service.SysDictTypeService{}).UpdateDictType(dictType)).Json(c)
+	response.New(nil, (&systemservice.SysDictTypeService{}).UpdateDictType(dictType)).Json(c)
 }
 
 // 字典类型删除
@@ -55,7 +55,7 @@ func (*DictController) Delete(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	response.New(nil, (&service.SysDictTypeService{}).DeleteDictType(ids)).Json(c)
+	response.New(nil, (&systemservice.SysDictTypeService{}).DeleteDictType(ids)).Json(c)
 }
 
 // 根据字典类型id查询字典数据
@@ -66,12 +66,12 @@ func (*DictController) QueryDictDataList(c *gin.Context) {
 			dictId = &val2
 		}
 	}
-	response.New((&service.SysDictDataService{}).QueryDictDataList(dictId)).Json(c)
+	response.New((&systemservice.SysDictDataService{}).QueryDictDataList(dictId)).Json(c)
 }
 
 // 根据字典类型查询字典数据
 func (*DictController) QueryDictDataListByType(c *gin.Context) {
-	response.New((&service.SysDictDataService{}).QueryDictDataListByType(c.Param("dictType"))).Json(c)
+	response.New((&systemservice.SysDictDataService{}).QueryDictDataListByType(c.Param("dictType"))).Json(c)
 }
 
 // 字典数据新增
@@ -82,11 +82,11 @@ func (*DictController) CreateData(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	if ok := (&service.SysDictDataService{}).DictDataHasSameNameValue(dictData.Label, dictData.Value, dictData.DictId, nil); ok {
+	if ok := (&systemservice.SysDictDataService{}).DictDataHasSameNameValue(dictData.Label, dictData.Value, dictData.DictId, nil); ok {
 		response.NewError(nil).SetMsg("字典名称或值已存在").Json(c)
 		return
 	}
-	response.New(nil, (&service.SysDictDataService{}).CreateDictData(dictData)).Json(c)
+	response.New(nil, (&systemservice.SysDictDataService{}).CreateDictData(dictData)).Json(c)
 }
 
 // 字典数据更新
@@ -98,11 +98,11 @@ func (*DictController) UpdateData(c *gin.Context) {
 		return
 	}
 	dictDataId := int(dictData.Id)
-	if ok := (&service.SysDictDataService{}).DictDataHasSameNameValue(dictData.Label, dictData.Value, dictData.DictId, &dictDataId); ok {
+	if ok := (&systemservice.SysDictDataService{}).DictDataHasSameNameValue(dictData.Label, dictData.Value, dictData.DictId, &dictDataId); ok {
 		response.NewError(nil).SetMsg("字典名称或值已存在").Json(c)
 		return
 	}
-	response.New(nil, (&service.SysDictDataService{}).UpdateDictData(dictData)).Json(c)
+	response.New(nil, (&systemservice.SysDictDataService{}).UpdateDictData(dictData)).Json(c)
 }
 
 // 字典数据删除
@@ -113,5 +113,5 @@ func (*DictController) DeleteData(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	response.New(nil, (&service.SysDictDataService{}).DeleteDictData(ids)).Json(c)
+	response.New(nil, (&systemservice.SysDictDataService{}).DeleteDictData(ids)).Json(c)
 }

@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/yx1126/go-admin/app/util/datetime"
+	"github.com/yx1126/go-admin/common/datetime"
 	"gorm.io/gorm"
 )
 

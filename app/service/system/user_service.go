@@ -1,26 +1,28 @@
-package service
+package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
 	model "github.com/yx1126/go-admin/app/model/sys"
-	"github.com/yx1126/go-admin/app/util/pwd"
+	"github.com/yx1126/go-admin/app/service"
 	"github.com/yx1126/go-admin/app/vo"
+	"github.com/yx1126/go-admin/common/password"
 	"github.com/yx1126/go-admin/config"
 )
 
 type UserService struct{}
 
-func (*UserService) QueryUserList(params vo.UserQueryPageVo) ([]vo.UserVo, int, error) {
+// 查询用户列表
+func (*UserService) QueryUserList(params vo.UserQueryParam, isPaging bool) (vo.PagingBackVo[vo.UserVo], error) {
 	var count int64
 	var userList = make([]vo.UserVo, 0)
 	query := DB.Gorm.Model(&model.SysUser{}).Select("sys_user.*", "d.dept_name").
 		Omit("password").
 		Joins("LEFT JOIN sys_dept as d ON sys_user.dept_id = d.id")
 	if params.UserName != "" {
-		query = query.Where("user_name LIKE ?", "%"+params.UserName+"%")
+		query = query.Where("sys_user.user_name LIKE ?", "%"+params.UserName+"%")
 	}
 	if params.NickName != "" {
-		query = query.Where("nick_name LIKE ?", "%"+params.NickName+"%")
+		query = query.Where("sys_user.nick_name LIKE ?", "%"+params.NickName+"%")
 	}
 	if params.Status != "" {
 		query = query.Where("sys_user.status = ?", params.Status)
@@ -28,13 +30,14 @@ func (*UserService) QueryUserList(params vo.UserQueryPageVo) ([]vo.UserVo, int, 
 	if params.DeptId != "" {
 		query = query.Where("sys_user.dept_id = ?", params.DeptId)
 	}
-	result := query.Count(&count).
-		Limit(params.Size).
-		Offset((params.Page - 1) * params.Size).
-		Find(&userList)
-	return userList, int(count), result.Error
+	if isPaging {
+		query.Count(&count).Scopes(service.PagingScope(params.Page, params.Size))
+	}
+	result := query.Find(&userList)
+	return vo.PagingBackVo[vo.UserVo]{Data: userList, Count: int(count)}, result.Error
 }
 
+// 根据id查询用户信息
 func (*UserService) QueryUserById(id int) (vo.UserVo, error) {
 	var user vo.UserVo
 	result := DB.Gorm.Model(&model.SysUser{}).
@@ -45,8 +48,9 @@ func (*UserService) QueryUserById(id int) (vo.UserVo, error) {
 	return user, result.Error
 }
 
+// 创建用户
 func (*UserService) CreateUser(user vo.CreateUserVo) error {
-	pwd, _ := pwd.Encode(config.User.Password)
+	pwd, _ := password.Encode(config.User.Password)
 	return DB.Gorm.Model(&model.SysUser{}).Create(&model.SysUser{
 		UserName: user.UserName,
 		DeptId:   user.DeptId,
@@ -62,20 +66,40 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 	}).Error
 }
 
+// 更新用户
 func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
-	return DB.Gorm.Model(&model.SysUser{}).Where("id = ?", user.Id).Updates(&model.SysUser{
-		DeptId:   user.DeptId,
-		NickName: user.NickName,
-		UserType: user.UserType,
-		Email:    user.Email,
-		Phone:    user.Phone,
-		Sex:      user.Sex,
-		Avatar:   user.Avatar,
-		Status:   user.Status,
-		Remark:   user.Remark,
-	}).Error
+	return DB.Gorm.Model(&model.SysUser{}).
+		Select("dept_id", "nick_name", "user_type", "email", "phone", "sex", "avatar", "status", "remark").
+		Where("id = ?", user.Id).
+		Updates(&model.SysUser{
+			DeptId:   user.DeptId,
+			NickName: user.NickName,
+			UserType: user.UserType,
+			Email:    user.Email,
+			Phone:    user.Phone,
+			Sex:      user.Sex,
+			Avatar:   user.Avatar,
+			Status:   user.Status,
+			Remark:   user.Remark,
+		}).Error
 }
 
+// 删除用户
 func (*UserService) DeleteUser(ids []int) error {
 	return DB.Gorm.Model(&model.SysUser{}).Delete(&model.SysUser{}, ids).Error
+}
+
+// 修改密码
+func (*UserService) UpdatePwd(id int, pwd string) error {
+	return DB.Gorm.Model(&model.SysUser{}).Where("id = ?", id).Update("password", pwd).Error
+}
+
+// 校验用户名
+func (*UserService) IsHasSameName(name string) bool {
+	var count int64
+	result := DB.Gorm.Model(&model.SysUser{}).Where("user_name = ?", name).Count(&count)
+	if result.Error != nil {
+		count = 0
+	}
+	return count > 0
 }

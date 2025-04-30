@@ -4,20 +4,7 @@ import (
 	"github.com/yx1126/go-admin/app/model"
 )
 
-type baseVo struct {
-	DeptId   int    `json:"deptId"`
-	DeptName string `json:"deptName"`
-	NickName string `json:"nickName"`
-	UserType string `json:"userType"`
-	Email    string `json:"email"`
-	Phone    string `json:"phone"`
-	Sex      string `json:"sex"`
-	Avatar   string `json:"avatar"`
-	Status   string `json:"status"`
-	Remark   string `json:"remark"`
-}
-
-type UserQueryPageVo struct {
+type UserQueryParam struct {
 	DeptId   string `json:"deptId" form:"deptId"`
 	DeptName string `json:"deptName" form:"deptName"`
 	UserName string `json:"userName" form:"userName"`
@@ -31,7 +18,7 @@ type UserVo struct {
 	UserName  string `json:"userName"`
 	LoginIp   string `json:"loginIp"`
 	LoginDate string `json:"loginDate"`
-	DeptId    int    `json:"deptId"`
+	DeptId    *int   `json:"deptId"`
 	DeptName  string `json:"deptName"`
 	NickName  string `json:"nickName"`
 	UserType  string `json:"userType"`
@@ -44,12 +31,32 @@ type UserVo struct {
 	model.BaseModel
 }
 
+type baseCUVo struct {
+	DeptId   *int   `json:"deptId"`
+	DeptName string `json:"deptName"`
+	NickName string `json:"nickName"`
+	UserType string `json:"userType"`
+	Email    string `json:"email" binding:"omitempty,email"`
+	Phone    string `json:"phone"`
+	Sex      string `json:"sex"`
+	Avatar   string `json:"avatar"`
+	Status   string `json:"status"`
+	Remark   string `json:"remark"`
+}
+
 type CreateUserVo struct {
 	UserName string `json:"userName"`
-	baseVo
+	baseCUVo
 }
 
 type UpdateUserVo struct {
 	Id int `json:"id"`
-	baseVo
+	baseCUVo
+}
+
+type UpdatePwdVo struct {
+	Id          int    `json:"id"`
+	OldPassword string `json:"oldPassword" binding:"required"`
+	Password    string `json:"password" binding:"required"`
+	ConfirmPwd  string `json:"confirmPwd" binding:"required,eqfield=Password"`
 }

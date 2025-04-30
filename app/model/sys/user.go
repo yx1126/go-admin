@@ -2,12 +2,12 @@ package model
 
 import (
 	"github.com/yx1126/go-admin/app/model"
-	"github.com/yx1126/go-admin/app/util/datetime"
+	"github.com/yx1126/go-admin/common/datetime"
 )
 
 type SysUser struct {
 	Id        int `gorm:"primaryKey;autoIncrement"`
-	DeptId    int
+	DeptId    *int
 	UserName  string
 	NickName  string
 	UserType  string `gorm:"default:00"`
