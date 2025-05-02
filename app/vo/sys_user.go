@@ -4,17 +4,20 @@ import (
 	"github.com/yx1126/go-admin/app/model"
 )
 
-type UserQueryParam struct {
+type UserParam struct {
 	DeptId   string `json:"deptId" form:"deptId"`
 	DeptName string `json:"deptName" form:"deptName"`
 	UserName string `json:"userName" form:"userName"`
 	NickName string `json:"nickName" form:"nickName"`
 	Status   string `json:"status" form:"status"`
+}
+
+type UserPagingParam struct {
+	UserParam
 	PagingVo
 }
 
 type UserVo struct {
-	Id        int    `json:"id"`
 	UserName  string `json:"userName"`
 	LoginIp   string `json:"loginIp"`
 	LoginDate string `json:"loginDate"`

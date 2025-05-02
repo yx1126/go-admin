@@ -9,20 +9,31 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 	// 系统设置模块
 	system := g.Group("/system")
 	{
+		// 用户管理
+		user := system.Group("/user")
 		{
-			// 用户管理
-			user := system.Group("/user")
 			userCtrl := systemCtrl.UserController{}
 			user.GET("", userCtrl.QueryUserList)
+			user.GET("/all", userCtrl.QueryUserAllList)
 			user.GET("/:id", userCtrl.QueryUserInfoById)
 			user.POST("", userCtrl.Create)
 			user.PUT("", userCtrl.Update)
 			user.PUT("/reset/:id", userCtrl.ResetPwd)
 			user.DELETE("", userCtrl.Delete)
 		}
-		// 菜单管理
+		// 部门管理
+		dept := system.Group("/dept")
 		{
-			menu := system.Group("/menu")
+			deptCtrl := systemCtrl.DeptController{}
+			dept.GET("", deptCtrl.QueryTree)
+			dept.GET("/selectTree", deptCtrl.QuerySelectTree)
+			dept.POST("", deptCtrl.Create)
+			dept.PUT("", deptCtrl.Update)
+			dept.DELETE("", deptCtrl.Delete)
+		}
+		// 菜单管理
+		menu := system.Group("/menu")
+		{
 			menuCtrl := systemCtrl.MenuController{}
 			menu.GET("", menuCtrl.QueryTree)
 			menu.GET("/selectTree", menuCtrl.QuerySelectTree)
@@ -31,16 +42,16 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 			menu.DELETE("", menuCtrl.Delete)
 		}
 		// 字典类型
+		dict := system.Group("/dict")
 		{
-			dict := system.Group("/dict")
 			dictTypeCtrl := systemCtrl.DictController{}
 			dict.GET("", dictTypeCtrl.QueryAllList)
 			dict.POST("", dictTypeCtrl.Create)
 			dict.PUT("", dictTypeCtrl.Update)
 			dict.DELETE("", dictTypeCtrl.Delete)
+			// 字典数据
+			dictData := dict.Group("/data")
 			{
-				// 字典数据
-				dictData := dict.Group("/data")
 				dictData.GET("", dictTypeCtrl.QueryDictDataList)
 				dictData.GET("/:dictType", dictTypeCtrl.QueryDictDataListByType)
 				dictData.POST("", dictTypeCtrl.CreateData)

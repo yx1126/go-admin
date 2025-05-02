@@ -4,13 +4,12 @@ import (
 	"github.com/yx1126/go-admin/app/model"
 )
 
-type MenuQueryParam struct {
+type MenuParam struct {
 	Title  string `json:"title"`
 	Status string `json:"status"`
 }
 
 type MenuVo struct {
-	ID         int    `json:"id"`
 	ParentId   int    `json:"parentId"`
 	Name       string `json:"name"`
 	Type       uint   `json:"type"`
@@ -34,7 +33,7 @@ type MenuTreeVo struct {
 }
 
 func (m MenuTreeVo) GetID() int {
-	return int(m.ID)
+	return m.Id
 }
 
 func (m MenuTreeVo) GetParentID() int {

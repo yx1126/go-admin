@@ -16,7 +16,7 @@ type UserController struct{}
 
 // 获取用户列表
 func (*UserController) QueryUserList(c *gin.Context) {
-	var params vo.UserQueryParam
+	var params vo.UserPagingParam
 	if err := c.ShouldBindQuery(&params); err != nil {
 		response.NewError(err).Json(c)
 		return
@@ -40,6 +40,15 @@ func (*UserController) QueryUserList(c *gin.Context) {
 		return
 	}
 	response.NewSuccess(paging).Json(c)
+}
+
+func (*UserController) QueryUserAllList(c *gin.Context) {
+	var params vo.UserParam
+	if err := c.ShouldBindQuery(&params); err != nil {
+		response.NewError(err).Json(c)
+		return
+	}
+	response.New((&systemservice.UserService{}).QueryUserAllList(params)).Json(c)
 }
 
 // 根据id获取用户信息
@@ -81,6 +90,10 @@ func (*UserController) Delete(c *gin.Context) {
 	var ids []int
 	if err := c.ShouldBindJSON(&ids); err != nil {
 		response.NewError(err).Json(c)
+		return
+	}
+	if len(ids) == 0 {
+		response.NewError(nil).SetMsg("请选择要删除的数据").Json(c)
 		return
 	}
 	if util.Contains(ids, 1) {

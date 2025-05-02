@@ -2,7 +2,7 @@ package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
-	model "github.com/yx1126/go-admin/app/model/sys"
+	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
 	"github.com/yx1126/go-admin/app/vo"
 )
@@ -11,7 +11,7 @@ type SysDictDataService struct{}
 
 func (*SysDictDataService) QueryDictDataList(dictId *int) ([]vo.DictDataListVo, error) {
 	var dictDataList []vo.DictDataListVo
-	query := DB.Gorm.Model(&model.SysDictData{}).
+	query := DB.Gorm.Model(&sysmodel.SysDictData{}).
 		Select("sys_dict_data.*", "t.type as dict_type", "t.node_type").
 		Order("sort,id").
 		Joins("LEFT JOIN sys_dict_type as t ON sys_dict_data.dict_id = t.id")
@@ -24,7 +24,7 @@ func (*SysDictDataService) QueryDictDataList(dictId *int) ([]vo.DictDataListVo, 
 
 func (*SysDictDataService) QueryDictDataListByType(dictType string) ([]vo.DictDataListVo, error) {
 	var dictDataList []vo.DictDataListVo
-	result := DB.Gorm.Model(&model.SysDictData{}).
+	result := DB.Gorm.Model(&sysmodel.SysDictData{}).
 		Select("sys_dict_data.*", "t.type as dict_type", "t.node_type").
 		Order("sort,id").
 		Joins("LEFT JOIN sys_dict_type as t ON sys_dict_data.dict_id = t.id").
@@ -35,7 +35,7 @@ func (*SysDictDataService) QueryDictDataListByType(dictType string) ([]vo.DictDa
 }
 
 func (*SysDictDataService) CreateDictData(dictData vo.CreateDictData) error {
-	return DB.Gorm.Model(&model.SysDictData{}).Create(&model.SysDictData{
+	return DB.Gorm.Model(&sysmodel.SysDictData{}).Create(&sysmodel.SysDictData{
 		DictId:    dictData.DictId,
 		Sort:      dictData.Sort,
 		Label:     dictData.Label,
@@ -50,10 +50,10 @@ func (*SysDictDataService) CreateDictData(dictData vo.CreateDictData) error {
 }
 
 func (*SysDictDataService) UpdateDictData(dictData vo.UpdateDictData) error {
-	return DB.Gorm.Model(&model.SysDictData{}).
+	return DB.Gorm.Model(&sysmodel.SysDictData{}).
 		Scopes(service.UpdateOmitScope()).
 		Where("id = ?", dictData.Id).
-		Updates(&model.SysDictData{
+		Updates(&sysmodel.SysDictData{
 			DictId:    dictData.DictId,
 			Sort:      dictData.Sort,
 			Label:     dictData.Label,
@@ -68,12 +68,12 @@ func (*SysDictDataService) UpdateDictData(dictData vo.UpdateDictData) error {
 }
 
 func (*SysDictDataService) DeleteDictData(ids []int) error {
-	return DB.Gorm.Model(&model.SysDictData{}).Delete(&model.SysDictData{}, ids).Error
+	return DB.Gorm.Model(&sysmodel.SysDictData{}).Delete(&sysmodel.SysDictData{}, ids).Error
 }
 
 func (*SysDictDataService) DictDataHasSameNameValue(label, value string, dictId int, id *int) bool {
 	var count int64
-	query := DB.Gorm.Model(&model.SysDictData{}).
+	query := DB.Gorm.Model(&sysmodel.SysDictData{}).
 		Where(DB.Gorm.Where("label = ?", label).Or("value = ?", value)).
 		Where("dict_id = ?", dictId)
 	if id != nil {

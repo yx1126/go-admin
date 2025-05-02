@@ -12,7 +12,7 @@ type MenuController struct{}
 
 // 菜单树查询
 func (*MenuController) QueryTree(c *gin.Context) {
-	menuList, err := (&systemservice.MenuService{}).QueryMenuList(vo.MenuQueryParam{
+	menuList, err := (&systemservice.MenuService{}).QueryMenuList(vo.MenuParam{
 		Title:  c.Query("title"),
 		Status: c.Query("status"),
 	})
@@ -51,8 +51,7 @@ func (*MenuController) Update(c *gin.Context) {
 		response.NewError(nil).SetMsg("请选择正确的父级菜单").Json(c)
 		return
 	}
-	menuId := int(menu.Id)
-	if (&systemservice.MenuService{}).MenuHasSameName(menu.Name, &menuId) {
+	if (&systemservice.MenuService{}).MenuHasSameName(menu.Name, &menu.Id) {
 		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
 		return
 	}
@@ -65,6 +64,10 @@ func (*MenuController) Delete(c *gin.Context) {
 	err := c.ShouldBindJSON(&ids)
 	if err != nil {
 		response.NewError(err).Json(c)
+		return
+	}
+	if len(ids) == 0 {
+		response.NewError(nil).SetMsg("请选择要删除的数据").Json(c)
 		return
 	}
 	for _, id := range ids {

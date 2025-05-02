@@ -113,5 +113,9 @@ func (*DictController) DeleteData(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
+	if len(ids) == 0 {
+		response.NewError(nil).SetMsg("请选择要删除的数据").Json(c)
+		return
+	}
 	response.New(nil, (&systemservice.SysDictDataService{}).DeleteDictData(ids)).Json(c)
 }

@@ -6,6 +6,7 @@ import (
 )
 
 type BaseModel struct {
+	Id        int               `json:"id" gorm:"primaryKey;autoIncrement"`
 	CreatedAt datetime.Datetime `json:"createdAt"`
 	UpdatedAt datetime.Datetime `json:"updatedAt"`
 	CreatedBy string            `json:"createdBy"`

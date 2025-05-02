@@ -3,7 +3,6 @@ package vo
 import "github.com/yx1126/go-admin/app/model"
 
 type DictTypeListVo struct {
-	Id       int    `json:"id"`
 	Name     string `json:"name"`
 	Type     string `json:"type"`
 	NodeType string `json:"nodeType"`

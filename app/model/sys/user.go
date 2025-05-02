@@ -1,4 +1,4 @@
-package model
+package sysmodel
 
 import (
 	"github.com/yx1126/go-admin/app/model"
@@ -6,20 +6,19 @@ import (
 )
 
 type SysUser struct {
-	Id        int `gorm:"primaryKey;autoIncrement"`
-	DeptId    *int
-	UserName  string
-	NickName  string
-	UserType  string `gorm:"default:00"`
-	Email     string
-	Phone     string
-	Sex       string `gorm:"default:2"`
-	Avatar    string
-	Password  string
-	LoginIp   string
-	LoginDate datetime.Datetime
-	Status    string `gorm:"default:1"`
-	Remark    string
+	DeptId    *int              `json:"deptId"`
+	UserName  string            `json:"userName"`
+	NickName  string            `json:"nickName"`
+	UserType  string            `json:"userType" gorm:"default:00"`
+	Email     string            `json:"email"`
+	Phone     string            `json:"phone"`
+	Sex       string            `json:"sex" gorm:"default:2"`
+	Avatar    string            `json:"avatar"`
+	Password  string            `json:"password"`
+	LoginIp   string            `json:"loginIp"`
+	LoginDate datetime.Datetime `json:"loginDate"`
+	Status    string            `json:"status" gorm:"default:1"`
+	Remark    string            `json:"remark"`
 	model.BaseModel
 }
 
