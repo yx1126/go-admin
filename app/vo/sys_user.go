@@ -2,6 +2,7 @@ package vo
 
 import (
 	"github.com/yx1126/go-admin/app/model"
+	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 )
 
 type UserParam struct {
@@ -32,6 +33,10 @@ type UserVo struct {
 	Status    string `json:"status"`
 	Remark    string `json:"remark"`
 	model.BaseModel
+}
+
+func (UserVo) TableName() string {
+	return (sysmodel.SysUser{}).TableName()
 }
 
 type baseCUVo struct {

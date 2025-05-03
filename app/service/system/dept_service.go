@@ -14,8 +14,8 @@ type DeptService struct{}
 func (*DeptService) QueryDeptList(param vo.DeptParam) ([]vo.DeptTreeVo, error) {
 	deptList := make([]vo.DeptTreeVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysDept{}).
-		Select("sys_dept.*", "u.user_name as leader_name", "u.nick_name as leader_nick_name", "u.email", "u.phone").
-		Joins("LEFT JOIN sys_user as u ON u.id = sys_dept.leader_id").
+		Preload("Leader").
+		Select("sys_dept.*").
 		Order("parent_id,sort,id")
 	if param.Name != "" {
 		query.Where("name LIKE ?", "%"+param.Name+"%")

@@ -12,7 +12,7 @@ import (
 type UserService struct{}
 
 // 查询用户列表
-func (*UserService) QueryUserList(params vo.UserPagingParam, isPaging bool) (vo.PagingBackVo[vo.UserVo], error) {
+func (*UserService) QueryUserList(params vo.UserPagingParam) (vo.PagingBackVo[vo.UserVo], error) {
 	var count int64
 	var userList = make([]vo.UserVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysUser{}).Select("sys_user.*", "d.name as dept_name").
@@ -30,10 +30,10 @@ func (*UserService) QueryUserList(params vo.UserPagingParam, isPaging bool) (vo.
 	if params.DeptId != "" {
 		query = query.Where("sys_user.dept_id = ?", params.DeptId)
 	}
-	if isPaging {
-		query.Count(&count).Scopes(service.PagingScope(params.Page, params.Size))
-	}
-	result := query.Find(&userList)
+	result := query.
+		Count(&count).
+		Scopes(service.PagingScope(params.Page, params.Size)).
+		Find(&userList)
 	return vo.PagingBackVo[vo.UserVo]{Data: userList, Count: int(count)}, result.Error
 }
 

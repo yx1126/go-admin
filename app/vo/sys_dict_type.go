@@ -24,6 +24,13 @@ type UpdateDictType struct {
 	CreateDictType
 }
 
+type DictPagingParam struct {
+	Id     *int   `json:"id" form:"id"`
+	Label  string `json:"label" form:"label"`
+	Status string `json:"status" form:"status"`
+	PagingVo
+}
+
 type DictDataListVo struct {
 	Id        int    `json:"id"`
 	DictId    int    `json:"dictId"`

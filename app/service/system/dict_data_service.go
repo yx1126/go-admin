@@ -9,17 +9,27 @@ import (
 
 type SysDictDataService struct{}
 
-func (*SysDictDataService) QueryDictDataList(dictId *int) ([]vo.DictDataListVo, error) {
+func (*SysDictDataService) QueryDictDataList(params vo.DictPagingParam) (vo.PagingBackVo[vo.DictDataListVo], error) {
 	var dictDataList []vo.DictDataListVo
+	var count int64
 	query := DB.Gorm.Model(&sysmodel.SysDictData{}).
 		Select("sys_dict_data.*", "t.type as dict_type", "t.node_type").
 		Order("sort,id").
 		Joins("LEFT JOIN sys_dict_type as t ON sys_dict_data.dict_id = t.id")
-	if dictId != nil {
-		query.Where("dict_id = ?", dictId)
+	if params.Id != nil {
+		query.Where("dict_id = ?", params.Id)
 	}
-	result := query.Find(&dictDataList)
-	return dictDataList, result.Error
+	if params.Label != "" {
+		query.Where("sys_dict_data.label LIKE ?", "%"+params.Label+"%")
+	}
+	if params.Status != "" {
+		query.Where("sys_dict_data.status = ?", params.Status)
+	}
+	result := query.
+		Count(&count).
+		Scopes(service.PagingScope(params.Page, params.Size)).
+		Find(&dictDataList)
+	return vo.PagingBackVo[vo.DictDataListVo]{Data: dictDataList, Count: int(count)}, result.Error
 }
 
 func (*SysDictDataService) QueryDictDataListByType(dictType string) ([]vo.DictDataListVo, error) {

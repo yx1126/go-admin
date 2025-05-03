@@ -8,6 +8,7 @@ import (
 	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/common/password"
+	bind "github.com/yx1126/go-admin/common/should_bind"
 	"github.com/yx1126/go-admin/config"
 	"github.com/yx1126/go-admin/response"
 )
@@ -17,18 +18,11 @@ type UserController struct{}
 // 获取用户列表
 func (*UserController) QueryUserList(c *gin.Context) {
 	var params vo.UserPagingParam
-	if err := c.ShouldBindQuery(&params); err != nil {
+	if err := bind.PagingBind(c, &params); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
-	if params.Page == 0 {
-		params.Page = 1
-	}
-	if params.Size == 0 {
-		params.Size = 10
-	}
-
-	data, err := (&systemservice.UserService{}).QueryUserList(params, true)
+	data, err := (&systemservice.UserService{}).QueryUserList(params)
 	paging := response.Paging{
 		List:  data.Data,
 		Page:  params.Page,

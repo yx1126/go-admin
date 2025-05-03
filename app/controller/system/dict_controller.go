@@ -1,11 +1,10 @@
 package systemcontroller
 
 import (
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 	systemservice "github.com/yx1126/go-admin/app/service/system"
 	"github.com/yx1126/go-admin/app/vo"
+	bind "github.com/yx1126/go-admin/common/should_bind"
 	"github.com/yx1126/go-admin/response"
 )
 
@@ -60,13 +59,23 @@ func (*DictController) Delete(c *gin.Context) {
 
 // 根据字典类型id查询字典数据
 func (*DictController) QueryDictDataList(c *gin.Context) {
-	var dictId *int
-	if val := c.Query("id"); val != "" {
-		if val2, ok := strconv.Atoi(val); ok == nil {
-			dictId = &val2
-		}
+	var params vo.DictPagingParam
+	if err := bind.PagingBind(c, &params); err != nil {
+		response.NewError(err).Json(c)
+		return
 	}
-	response.New((&systemservice.SysDictDataService{}).QueryDictDataList(dictId)).Json(c)
+	data, err := (&systemservice.SysDictDataService{}).QueryDictDataList(params)
+	paging := response.Paging{
+		List:  data.Data,
+		Page:  params.Page,
+		Size:  params.Size,
+		Total: data.Count,
+	}
+	if err != nil {
+		response.NewError(err).SetPaging(paging).Json(c)
+		return
+	}
+	response.NewSuccess(paging).Json(c)
 }
 
 // 根据字典类型查询字典数据

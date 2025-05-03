@@ -31,16 +31,13 @@ func (d DeptVo) SetChildren(children []DeptVo) DeptVo {
 }
 
 type DeptTreeVo struct {
-	ParentId       int          `json:"parentId"`
-	Name           string       `json:"name"`
-	Sort           int          `json:"sort"`
-	LeaderId       *int         `json:"leaderId"`
-	LeaderName     string       `json:"leaderName"`
-	LeaderNickName string       `json:"leaderNickName"`
-	Email          string       `json:"email"`
-	Phone          string       `json:"phone"`
-	Status         string       `json:"status"`
-	Children       []DeptTreeVo `json:"children" gorm:"-"`
+	ParentId int          `json:"parentId"`
+	Name     string       `json:"name"`
+	Sort     int          `json:"sort"`
+	LeaderId *int         `json:"leaderId"`
+	Leader   *UserVo      `json:"leader" gorm:"foreignKey:LeaderId;references:Id"`
+	Status   string       `json:"status"`
+	Children []DeptTreeVo `json:"children" gorm:"-"`
 	model.BaseModel
 }
 
