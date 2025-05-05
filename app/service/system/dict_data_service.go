@@ -9,6 +9,7 @@ import (
 
 type SysDictDataService struct{}
 
+// 字典数据分页查询
 func (*SysDictDataService) QueryDictDataList(params vo.DictPagingParam) (vo.PagingBackVo[vo.DictDataListVo], error) {
 	var dictDataList []vo.DictDataListVo
 	var count int64
@@ -32,6 +33,7 @@ func (*SysDictDataService) QueryDictDataList(params vo.DictPagingParam) (vo.Pagi
 	return vo.PagingBackVo[vo.DictDataListVo]{Data: dictDataList, Count: int(count)}, result.Error
 }
 
+// 通过字段类型查询字典数据
 func (*SysDictDataService) QueryDictDataListByType(dictType string) ([]vo.DictDataListVo, error) {
 	var dictDataList []vo.DictDataListVo
 	result := DB.Gorm.Model(&sysmodel.SysDictData{}).
@@ -44,6 +46,7 @@ func (*SysDictDataService) QueryDictDataListByType(dictType string) ([]vo.DictDa
 	return dictDataList, result.Error
 }
 
+// 创建字典数据
 func (*SysDictDataService) CreateDictData(dictData vo.CreateDictData) error {
 	return DB.Gorm.Model(&sysmodel.SysDictData{}).Create(&sysmodel.SysDictData{
 		DictId:    dictData.DictId,
@@ -59,6 +62,7 @@ func (*SysDictDataService) CreateDictData(dictData vo.CreateDictData) error {
 	}).Error
 }
 
+// 更新字典数据
 func (*SysDictDataService) UpdateDictData(dictData vo.UpdateDictData) error {
 	return DB.Gorm.Model(&sysmodel.SysDictData{}).
 		Scopes(service.UpdateOmitScope()).
@@ -77,20 +81,33 @@ func (*SysDictDataService) UpdateDictData(dictData vo.UpdateDictData) error {
 		}).Error
 }
 
+// 删除字典数据
 func (*SysDictDataService) DeleteDictData(ids []int) error {
 	return DB.Gorm.Model(&sysmodel.SysDictData{}).Delete(&sysmodel.SysDictData{}, ids).Error
 }
 
-func (*SysDictDataService) DictDataHasSameNameValue(label, value string, dictId int, id *int) bool {
+// 校验字典名称
+func (*SysDictDataService) IsHasSameName(label string, dictId int, id *int) bool {
 	var count int64
 	query := DB.Gorm.Model(&sysmodel.SysDictData{}).
-		Where(DB.Gorm.Where("label = ?", label).Or("value = ?", value)).
+		Where("label = ?", label).
 		Where("dict_id = ?", dictId)
 	if id != nil {
 		query.Where("id != ?", id)
 	}
-	if result := query.Count(&count); result.Error != nil {
-		return true
+	query.Count(&count)
+	return count > 0
+}
+
+// 校验字典值
+func (*SysDictDataService) IsHasSameValue(value string, dictId int, id *int) bool {
+	var count int64
+	query := DB.Gorm.Model(&sysmodel.SysDictData{}).
+		Where("value = ?", value).
+		Where("dict_id = ?", dictId)
+	if id != nil {
+		query.Where("id != ?", id)
 	}
+	query.Count(&count)
 	return count > 0
 }

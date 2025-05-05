@@ -9,6 +9,7 @@ import (
 
 type MenuService struct{}
 
+// 查询菜单列表
 func (*MenuService) QueryMenuList(menu vo.MenuParam) ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id")
@@ -22,6 +23,7 @@ func (*MenuService) QueryMenuList(menu vo.MenuParam) ([]vo.MenuTreeVo, error) {
 	return menuList, result.Error
 }
 
+// 查询菜单树
 func (*MenuService) QueryMenuSelectTree() ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id").Where("type != 3")
@@ -29,6 +31,7 @@ func (*MenuService) QueryMenuSelectTree() ([]vo.MenuTreeVo, error) {
 	return util.ListToTree(menuList, 0), result.Error
 }
 
+// 创建菜单
 func (*MenuService) CreateMenu(menu vo.CreateMenuVo) error {
 	return DB.Gorm.Model(&sysmodel.SysMenu{}).Create(&sysmodel.SysMenu{
 		ParentId:   menu.ParentId,
@@ -47,6 +50,7 @@ func (*MenuService) CreateMenu(menu vo.CreateMenuVo) error {
 	}).Error
 }
 
+// 更新菜单
 func (*MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
 	return DB.Gorm.Model(&sysmodel.SysMenu{}).Where("id = ?", menu.Id).Updates(&sysmodel.SysMenu{
 		ParentId:   menu.ParentId,
@@ -66,27 +70,25 @@ func (*MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
 	}).Error
 }
 
+// 删除菜单
 func (*MenuService) DeleteMenus(ids []int) error {
 	return DB.Gorm.Model(&sysmodel.SysMenu{}).Delete(&sysmodel.SysMenu{}, ids).Error
 }
 
-func (*MenuService) MenuHasChildren(parentId int) bool {
+// 校验存在子元素
+func (*MenuService) IsHasChildren(parentId int) bool {
 	var count int64
-	result := DB.Gorm.Model(&sysmodel.SysMenu{}).Where("parent_id = ?", parentId).Count(&count)
-	if result.Error != nil {
-		count = 0
-	}
+	DB.Gorm.Model(&sysmodel.SysMenu{}).Where("parent_id = ?", parentId).Count(&count)
 	return count > 0
 }
 
-func (*MenuService) MenuHasSameName(name string, id *int) bool {
+// 校验菜单页面名称
+func (*MenuService) IsHasSameName(name string, id *int) bool {
 	var count int64
 	query := DB.Gorm.Model(&sysmodel.SysMenu{}).Where("name = ?", name)
 	if id != nil {
 		query.Where("id != ?", id)
 	}
-	if result := query.Count(&count); result.Error != nil {
-		count = 0
-	}
+	query.Count(&count)
 	return count > 0
 }

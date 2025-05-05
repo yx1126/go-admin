@@ -5,6 +5,7 @@ import (
 	systemservice "github.com/yx1126/go-admin/app/service/system"
 	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
+	bind "github.com/yx1126/go-admin/common/should_bind"
 	"github.com/yx1126/go-admin/response"
 )
 
@@ -32,7 +33,7 @@ func (*MenuController) Create(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	if (&systemservice.MenuService{}).MenuHasSameName(menu.Name, nil) {
+	if (&systemservice.MenuService{}).IsHasSameName(menu.Name, nil) {
 		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
 		return
 	}
@@ -51,7 +52,7 @@ func (*MenuController) Update(c *gin.Context) {
 		response.NewError(nil).SetMsg("请选择正确的父级菜单").Json(c)
 		return
 	}
-	if (&systemservice.MenuService{}).MenuHasSameName(menu.Name, &menu.Id) {
+	if (&systemservice.MenuService{}).IsHasSameName(menu.Name, &menu.Id) {
 		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
 		return
 	}
@@ -61,17 +62,12 @@ func (*MenuController) Update(c *gin.Context) {
 // 菜单删除
 func (*MenuController) Delete(c *gin.Context) {
 	var ids []int
-	err := c.ShouldBindJSON(&ids)
-	if err != nil {
+	if err := bind.BindIds(c, &ids); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
-	if len(ids) == 0 {
-		response.NewError(nil).SetMsg("请选择要删除的数据").Json(c)
-		return
-	}
 	for _, id := range ids {
-		if (&systemservice.MenuService{}).MenuHasChildren(id) {
+		if (&systemservice.MenuService{}).IsHasChildren(id) {
 			response.NewError(nil).SetMsg("存在子菜单，不允许删除").Json(c)
 			return
 		}

@@ -119,9 +119,6 @@ func (*UserService) UpdatePwd(id int, pwd string) error {
 // 校验用户名
 func (*UserService) IsHasSameName(name string) bool {
 	var count int64
-	result := DB.Gorm.Model(&sysmodel.SysUser{}).Where("user_name = ?", name).Count(&count)
-	if result.Error != nil {
-		count = 0
-	}
+	DB.Gorm.Model(&sysmodel.SysUser{}).Where("user_name = ?", name).Count(&count)
 	return count > 0
 }

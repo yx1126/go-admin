@@ -26,6 +26,7 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 		{
 			deptCtrl := systemCtrl.DeptController{}
 			dept.GET("", deptCtrl.QueryTree)
+			dept.GET("/all", deptCtrl.QuerySelectAllTree)
 			dept.GET("/selectTree", deptCtrl.QuerySelectTree)
 			dept.POST("", deptCtrl.Create)
 			dept.PUT("", deptCtrl.Update)
@@ -58,6 +59,17 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 				dictData.PUT("", dictTypeCtrl.UpdateData)
 				dictData.DELETE("", dictTypeCtrl.DeleteData)
 			}
+		}
+		// 岗位管理
+		post := system.Group("/post")
+		{
+			postCtrl := systemCtrl.PostController{}
+			post.GET("", postCtrl.QueryPostList)
+			post.GET("/all", postCtrl.QueryPostAllList)
+			post.GET("/select", postCtrl.QueryPostSelectList)
+			post.POST("", postCtrl.Create)
+			post.PUT("", postCtrl.Update)
+			post.DELETE("", postCtrl.Delete)
 		}
 	}
 }

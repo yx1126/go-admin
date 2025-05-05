@@ -15,7 +15,6 @@ func (*DeptService) QueryDeptList(param vo.DeptParam) ([]vo.DeptTreeVo, error) {
 	deptList := make([]vo.DeptTreeVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysDept{}).
 		Preload("Leader").
-		Select("sys_dept.*").
 		Order("parent_id,sort,id")
 	if param.Name != "" {
 		query.Where("name LIKE ?", "%"+param.Name+"%")
@@ -28,10 +27,14 @@ func (*DeptService) QueryDeptList(param vo.DeptParam) ([]vo.DeptTreeVo, error) {
 }
 
 // 查询部门树结构
-func (*DeptService) QueryDeptSelectTree() ([]vo.DeptVo, error) {
+func (*DeptService) QueryDeptSelectTree(status string) ([]vo.DeptVo, error) {
 	deptList := make([]vo.DeptVo, 0)
-	result := DB.Gorm.Model(&sysmodel.SysDept{}).Order("parent_id,sort,id").Find(&deptList)
-	return util.ListToTree(deptList, 0), result.Error
+	query := DB.Gorm.Model(&sysmodel.SysDept{}).Order("parent_id,sort,id")
+	if status != "" {
+		query.Where("status = ?", status)
+	}
+	result := query.Find(&deptList)
+	return util.ListToTree(deptList, -1), result.Error
 }
 
 // 创建部门
@@ -66,10 +69,7 @@ func (*DeptService) DeleteDept(ids []int) error {
 // 根据id查询时候是否有子集
 func (*DeptService) DeptHasChildren(parentId int) bool {
 	var count int64
-	result := DB.Gorm.Model(&sysmodel.SysDept{}).Where("parent_id = ?", parentId).Count(&count)
-	if result.Error != nil {
-		count = 0
-	}
+	DB.Gorm.Model(&sysmodel.SysDept{}).Where("parent_id = ?", parentId).Count(&count)
 	return count > 0
 }
 
@@ -80,8 +80,6 @@ func (*DeptService) DeptHasSameName(name string, id *int) bool {
 	if id != nil {
 		query.Where("id != ?", id)
 	}
-	if result := query.Count(&count); result.Error != nil {
-		count = 0
-	}
+	query.Count(&count)
 	return count > 0
 }

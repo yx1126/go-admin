@@ -5,6 +5,8 @@ import (
 	systemservice "github.com/yx1126/go-admin/app/service/system"
 	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
+	"github.com/yx1126/go-admin/common/constant"
+	bind "github.com/yx1126/go-admin/common/should_bind"
 	"github.com/yx1126/go-admin/response"
 )
 
@@ -21,10 +23,17 @@ func (*DeptController) QueryTree(c *gin.Context) {
 	response.New(util.ListToTree(deptList, 0), err).Json(c)
 }
 
+// 查询所有部门树
 func (*DeptController) QuerySelectTree(c *gin.Context) {
-	response.New((&systemservice.DeptService{}).QueryDeptSelectTree()).Json(c)
+	response.New((&systemservice.DeptService{}).QueryDeptSelectTree("")).Json(c)
 }
 
+// 查询未禁用的部门树
+func (*DeptController) QuerySelectAllTree(c *gin.Context) {
+	response.New((&systemservice.DeptService{}).QueryDeptSelectTree(constant.STATUS)).Json(c)
+}
+
+// 创建部门
 func (*DeptController) Create(c *gin.Context) {
 	var dept vo.CreateDeptVo
 	if err := c.ShouldBindJSON(&dept); err != nil {
@@ -38,6 +47,7 @@ func (*DeptController) Create(c *gin.Context) {
 	response.New(nil, (&systemservice.DeptService{}).CreateDept(dept)).Json(c)
 }
 
+// 更新部门
 func (*DeptController) Update(c *gin.Context) {
 	var dept vo.UpdateDeptVo
 	if err := c.ShouldBindJSON(&dept); err != nil {
@@ -55,14 +65,11 @@ func (*DeptController) Update(c *gin.Context) {
 	response.New(nil, (&systemservice.DeptService{}).UpdateDept(dept)).Json(c)
 }
 
+// 删除部门
 func (*DeptController) Delete(c *gin.Context) {
 	var ids []int
-	if err := c.ShouldBindJSON(&ids); err != nil {
+	if err := bind.BindIds(c, &ids); err != nil {
 		response.NewError(err).Json(c)
-		return
-	}
-	if len(ids) == 0 {
-		response.NewError(nil).SetMsg("请选择要删除的数据").Json(c)
 		return
 	}
 	response.New(nil, (&systemservice.DeptService{}).DeleteDept(ids)).Json(c)

@@ -23,7 +23,7 @@ func (*DictController) Create(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	if ok := (&systemservice.SysDictTypeService{}).DictTypeHasSameType(dictType.Type, nil); ok {
+	if ok := (&systemservice.SysDictTypeService{}).IsHasSameType(dictType.Type, nil); ok {
 		response.NewError(nil).SetMsg("字典类型已存在").Json(c)
 		return
 	}
@@ -39,7 +39,7 @@ func (*DictController) Update(c *gin.Context) {
 		return
 	}
 	dictTypeId := int(dictType.Id)
-	if ok := (&systemservice.SysDictTypeService{}).DictTypeHasSameType(dictType.Type, &dictTypeId); ok {
+	if ok := (&systemservice.SysDictTypeService{}).IsHasSameType(dictType.Type, &dictTypeId); ok {
 		response.NewError(nil).SetMsg("字典类型已存在").Json(c)
 		return
 	}
@@ -60,7 +60,7 @@ func (*DictController) Delete(c *gin.Context) {
 // 根据字典类型id查询字典数据
 func (*DictController) QueryDictDataList(c *gin.Context) {
 	var params vo.DictPagingParam
-	if err := bind.PagingBind(c, &params); err != nil {
+	if err := bind.BindPaging(c, &params); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
@@ -91,8 +91,12 @@ func (*DictController) CreateData(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	if ok := (&systemservice.SysDictDataService{}).DictDataHasSameNameValue(dictData.Label, dictData.Value, dictData.DictId, nil); ok {
-		response.NewError(nil).SetMsg("字典名称或值已存在").Json(c)
+	if ok := (&systemservice.SysDictDataService{}).IsHasSameName(dictData.Label, dictData.DictId, nil); ok {
+		response.NewError(nil).SetMsg("字典名称已存在").Json(c)
+		return
+	}
+	if ok := (&systemservice.SysDictDataService{}).IsHasSameValue(dictData.Value, dictData.DictId, nil); ok {
+		response.NewError(nil).SetMsg("字典值已存在").Json(c)
 		return
 	}
 	response.New(nil, (&systemservice.SysDictDataService{}).CreateDictData(dictData)).Json(c)
@@ -107,8 +111,12 @@ func (*DictController) UpdateData(c *gin.Context) {
 		return
 	}
 	dictDataId := int(dictData.Id)
-	if ok := (&systemservice.SysDictDataService{}).DictDataHasSameNameValue(dictData.Label, dictData.Value, dictData.DictId, &dictDataId); ok {
-		response.NewError(nil).SetMsg("字典名称或值已存在").Json(c)
+	if ok := (&systemservice.SysDictDataService{}).IsHasSameName(dictData.Label, dictData.DictId, &dictDataId); ok {
+		response.NewError(nil).SetMsg("字典名称已存在").Json(c)
+		return
+	}
+	if ok := (&systemservice.SysDictDataService{}).IsHasSameValue(dictData.Value, dictData.DictId, &dictDataId); ok {
+		response.NewError(nil).SetMsg("字典值已存在").Json(c)
 		return
 	}
 	response.New(nil, (&systemservice.SysDictDataService{}).UpdateDictData(dictData)).Json(c)
@@ -117,13 +125,8 @@ func (*DictController) UpdateData(c *gin.Context) {
 // 字典数据删除
 func (*DictController) DeleteData(c *gin.Context) {
 	var ids []int
-	err := c.ShouldBindJSON(&ids)
-	if err != nil {
+	if err := bind.BindIds(c, &ids); err != nil {
 		response.NewError(err).Json(c)
-		return
-	}
-	if len(ids) == 0 {
-		response.NewError(nil).SetMsg("请选择要删除的数据").Json(c)
 		return
 	}
 	response.New(nil, (&systemservice.SysDictDataService{}).DeleteDictData(ids)).Json(c)
