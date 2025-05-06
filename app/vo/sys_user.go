@@ -5,6 +5,7 @@ import (
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 )
 
+// 列表查询
 type UserParam struct {
 	DeptId   string `json:"deptId" form:"deptId"`
 	DeptName string `json:"deptName" form:"deptName"`
@@ -13,11 +14,13 @@ type UserParam struct {
 	Status   string `json:"status" form:"status"`
 }
 
+// 分页查询
 type UserPagingParam struct {
 	UserParam
 	PagingVo
 }
 
+// 列表
 type UserVo struct {
 	UserName  string `json:"userName"`
 	LoginIp   string `json:"loginIp"`
@@ -35,12 +38,19 @@ type UserVo struct {
 	model.BaseModel
 }
 
+// 详情
+type UserInfoVo struct {
+	PostIds *[]int `json:"postIds"`
+	UserVo
+}
+
 func (UserVo) TableName() string {
 	return (sysmodel.SysUser{}).TableName()
 }
 
 type baseCUVo struct {
 	DeptId   *int   `json:"deptId"`
+	PostIds  *[]int `json:"postIds"`
 	DeptName string `json:"deptName"`
 	NickName string `json:"nickName"`
 	UserType string `json:"userType"`
@@ -62,6 +72,7 @@ type UpdateUserVo struct {
 	baseCUVo
 }
 
+// 更新密码
 type UpdatePwdVo struct {
 	Id          int    `json:"id"`
 	OldPassword string `json:"oldPassword" binding:"required"`

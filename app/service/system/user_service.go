@@ -4,6 +4,7 @@ import (
 	"github.com/yx1126/go-admin/DB"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
+	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/common/password"
 	"github.com/yx1126/go-admin/config"
@@ -15,7 +16,8 @@ type UserService struct{}
 func (*UserService) QueryUserList(params vo.UserPagingParam) (vo.PagingBackVo[vo.UserVo], error) {
 	var count int64
 	var userList = make([]vo.UserVo, 0)
-	query := DB.Gorm.Model(&sysmodel.SysUser{}).Select("sys_user.*", "d.name as dept_name").
+	query := DB.Gorm.Model(&sysmodel.SysUser{}).
+		Select("sys_user.*", "d.name as dept_name").
 		Omit("password").
 		Joins("LEFT JOIN sys_dept as d ON sys_user.dept_id = d.id")
 	if params.UserName != "" {
@@ -72,8 +74,18 @@ func (*UserService) QueryUserById(id int) (vo.UserVo, error) {
 
 // 创建用户
 func (*UserService) CreateUser(user vo.CreateUserVo) error {
+	tx := DB.Gorm.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return err
+	}
 	pwd, _ := password.Encode(config.User.Password)
-	return DB.Gorm.Model(&sysmodel.SysUser{}).Create(&sysmodel.SysUser{
+	// 插入用户
+	sysUser := sysmodel.SysUser{
 		UserName: user.UserName,
 		DeptId:   user.DeptId,
 		NickName: user.NickName,
@@ -85,7 +97,27 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 		Password: pwd,
 		Status:   user.Status,
 		Remark:   user.Remark,
-	}).Error
+	}
+	result := tx.Model(&sysmodel.SysUser{}).Create(&sysUser)
+
+	if err := result.Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	// 插入岗位
+	if user.PostIds != nil && len(*user.PostIds) > 0 {
+		postList := util.Map(*user.PostIds, func(item, _ int) sysmodel.SysUserPost {
+			return sysmodel.SysUserPost{
+				UserId: sysUser.Id,
+				PostId: item,
+			}
+		})
+		if err := tx.Model(&sysmodel.SysUserPost{}).Create(&postList).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+	return tx.Commit().Error
 }
 
 // 更新用户

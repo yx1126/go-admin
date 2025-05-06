@@ -32,11 +32,6 @@ func (*PostController) QueryPostList(c *gin.Context) {
 	response.NewSuccess(paging).Json(c)
 }
 
-// 查询所有岗位
-func (*PostController) QueryPostSelectList(c *gin.Context) {
-	response.New((&systemservice.PostService{}).QueryPostAllList("")).Json(c)
-}
-
 // 查询未禁用的所有岗位
 func (*PostController) QueryPostAllList(c *gin.Context) {
 	response.New((&systemservice.PostService{}).QueryPostAllList(constant.STATUS)).Json(c)

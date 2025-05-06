@@ -66,7 +66,6 @@ func RegisterAdminRouters(g *gin.RouterGroup) {
 			postCtrl := systemCtrl.PostController{}
 			post.GET("", postCtrl.QueryPostList)
 			post.GET("/all", postCtrl.QueryPostAllList)
-			post.GET("/select", postCtrl.QueryPostSelectList)
 			post.POST("", postCtrl.Create)
 			post.PUT("", postCtrl.Update)
 			post.DELETE("", postCtrl.Delete)
