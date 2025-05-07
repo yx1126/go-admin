@@ -57,7 +57,6 @@ type baseCUVo struct {
 	Email    string `json:"email" binding:"omitempty,email"`
 	Phone    string `json:"phone"`
 	Sex      string `json:"sex"`
-	Avatar   string `json:"avatar"`
 	Status   string `json:"status"`
 	Remark   string `json:"remark"`
 }

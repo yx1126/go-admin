@@ -62,27 +62,28 @@ func (*UserService) QueryUserAllList(params vo.UserParam) ([]vo.UserVo, error) {
 }
 
 // 根据id查询用户信息
-func (*UserService) QueryUserById(id int) (vo.UserVo, error) {
-	var user vo.UserVo
-	result := DB.Gorm.Model(&sysmodel.SysUser{}).
-		Select("sys_user.*", "d.dept_name").
+func (*UserService) QueryUserById(id int) (*vo.UserInfoVo, error) {
+	var user vo.UserInfoVo
+	query := DB.Gorm.Model(&sysmodel.SysUser{}).
+		Select("sys_user.*", "d.name").
 		Joins("LEFT JOIN sys_dept as d ON sys_user.dept_id = d.id").
-		Where("sys_user.id = ?", id).
-		First(&user)
-	return user, result.Error
+		Where("sys_user.id = ?", id)
+	if err := query.First(&user).Error; err != nil {
+		return nil, err
+	}
+	err := DB.Gorm.Model(&sysmodel.SysUserPost{}).
+		Select("post_id").
+		Where("user_id = ?", id).
+		Pluck("post_id", &user.PostIds).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
 
 // 创建用户
 func (*UserService) CreateUser(user vo.CreateUserVo) error {
 	tx := DB.Gorm.Begin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
-	if err := tx.Error; err != nil {
-		return err
-	}
 	pwd, _ := password.Encode(config.User.Password)
 	// 插入用户
 	sysUser := sysmodel.SysUser{
@@ -93,7 +94,6 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 		Email:    user.Email,
 		Phone:    user.Phone,
 		Sex:      user.Sex,
-		Avatar:   user.Avatar,
 		Password: pwd,
 		Status:   user.Status,
 		Remark:   user.Remark,
@@ -122,7 +122,8 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 
 // 更新用户
 func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
-	return DB.Gorm.Model(&sysmodel.SysUser{}).
+	tx := DB.Gorm.Begin()
+	if err := tx.Model(&sysmodel.SysUser{}).
 		Select("dept_id", "nick_name", "user_type", "email", "phone", "sex", "avatar", "status", "remark").
 		Where("id = ?", user.Id).
 		Updates(&sysmodel.SysUser{
@@ -132,10 +133,31 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 			Email:    user.Email,
 			Phone:    user.Phone,
 			Sex:      user.Sex,
-			Avatar:   user.Avatar,
 			Status:   user.Status,
 			Remark:   user.Remark,
-		}).Error
+		}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	// 删除岗位
+	if err := tx.Model(&sysmodel.SysUserPost{}).Where("user_id = ?", user.Id).Delete(&sysmodel.SysUserPost{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	// 插入岗位
+	if user.PostIds != nil && len(*user.PostIds) > 0 {
+		postList := util.Map(*user.PostIds, func(item, _ int) sysmodel.SysUserPost {
+			return sysmodel.SysUserPost{
+				UserId: user.Id,
+				PostId: item,
+			}
+		})
+		if err := tx.Model(&sysmodel.SysUserPost{}).Create(&postList).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+	return tx.Commit().Error
 }
 
 // 删除用户
