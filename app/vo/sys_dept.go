@@ -22,7 +22,7 @@ func (d DeptVo) GetID() int {
 }
 
 func (d DeptVo) GetParentID() int {
-	return int(d.ParentId)
+	return d.ParentId
 }
 
 func (d DeptVo) SetChildren(children []DeptVo) DeptVo {
@@ -46,7 +46,7 @@ func (d DeptTreeVo) GetID() int {
 }
 
 func (d DeptTreeVo) GetParentID() int {
-	return int(d.ParentId)
+	return d.ParentId
 }
 
 func (d DeptTreeVo) SetChildren(children []DeptTreeVo) DeptTreeVo {

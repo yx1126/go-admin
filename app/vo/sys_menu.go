@@ -37,7 +37,7 @@ func (m MenuTreeVo) GetID() int {
 }
 
 func (m MenuTreeVo) GetParentID() int {
-	return int(m.ParentId)
+	return m.ParentId
 }
 
 func (m MenuTreeVo) SetChildren(children []MenuTreeVo) MenuTreeVo {

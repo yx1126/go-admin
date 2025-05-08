@@ -38,8 +38,7 @@ func (*DictController) Update(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	dictTypeId := int(dictType.Id)
-	if ok := (&systemservice.SysDictTypeService{}).IsHasSameType(dictType.Type, &dictTypeId); ok {
+	if ok := (&systemservice.SysDictTypeService{}).IsHasSameType(dictType.Type, &dictType.Id); ok {
 		response.NewError(nil).SetMsg("字典类型已存在").Json(c)
 		return
 	}
@@ -110,12 +109,11 @@ func (*DictController) UpdateData(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	dictDataId := int(dictData.Id)
-	if ok := (&systemservice.SysDictDataService{}).IsHasSameName(dictData.Label, dictData.DictId, &dictDataId); ok {
+	if ok := (&systemservice.SysDictDataService{}).IsHasSameName(dictData.Label, dictData.DictId, &dictData.Id); ok {
 		response.NewError(nil).SetMsg("字典名称已存在").Json(c)
 		return
 	}
-	if ok := (&systemservice.SysDictDataService{}).IsHasSameValue(dictData.Value, dictData.DictId, &dictDataId); ok {
+	if ok := (&systemservice.SysDictDataService{}).IsHasSameValue(dictData.Value, dictData.DictId, &dictData.Id); ok {
 		response.NewError(nil).SetMsg("字典值已存在").Json(c)
 		return
 	}
