@@ -68,7 +68,7 @@ func (*UserService) QueryUserById(id int) (*vo.UserInfoVo, error) {
 		Select("sys_user.*", "d.name").
 		Joins("LEFT JOIN sys_dept as d ON sys_user.dept_id = d.id").
 		Where("sys_user.id = ?", id)
-	if err := query.First(&user).Error; err != nil {
+	if err := query.First(&user.UserVo).Error; err != nil {
 		return nil, err
 	}
 	err := DB.Gorm.Model(&sysmodel.SysUserPost{}).
