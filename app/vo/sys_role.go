@@ -18,12 +18,18 @@ type RoleVo struct {
 	model.BaseModel
 }
 
+type RoleInfoVo struct {
+	MenuIds *[]int `json:"menuIds"`
+	RoleVo
+}
+
 type CreateRoleVo struct {
-	Name   string `json:"name"`
-	Key    string `json:"key"`
-	Sort   int    `json:"sort"`
-	Status string `json:"status"`
-	Remark string `json:"remark"`
+	Name    string `json:"name"`
+	Key     string `json:"key"`
+	Sort    int    `json:"sort"`
+	Status  string `json:"status"`
+	Remark  string `json:"remark"`
+	MenuIds *[]int `json:"menuIds"`
 }
 
 type UpdateRoleVo struct {

@@ -5,6 +5,7 @@ import (
 	systemservice "github.com/yx1126/go-admin/app/service/system"
 	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
+	"github.com/yx1126/go-admin/common/constant"
 	bind "github.com/yx1126/go-admin/common/should_bind"
 	"github.com/yx1126/go-admin/response"
 )
@@ -20,9 +21,13 @@ func (*MenuController) QueryTree(c *gin.Context) {
 	response.New(util.ListToTree(menuList, 0), err).Json(c)
 }
 
-// 菜单下拉列表查询
+// 菜单页下拉列表查询
 func (*MenuController) QuerySelectTree(c *gin.Context) {
-	response.New((&systemservice.MenuService{}).QueryMenuSelectTree()).Json(c)
+	response.New((&systemservice.MenuService{}).QueryMenuSelectTree("")).Json(c)
+}
+
+func (*MenuController) QueryAllTree(c *gin.Context) {
+	response.New((&systemservice.MenuService{}).QueryMenuSelectTree(constant.STATUS)).Json(c)
 }
 
 // 菜单新增

@@ -23,10 +23,13 @@ func (*MenuService) QueryMenuList(menu vo.MenuParam) ([]vo.MenuTreeVo, error) {
 	return menuList, result.Error
 }
 
-// 查询菜单树
-func (*MenuService) QueryMenuSelectTree() ([]vo.MenuTreeVo, error) {
+// 查询下拉菜单树
+func (*MenuService) QueryMenuSelectTree(status string) ([]vo.MenuTreeVo, error) {
 	menuList := make([]vo.MenuTreeVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id").Where("type != 3")
+	if status != "" {
+		query.Where("status = ?", status)
+	}
 	result := query.Find(&menuList)
 	return util.ListToTree(menuList, 0), result.Error
 }
