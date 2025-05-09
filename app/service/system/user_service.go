@@ -199,7 +199,22 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 
 // 删除用户
 func (*UserService) DeleteUser(ids []int) error {
-	return DB.Gorm.Model(&sysmodel.SysUser{}).Delete(&sysmodel.SysUser{}, ids).Error
+	tx := DB.Gorm.Begin()
+	if err := tx.Model(&sysmodel.SysUser{}).Delete(&sysmodel.SysUser{}, ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	// 删除岗位
+	if err := tx.Model(&sysmodel.SysUserPost{}).Where("user_id in ?", ids).Delete(&sysmodel.SysUserPost{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	// 删除角色
+	if err := tx.Model(&sysmodel.SysUserRole{}).Where("user_id in ?", ids).Delete(&sysmodel.SysUserRole{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
 }
 
 // 修改密码

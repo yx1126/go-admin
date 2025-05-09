@@ -1,8 +1,8 @@
 package sysmodel
 
 type SysUserRole struct {
-	UserId int `gorm:"primaryKey"`
-	RoleId int `gorm:"primaryKey"`
+	UserId int `gorm:"primaryKey;AutoIncrement:false"`
+	RoleId int `gorm:"primaryKey;AutoIncrement:false"`
 }
 
 func (*SysUserRole) TableName() string {

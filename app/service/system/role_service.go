@@ -67,6 +67,7 @@ func (*RoleService) CreateRole(role vo.CreateRoleVo) error {
 		tx.Rollback()
 		return err
 	}
+	// 插入菜单
 	if role.MenuIds != nil && len(*role.MenuIds) > 0 {
 		roleMenus := util.Map(*role.MenuIds, func(item, _ int) sysmodel.SysRoleMenu {
 			return sysmodel.SysRoleMenu{
@@ -100,6 +101,7 @@ func (*RoleService) UpdateRole(role vo.UpdateRoleVo) error {
 		tx.Rollback()
 		return err
 	}
+	// 插入菜单
 	if role.MenuIds != nil && len(*role.MenuIds) > 0 {
 		roleMenus := util.Map(*role.MenuIds, func(item, _ int) sysmodel.SysRoleMenu {
 			return sysmodel.SysRoleMenu{
@@ -117,7 +119,18 @@ func (*RoleService) UpdateRole(role vo.UpdateRoleVo) error {
 
 // 删除角色
 func (*RoleService) DeleteRole(ids []int) error {
-	return DB.Gorm.Model(&sysmodel.SysRole{}).Delete(&sysmodel.SysRole{}, ids).Error
+	tx := DB.Gorm.Begin()
+	if err := DB.Gorm.Model(&sysmodel.SysRole{}).Delete(&sysmodel.SysRole{}, ids).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	// 删除菜单
+	if err := tx.Model(&sysmodel.SysRoleMenu{}).Where("role_id in ?", ids).Delete(&sysmodel.SysRoleMenu{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	// 删除菜单
+	return tx.Commit().Error
 }
 
 // 校验角色名称
