@@ -6,5 +6,5 @@ type SysUserRole struct {
 }
 
 func (*SysUserRole) TableName() string {
-	return "sys_role_menu"
+	return "sys_user_role"
 }

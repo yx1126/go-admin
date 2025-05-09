@@ -41,6 +41,7 @@ type UserVo struct {
 // 详情
 type UserInfoVo struct {
 	PostIds *[]int `json:"postIds"`
+	RoleIds *[]int `json:"roleIds"`
 	UserVo
 }
 
@@ -51,6 +52,7 @@ func (UserVo) TableName() string {
 type baseCUVo struct {
 	DeptId   *int   `json:"deptId"`
 	PostIds  *[]int `json:"postIds"`
+	RoleIds  *[]int `json:"roleIds"`
 	DeptName string `json:"deptName"`
 	NickName string `json:"nickName"`
 	UserType string `json:"userType"`

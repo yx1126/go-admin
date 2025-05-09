@@ -71,11 +71,17 @@ func (*UserService) QueryUserById(id int) (*vo.UserInfoVo, error) {
 	if err := query.First(&user.UserVo).Error; err != nil {
 		return nil, err
 	}
-	err := DB.Gorm.Model(&sysmodel.SysUserPost{}).
+
+	if err := DB.Gorm.Model(&sysmodel.SysUserPost{}).
 		Select("post_id").
 		Where("user_id = ?", id).
-		Pluck("post_id", &user.PostIds).Error
-	if err != nil {
+		Pluck("post_id", &user.PostIds).Error; err != nil {
+		return nil, err
+	}
+	if err := DB.Gorm.Model(&sysmodel.SysUserRole{}).
+		Select("role_id").
+		Where("user_id = ?", id).
+		Pluck("role_id", &user.RoleIds).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -117,6 +123,19 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 			return err
 		}
 	}
+	// 插入角色
+	if user.RoleIds != nil && len(*user.RoleIds) > 0 {
+		roleList := util.Map(*user.RoleIds, func(item, _ int) sysmodel.SysUserRole {
+			return sysmodel.SysUserRole{
+				UserId: sysUser.Id,
+				RoleId: item,
+			}
+		})
+		if err := tx.Model(&sysmodel.SysUserRole{}).Create(&roleList).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
 	return tx.Commit().Error
 }
 
@@ -144,6 +163,11 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 		tx.Rollback()
 		return err
 	}
+	// 删除角色
+	if err := tx.Model(&sysmodel.SysUserRole{}).Where("user_id = ?", user.Id).Delete(&sysmodel.SysUserRole{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
 	// 插入岗位
 	if user.PostIds != nil && len(*user.PostIds) > 0 {
 		postList := util.Map(*user.PostIds, func(item, _ int) sysmodel.SysUserPost {
@@ -153,6 +177,19 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 			}
 		})
 		if err := tx.Model(&sysmodel.SysUserPost{}).Create(&postList).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+	// 插入角色
+	if user.RoleIds != nil && len(*user.RoleIds) > 0 {
+		roleList := util.Map(*user.RoleIds, func(item, _ int) sysmodel.SysUserRole {
+			return sysmodel.SysUserRole{
+				UserId: user.Id,
+				RoleId: item,
+			}
+		})
+		if err := tx.Model(&sysmodel.SysUserRole{}).Create(&roleList).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
