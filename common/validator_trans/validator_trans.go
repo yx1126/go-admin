@@ -2,6 +2,8 @@ package validatortrans
 
 import (
 	"fmt"
+	"reflect"
+	"strings"
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
@@ -14,8 +16,34 @@ import (
 
 var Trans ut.Translator
 
-func InitTrans(locales string) error {
+func Translate(trans ut.Translator, fe validator.FieldError) string {
+	msg, err := trans.T(fe.Tag(), fe.Field())
+	if err != nil {
+		panic(fe.(error).Error())
+	}
+	return msg
+}
+
+func RegisterTranslator(tag string, msg string) validator.RegisterTranslationsFunc {
+	return func(trans ut.Translator) error {
+		if err := trans.Add(tag, msg, false); err != nil {
+			return err
+		}
+		return nil
+	}
+}
+
+func InitTrans(locales string) (err error) {
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		// 注册一个获取json tag的自定义方法
+		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
+			name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
+			if name == "-" {
+				return ""
+			}
+			return name
+		})
+
 		zhT := zh.New()
 		enT := en.New()
 
@@ -28,12 +56,24 @@ func InitTrans(locales string) error {
 		}
 		switch locales {
 		case "en":
-			return enTranslations.RegisterDefaultTranslations(v, Trans)
+			err = enTranslations.RegisterDefaultTranslations(v, Trans)
 		case "zh":
-			return zhTranslations.RegisterDefaultTranslations(v, Trans)
+			err = zhTranslations.RegisterDefaultTranslations(v, Trans)
 		default:
-			return enTranslations.RegisterDefaultTranslations(v, Trans)
+			err = enTranslations.RegisterDefaultTranslations(v, Trans)
 		}
+		if err != nil {
+			return err
+		}
+		if err := v.RegisterTranslation(
+			"is_code",
+			Trans,
+			RegisterTranslator("is_code", "请输入数字字母_-"),
+			Translate,
+		); err != nil {
+			return err
+		}
+		return
 	}
 	return nil
 }

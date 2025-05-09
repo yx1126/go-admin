@@ -4,14 +4,23 @@ import (
 	"encoding/json"
 	"errors"
 	"reflect"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	validatortrans "github.com/yx1126/go-admin/common/validator_trans"
 )
 
+func removeTopStruct(fields map[string]string) map[string]string {
+	res := map[string]string{}
+	for field, err := range fields {
+		res[field[strings.Index(field, ".")+1:]] = err
+	}
+	return res
+}
+
 // validator 翻译
-func validatorErr(err error) error {
+func TransErr(err error) error {
 	// 获取validator.ValidationErrors类型的errors
 	errs, ok := err.(validator.ValidationErrors)
 	if !ok {
@@ -19,7 +28,7 @@ func validatorErr(err error) error {
 		return err
 	}
 	// validator.ValidationErrors类型错误则进行翻译
-	msg, err := json.Marshal(errs.Translate(validatortrans.Trans))
+	msg, err := json.Marshal(removeTopStruct(errs.Translate(validatortrans.Trans)))
 	if err != nil {
 		return err
 	}
@@ -29,7 +38,7 @@ func validatorErr(err error) error {
 // 绑定分页参数
 func BindPaging[T any](c *gin.Context, param *T) error {
 	if err := c.ShouldBindQuery(&param); err != nil {
-		return validatorErr(err)
+		return TransErr(err)
 	}
 	v := reflect.ValueOf(param).Elem()
 	pageField := v.FieldByName("PagingVo").FieldByName("Page")
@@ -45,21 +54,21 @@ func BindPaging[T any](c *gin.Context, param *T) error {
 
 func ShouldBindQuery[T any](c *gin.Context, param *T) error {
 	if err := c.ShouldBindQuery(&param); err != nil {
-		return validatorErr(err)
+		return TransErr(err)
 	}
 	return nil
 }
 
 func ShouldBind[T any](c *gin.Context, param *T) error {
 	if err := c.ShouldBind(&param); err != nil {
-		return validatorErr(err)
+		return TransErr(err)
 	}
 	return nil
 }
 
 func ShouldBindJSON[T any](c *gin.Context, param *T) error {
 	if err := c.ShouldBindJSON(&param); err != nil {
-		return validatorErr(err)
+		return TransErr(err)
 	}
 	return nil
 }
