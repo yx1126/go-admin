@@ -33,7 +33,7 @@ func (*MenuController) QueryAllTree(c *gin.Context) {
 // 菜单新增
 func (*MenuController) Create(c *gin.Context) {
 	var menu vo.CreateMenuVo
-	err := c.ShouldBindJSON(&menu)
+	err := bind.ShouldBindJSON(c, &menu)
 	if err != nil {
 		response.NewError(err).Json(c)
 		return
@@ -48,7 +48,7 @@ func (*MenuController) Create(c *gin.Context) {
 // 菜单更新
 func (*MenuController) Update(c *gin.Context) {
 	var menu vo.UpdateMenuVo
-	err := c.ShouldBindJSON(&menu)
+	err := bind.ShouldBindJSON(c, &menu)
 	if err != nil {
 		response.NewError(err).Json(c)
 		return

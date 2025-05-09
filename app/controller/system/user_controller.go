@@ -39,7 +39,7 @@ func (*UserController) QueryUserList(c *gin.Context) {
 // 查询所有用户列表
 func (*UserController) QueryUserAllList(c *gin.Context) {
 	var params vo.UserParam
-	if err := c.ShouldBindQuery(&params); err != nil {
+	if err := bind.ShouldBindQuery(c, &params); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
@@ -59,7 +59,7 @@ func (*UserController) QueryUserInfoById(c *gin.Context) {
 // 新增用户
 func (*UserController) Create(c *gin.Context) {
 	var user vo.CreateUserVo
-	if err := c.ShouldBindJSON(&user); err != nil {
+	if err := bind.ShouldBindJSON(c, &user); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
@@ -73,7 +73,7 @@ func (*UserController) Create(c *gin.Context) {
 // 更新用户
 func (*UserController) Update(c *gin.Context) {
 	var user vo.UpdateUserVo
-	if err := c.ShouldBindJSON(&user); err != nil {
+	if err := bind.ShouldBindJSON(c, &user); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
@@ -108,7 +108,7 @@ func (*UserController) ResetPwd(c *gin.Context) {
 // 修改密码
 func (*UserController) UpdatePwd(c *gin.Context) {
 	var params vo.UpdatePwdVo
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := bind.ShouldBindJSON(c, &params); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}

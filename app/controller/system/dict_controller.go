@@ -18,7 +18,7 @@ func (*DictController) QueryAllList(c *gin.Context) {
 // 字典类型新增
 func (*DictController) Create(c *gin.Context) {
 	var dictType vo.CreateDictType
-	err := c.ShouldBindJSON(&dictType)
+	err := bind.ShouldBindJSON(c, &dictType)
 	if err != nil {
 		response.NewError(err).Json(c)
 		return
@@ -33,7 +33,7 @@ func (*DictController) Create(c *gin.Context) {
 // 字典类型更新
 func (*DictController) Update(c *gin.Context) {
 	var dictType vo.UpdateDictType
-	err := c.ShouldBindJSON(&dictType)
+	err := bind.ShouldBindJSON(c, &dictType)
 	if err != nil {
 		response.NewError(err).Json(c)
 		return
@@ -48,7 +48,7 @@ func (*DictController) Update(c *gin.Context) {
 // 字典类型删除
 func (*DictController) Delete(c *gin.Context) {
 	var ids []int
-	err := c.ShouldBindJSON(&ids)
+	err := bind.BindIds(c, &ids)
 	if err != nil {
 		response.NewError(err).Json(c)
 		return
@@ -85,7 +85,7 @@ func (*DictController) QueryDictDataListByType(c *gin.Context) {
 // 字典数据新增
 func (*DictController) CreateData(c *gin.Context) {
 	var dictData vo.CreateDictData
-	err := c.ShouldBindJSON(&dictData)
+	err := bind.ShouldBindJSON(c, &dictData)
 	if err != nil {
 		response.NewError(err).Json(c)
 		return
@@ -104,7 +104,7 @@ func (*DictController) CreateData(c *gin.Context) {
 // 字典数据更新
 func (*DictController) UpdateData(c *gin.Context) {
 	var dictData vo.UpdateDictData
-	err := c.ShouldBindJSON(&dictData)
+	err := bind.ShouldBindJSON(c, &dictData)
 	if err != nil {
 		response.NewError(err).Json(c)
 		return

@@ -15,7 +15,7 @@ type DeptController struct{}
 // 查询部门列表
 func (*DeptController) QueryTree(c *gin.Context) {
 	var param vo.DeptParam
-	if err := c.ShouldBindQuery(&param); err != nil {
+	if err := bind.ShouldBindQuery(c, &param); err != nil {
 		response.NewError(nil).Json(c)
 		return
 	}
@@ -36,7 +36,7 @@ func (*DeptController) QuerySelectAllTree(c *gin.Context) {
 // 创建部门
 func (*DeptController) Create(c *gin.Context) {
 	var dept vo.CreateDeptVo
-	if err := c.ShouldBindJSON(&dept); err != nil {
+	if err := bind.ShouldBindJSON(c, &dept); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
@@ -50,7 +50,7 @@ func (*DeptController) Create(c *gin.Context) {
 // 更新部门
 func (*DeptController) Update(c *gin.Context) {
 	var dept vo.UpdateDeptVo
-	if err := c.ShouldBindJSON(&dept); err != nil {
+	if err := bind.ShouldBindJSON(c, &dept); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
