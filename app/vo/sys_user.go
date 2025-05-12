@@ -50,21 +50,20 @@ func (UserVo) TableName() string {
 }
 
 type baseCUVo struct {
-	DeptId   *int   `json:"deptId"`
+	DeptId   *int   `json:"deptId" binding:"required"`
 	PostIds  *[]int `json:"postIds"`
 	RoleIds  *[]int `json:"roleIds"`
-	DeptName string `json:"deptName"`
-	NickName string `json:"nickName"`
+	NickName string `json:"nickName" binding:"required"`
 	UserType string `json:"userType"`
 	Email    string `json:"email" binding:"omitempty,email"`
-	Phone    string `json:"phone"`
+	Phone    string `json:"phone" binding:"required"`
 	Sex      string `json:"sex"`
 	Status   string `json:"status"`
 	Remark   string `json:"remark"`
 }
 
 type CreateUserVo struct {
-	UserName string `json:"userName"`
+	UserName string `json:"userName" binding:"required"`
 	baseCUVo
 }
 
@@ -75,7 +74,7 @@ type UpdateUserVo struct {
 
 // 更新密码
 type UpdatePwdVo struct {
-	Id          int    `json:"id"`
+	Id          int    `json:"id" binding:"required"`
 	OldPassword string `json:"oldPassword" binding:"required"`
 	Password    string `json:"password" binding:"required"`
 	ConfirmPwd  string `json:"confirmPwd" binding:"required,eqfield=Password"`

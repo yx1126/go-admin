@@ -24,8 +24,8 @@ type RoleInfoVo struct {
 }
 
 type CreateRoleVo struct {
-	Name    string `json:"name"`
-	Key     string `json:"key"`
+	Name    string `json:"name" binding:"required"`
+	Key     string `json:"key" binding:"required,is_code"`
 	Sort    int    `json:"sort"`
 	Status  string `json:"status"`
 	Remark  string `json:"remark"`
@@ -33,6 +33,6 @@ type CreateRoleVo struct {
 }
 
 type UpdateRoleVo struct {
-	Id int `json:"id"`
+	Id int `json:"id" binding:"required"`
 	CreateRoleVo
 }

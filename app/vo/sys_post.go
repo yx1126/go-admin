@@ -27,6 +27,6 @@ type CreatePostVo struct {
 }
 
 type UpdatePostVo struct {
-	Id int `json:"id"`
+	Id int `json:"id" binding:"required"`
 	CreatePostVo
 }

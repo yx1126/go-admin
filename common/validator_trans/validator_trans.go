@@ -16,7 +16,9 @@ import (
 
 var Trans ut.Translator
 
-func Translate(trans ut.Translator, fe validator.FieldError) string {
+var messages = make(map[string]string, 0)
+
+func translate(trans ut.Translator, fe validator.FieldError) string {
 	msg, err := trans.T(fe.Tag(), fe.Field())
 	if err != nil {
 		panic(fe.(error).Error())
@@ -24,13 +26,17 @@ func Translate(trans ut.Translator, fe validator.FieldError) string {
 	return msg
 }
 
-func RegisterTranslator(tag string, msg string) validator.RegisterTranslationsFunc {
+func registerTranslator(tag string, msg string) validator.RegisterTranslationsFunc {
 	return func(trans ut.Translator) error {
 		if err := trans.Add(tag, msg, false); err != nil {
 			return err
 		}
 		return nil
 	}
+}
+
+func RegisterMessage(tag, message string) {
+	messages[tag] = message
 }
 
 func InitTrans(locales string) (err error) {
@@ -65,13 +71,10 @@ func InitTrans(locales string) (err error) {
 		if err != nil {
 			return err
 		}
-		if err := v.RegisterTranslation(
-			"is_code",
-			Trans,
-			RegisterTranslator("is_code", "请输入数字字母_-"),
-			Translate,
-		); err != nil {
-			return err
+		for tag, message := range messages {
+			if err := v.RegisterTranslation(tag, Trans, registerTranslator(tag, message), translate); err != nil {
+				return err
+			}
 		}
 		return
 	}

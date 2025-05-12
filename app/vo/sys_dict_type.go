@@ -20,7 +20,7 @@ type CreateDictType struct {
 }
 
 type UpdateDictType struct {
-	Id int `json:"id"`
+	Id int `json:"id" binding:"required"`
 	CreateDictType
 }
 
@@ -64,6 +64,6 @@ type CreateDictData struct {
 }
 
 type UpdateDictData struct {
-	Id int `json:"id"`
+	Id int `json:"id" binding:"required"`
 	CreateDictData
 }

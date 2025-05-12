@@ -63,6 +63,6 @@ type CreateMenuVo struct {
 }
 
 type UpdateMenuVo struct {
-	Id int `json:"id"`
+	Id int `json:"id" binding:"required"`
 	CreateMenuVo
 }
