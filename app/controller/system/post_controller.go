@@ -25,11 +25,7 @@ func (*PostController) QueryPostList(c *gin.Context) {
 		Total: data.Count,
 		List:  data.Data,
 	}
-	if err != nil {
-		response.NewError(err).SetPaging(paging).Json(c)
-		return
-	}
-	response.NewSuccess(paging).Json(c)
+	response.New(nil, err).SetPaging(paging).Json(c)
 }
 
 // 查询未禁用的所有岗位

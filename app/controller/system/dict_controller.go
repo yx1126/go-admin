@@ -70,11 +70,7 @@ func (*DictController) QueryDictDataList(c *gin.Context) {
 		Size:  params.Size,
 		Total: data.Count,
 	}
-	if err != nil {
-		response.NewError(err).SetPaging(paging).Json(c)
-		return
-	}
-	response.NewSuccess(paging).Json(c)
+	response.New(nil, err).SetPaging(paging).Json(c)
 }
 
 // 根据字典类型查询字典数据

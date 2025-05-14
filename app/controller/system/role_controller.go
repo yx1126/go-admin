@@ -26,11 +26,7 @@ func (*RoleController) QueryRoleList(c *gin.Context) {
 		Size:  params.Size,
 		Total: data.Count,
 	}
-	if err != nil {
-		response.NewError(err).SetPaging(paging).Json(c)
-		return
-	}
-	response.NewSuccess(paging).Json(c)
+	response.New(nil, err).SetPaging(paging).Json(c)
 }
 
 // 查询全部
