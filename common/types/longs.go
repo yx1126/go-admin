@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-// id
+// id list
 type Long struct {
 	Val int
 }
@@ -48,6 +48,12 @@ func (l *Long) Scan(value interface{}) error {
 	switch v := value.(type) {
 	case int:
 		l.Val = v
+	case int8:
+		l.Val = int(v)
+	case int32:
+		l.Val = int(v)
+	case int64:
+		l.Val = int(v)
 	default:
 		return fmt.Errorf("cannot scan type %T into Longs", value)
 	}

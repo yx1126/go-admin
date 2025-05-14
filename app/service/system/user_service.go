@@ -19,7 +19,6 @@ func (*UserService) QueryUserList(params vo.UserPagingParam) (vo.PagingBackVo[vo
 	var userList = make([]vo.UserVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysUser{}).
 		Select("sys_user.*", "d.name as dept_name").
-		Omit("password").
 		Joins("LEFT JOIN sys_dept as d ON sys_user.dept_id = d.id")
 	if params.UserName != "" {
 		query = query.Where("sys_user.user_name LIKE ?", "%"+params.UserName+"%")
@@ -44,7 +43,6 @@ func (*UserService) QueryUserList(params vo.UserPagingParam) (vo.PagingBackVo[vo
 func (*UserService) QueryUserAllList(params vo.UserParam) ([]vo.UserVo, error) {
 	var userList = make([]vo.UserVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysUser{}).Select("sys_user.*", "d.name as deptName").
-		Omit("password").
 		Joins("LEFT JOIN sys_dept as d ON sys_user.dept_id = d.id")
 	if params.UserName != "" {
 		query = query.Where("sys_user.user_name LIKE ?", "%"+params.UserName+"%")

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -75,11 +76,19 @@ func ShouldBindJSON[T any](c *gin.Context, param *T) error {
 
 // 绑定删除id
 func BindIds(c *gin.Context, ids *[]int) error {
-	if err := c.ShouldBind(&ids); err != nil {
+	var strIds []string
+	if err := c.ShouldBind(&strIds); err != nil {
 		return err
 	}
-	if len(*ids) <= 0 {
+	if len(strIds) <= 0 {
 		return errors.New("请选择要删除的数据")
+	}
+	for _, v := range strIds {
+		id, err := strconv.Atoi(v)
+		if err != nil {
+			return err
+		}
+		*ids = append(*ids, id)
 	}
 	return nil
 }

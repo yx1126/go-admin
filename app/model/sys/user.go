@@ -14,7 +14,7 @@ type SysUser struct {
 	Phone     string         `json:"phone"`
 	Sex       string         `json:"sex" gorm:"default:2"`
 	Avatar    string         `json:"avatar"`
-	Password  string         `json:"password"`
+	Password  string         `json:"-"`
 	LoginIp   string         `json:"loginIp"`
 	LoginDate types.Datetime `json:"loginDate"`
 	Status    string         `json:"status" gorm:"default:1"`
