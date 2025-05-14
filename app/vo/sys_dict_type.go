@@ -13,14 +13,14 @@ type DictTypeListVo struct {
 
 type CreateDictType struct {
 	Name     string `json:"name" binding:"required"`
-	Type     string `json:"type" binding:"required"`
+	Type     string `json:"type" binding:"required,is_code"`
 	NodeType string `json:"nodeType"`
 	Status   string `json:"status"`
 	Remark   string `json:"remark"`
 }
 
 type UpdateDictType struct {
-	Id int `json:"id" binding:"required"`
+	BaseVo
 	CreateDictType
 }
 
@@ -32,7 +32,6 @@ type DictPagingParam struct {
 }
 
 type DictDataListVo struct {
-	Id        int    `json:"id"`
 	DictId    int    `json:"dictId"`
 	Sort      int    `json:"sort"`
 	Label     string `json:"label"`
@@ -64,6 +63,6 @@ type CreateDictData struct {
 }
 
 type UpdateDictData struct {
-	Id int `json:"id" binding:"required"`
+	BaseVo
 	CreateDictData
 }

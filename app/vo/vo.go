@@ -9,3 +9,7 @@ type PagingBackVo[T any] struct {
 	Data  []T
 	Count int
 }
+
+type BaseVo struct {
+	Id int `json:"id,string" form:"id" binding:"required"`
+}

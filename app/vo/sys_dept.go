@@ -34,7 +34,7 @@ type DeptTreeVo struct {
 	ParentId int          `json:"parentId"`
 	Name     string       `json:"name"`
 	Sort     int          `json:"sort"`
-	LeaderId *int         `json:"leaderId"`
+	LeaderId *int         `json:"leaderId,string"`
 	Leader   *UserVo      `json:"leader" gorm:"foreignKey:LeaderId;references:Id"`
 	Status   string       `json:"status"`
 	Children []DeptTreeVo `json:"children" gorm:"-"`
@@ -58,11 +58,11 @@ type CreateDeptVo struct {
 	ParentId int    `json:"parentId"`
 	Name     string `json:"name" binding:"required"`
 	Sort     int    `json:"sort"`
-	LeaderId *int   `json:"leaderId" binding:"omitempty"`
+	LeaderId *int   `json:"leaderId,string" binding:"omitempty"`
 	Status   string `json:"status"`
 }
 
 type UpdateDeptVo struct {
-	Id int `json:"id" binding:"required"`
+	BaseVo
 	CreateDeptVo
 }

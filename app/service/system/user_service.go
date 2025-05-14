@@ -7,6 +7,7 @@ import (
 	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/common/password"
+	"github.com/yx1126/go-admin/common/types"
 	"github.com/yx1126/go-admin/config"
 )
 
@@ -112,10 +113,10 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 	}
 	// 插入岗位
 	if user.PostIds != nil && len(*user.PostIds) > 0 {
-		postList := util.Map(*user.PostIds, func(item, _ int) sysmodel.SysUserPost {
+		postList := util.Map(*user.PostIds, func(item types.Long, _ int) sysmodel.SysUserPost {
 			return sysmodel.SysUserPost{
 				UserId: sysUser.Id,
-				PostId: item,
+				PostId: item.Val,
 			}
 		})
 		if err := tx.Model(&sysmodel.SysUserPost{}).Create(&postList).Error; err != nil {
@@ -125,10 +126,10 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 	}
 	// 插入角色
 	if user.RoleIds != nil && len(*user.RoleIds) > 0 {
-		roleList := util.Map(*user.RoleIds, func(item, _ int) sysmodel.SysUserRole {
+		roleList := util.Map(*user.RoleIds, func(item types.Long, _ int) sysmodel.SysUserRole {
 			return sysmodel.SysUserRole{
 				UserId: sysUser.Id,
-				RoleId: item,
+				RoleId: item.Val,
 			}
 		})
 		if err := tx.Model(&sysmodel.SysUserRole{}).Create(&roleList).Error; err != nil {
@@ -170,10 +171,10 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 	}
 	// 插入岗位
 	if user.PostIds != nil && len(*user.PostIds) > 0 {
-		postList := util.Map(*user.PostIds, func(item, _ int) sysmodel.SysUserPost {
+		postList := util.Map(*user.PostIds, func(item types.Long, _ int) sysmodel.SysUserPost {
 			return sysmodel.SysUserPost{
 				UserId: user.Id,
-				PostId: item,
+				PostId: item.Val,
 			}
 		})
 		if err := tx.Model(&sysmodel.SysUserPost{}).Create(&postList).Error; err != nil {
@@ -183,10 +184,10 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 	}
 	// 插入角色
 	if user.RoleIds != nil && len(*user.RoleIds) > 0 {
-		roleList := util.Map(*user.RoleIds, func(item, _ int) sysmodel.SysUserRole {
+		roleList := util.Map(*user.RoleIds, func(item types.Long, _ int) sysmodel.SysUserRole {
 			return sysmodel.SysUserRole{
 				UserId: user.Id,
-				RoleId: item,
+				RoleId: item.Val,
 			}
 		})
 		if err := tx.Model(&sysmodel.SysUserRole{}).Create(&roleList).Error; err != nil {

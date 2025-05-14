@@ -3,6 +3,7 @@ package vo
 import (
 	"github.com/yx1126/go-admin/app/model"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
+	"github.com/yx1126/go-admin/common/types"
 )
 
 // 列表查询
@@ -22,26 +23,26 @@ type UserPagingParam struct {
 
 // 列表
 type UserVo struct {
-	UserName  string `json:"userName"`
-	LoginIp   string `json:"loginIp"`
-	LoginDate string `json:"loginDate"`
-	DeptId    *int   `json:"deptId"`
-	DeptName  string `json:"deptName"`
-	NickName  string `json:"nickName"`
-	UserType  string `json:"userType"`
-	Email     string `json:"email"`
-	Phone     string `json:"phone"`
-	Sex       string `json:"sex"`
-	Avatar    string `json:"avatar"`
-	Status    string `json:"status"`
-	Remark    string `json:"remark"`
+	UserName  string      `json:"userName"`
+	LoginIp   string      `json:"loginIp"`
+	LoginDate string      `json:"loginDate"`
+	DeptId    *types.Long `json:"deptId"`
+	DeptName  string      `json:"deptName"`
+	NickName  string      `json:"nickName"`
+	UserType  string      `json:"userType"`
+	Email     string      `json:"email"`
+	Phone     string      `json:"phone"`
+	Sex       string      `json:"sex"`
+	Avatar    string      `json:"avatar"`
+	Status    string      `json:"status"`
+	Remark    string      `json:"remark"`
 	model.BaseModel
 }
 
 // 详情
 type UserInfoVo struct {
-	PostIds *[]int `json:"postIds"`
-	RoleIds *[]int `json:"roleIds"`
+	PostIds *[]types.Long `json:"postIds"`
+	RoleIds *[]types.Long `json:"roleIds"`
 	UserVo
 }
 
@@ -50,16 +51,16 @@ func (UserVo) TableName() string {
 }
 
 type baseCUVo struct {
-	DeptId   *int   `json:"deptId" binding:"required"`
-	PostIds  *[]int `json:"postIds"`
-	RoleIds  *[]int `json:"roleIds"`
-	NickName string `json:"nickName" binding:"required"`
-	UserType string `json:"userType"`
-	Email    string `json:"email" binding:"omitempty,email"`
-	Phone    string `json:"phone" binding:"required"`
-	Sex      string `json:"sex"`
-	Status   string `json:"status"`
-	Remark   string `json:"remark"`
+	DeptId   *int          `json:"deptId,string" binding:"required"`
+	PostIds  *[]types.Long `json:"postIds"`
+	RoleIds  *[]types.Long `json:"roleIds"`
+	NickName string        `json:"nickName" binding:"required"`
+	UserType string        `json:"userType"`
+	Email    string        `json:"email" binding:"omitempty,email"`
+	Phone    string        `json:"phone" binding:"required"`
+	Sex      string        `json:"sex"`
+	Status   string        `json:"status"`
+	Remark   string        `json:"remark"`
 }
 
 type CreateUserVo struct {
@@ -68,13 +69,13 @@ type CreateUserVo struct {
 }
 
 type UpdateUserVo struct {
-	Id int `json:"id"`
+	BaseVo
 	baseCUVo
 }
 
 // 更新密码
 type UpdatePwdVo struct {
-	Id          int    `json:"id" binding:"required"`
+	BaseVo
 	OldPassword string `json:"oldPassword" binding:"required"`
 	Password    string `json:"password" binding:"required"`
 	ConfirmPwd  string `json:"confirmPwd" binding:"required,eqfield=Password"`

@@ -7,6 +7,7 @@ import (
 	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/common/constant"
+	"github.com/yx1126/go-admin/common/types"
 )
 
 type RoleService struct{}
@@ -69,10 +70,10 @@ func (*RoleService) CreateRole(role vo.CreateRoleVo) error {
 	}
 	// 插入菜单
 	if role.MenuIds != nil && len(*role.MenuIds) > 0 {
-		roleMenus := util.Map(*role.MenuIds, func(item, _ int) sysmodel.SysRoleMenu {
+		roleMenus := util.Map(*role.MenuIds, func(item types.Long, _ int) sysmodel.SysRoleMenu {
 			return sysmodel.SysRoleMenu{
 				RoleId: roleInfo.Id,
-				MenuId: item,
+				MenuId: item.Val,
 			}
 		})
 		if err := tx.Model(&sysmodel.SysRoleMenu{}).Create(&roleMenus).Error; err != nil {
@@ -103,10 +104,10 @@ func (*RoleService) UpdateRole(role vo.UpdateRoleVo) error {
 	}
 	// 插入菜单
 	if role.MenuIds != nil && len(*role.MenuIds) > 0 {
-		roleMenus := util.Map(*role.MenuIds, func(item, _ int) sysmodel.SysRoleMenu {
+		roleMenus := util.Map(*role.MenuIds, func(item types.Long, _ int) sysmodel.SysRoleMenu {
 			return sysmodel.SysRoleMenu{
 				RoleId: role.Id,
-				MenuId: item,
+				MenuId: item.Val,
 			}
 		})
 		if err := tx.Model(&sysmodel.SysRoleMenu{}).Create(&roleMenus).Error; err != nil {

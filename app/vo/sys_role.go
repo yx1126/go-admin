@@ -1,6 +1,9 @@
 package vo
 
-import "github.com/yx1126/go-admin/app/model"
+import (
+	"github.com/yx1126/go-admin/app/model"
+	"github.com/yx1126/go-admin/common/types"
+)
 
 type RoleParam struct {
 	Name   string `json:"name" form:"name"`
@@ -19,20 +22,20 @@ type RoleVo struct {
 }
 
 type RoleInfoVo struct {
-	MenuIds *[]int `json:"menuIds"`
+	MenuIds *[]types.Long `json:"menuIds"`
 	RoleVo
 }
 
 type CreateRoleVo struct {
-	Name    string `json:"name" binding:"required"`
-	Key     string `json:"key" binding:"required,is_code"`
-	Sort    int    `json:"sort"`
-	Status  string `json:"status"`
-	Remark  string `json:"remark"`
-	MenuIds *[]int `json:"menuIds"`
+	Name    string        `json:"name" binding:"required"`
+	Key     string        `json:"key" binding:"required,is_code"`
+	Sort    int           `json:"sort"`
+	Status  string        `json:"status"`
+	Remark  string        `json:"remark"`
+	MenuIds *[]types.Long `json:"menuIds"`
 }
 
 type UpdateRoleVo struct {
-	Id int `json:"id" binding:"required"`
+	BaseVo
 	CreateRoleVo
 }
