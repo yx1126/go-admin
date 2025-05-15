@@ -8,7 +8,7 @@ type DeptParam struct {
 }
 
 type DeptVo struct {
-	ParentId int      `json:"parentId"`
+	ParentId int      `json:"parentId,string"`
 	Name     string   `json:"name"`
 	Sort     int      `json:"sort"`
 	LeaderId int      `json:"leaderId"`
@@ -31,7 +31,7 @@ func (d DeptVo) SetChildren(children []DeptVo) DeptVo {
 }
 
 type DeptTreeVo struct {
-	ParentId int          `json:"parentId"`
+	ParentId int          `json:"parentId,string"`
 	Name     string       `json:"name"`
 	Sort     int          `json:"sort"`
 	LeaderId *int         `json:"leaderId,string"`
@@ -55,7 +55,7 @@ func (d DeptTreeVo) SetChildren(children []DeptTreeVo) DeptTreeVo {
 }
 
 type CreateDeptVo struct {
-	ParentId int    `json:"parentId"`
+	ParentId int    `json:"parentId,string"`
 	Name     string `json:"name" binding:"required"`
 	Sort     int    `json:"sort"`
 	LeaderId *int   `json:"leaderId,string" binding:"omitempty"`
