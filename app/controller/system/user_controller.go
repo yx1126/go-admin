@@ -5,10 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	systemservice "github.com/yx1126/go-admin/app/service/system"
-	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/common/password"
 	bind "github.com/yx1126/go-admin/common/should_bind"
+	"github.com/yx1126/go-admin/common/util"
 	"github.com/yx1126/go-admin/config"
 	"github.com/yx1126/go-admin/response"
 )

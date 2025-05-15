@@ -3,7 +3,7 @@ package service
 import (
 	"strings"
 
-	"github.com/yx1126/go-admin/app/util"
+	"github.com/yx1126/go-admin/common/util"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

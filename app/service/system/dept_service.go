@@ -4,8 +4,8 @@ import (
 	"github.com/yx1126/go-admin/DB"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
-	"github.com/yx1126/go-admin/app/util"
 	"github.com/yx1126/go-admin/app/vo"
+	"github.com/yx1126/go-admin/common/util"
 )
 
 type DeptService struct{}
