@@ -16,3 +16,10 @@ server:
 user:
   # 默认密码
   password: "123456"
+
+# redis
+redis:
+  ip: 60.204.235.74
+  port: 6379
+  password: 123456
+  database: 0

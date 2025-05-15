@@ -12,6 +12,7 @@ import (
 
 func main() {
 	DB.InitGorm()
+	DB.InitRedis()
 	r := gin.Default()
 	validator.RegisterValidator()
 	router.Register(r)

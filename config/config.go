@@ -24,15 +24,24 @@ type UserConfig struct {
 	Password string `yaml:"password" json:"password"`
 }
 
+type RedisConfig struct {
+	Ip       string `yaml:"ip" json:"ip"`
+	Port     int    `yaml:"port" json:"port"`
+	Password string `yaml:"password" json:"password"`
+	Database int    `yaml:"database" json:"database"`
+}
+
 type ConfigContext struct {
 	Mysql  MysqlConfig  `yaml:"mysql" json:"mysql"`
 	Server ServerConfig `yaml:"server" json:"server"`
 	User   UserConfig   `yaml:"user" json:"user"`
+	Redis  RedisConfig  `yaml:"redis" json:"redis"`
 }
 
 var Mysql *MysqlConfig
 var Server *ServerConfig
 var User *UserConfig
+var Redis *RedisConfig
 
 func init() {
 	var Config *ConfigContext
@@ -47,4 +56,5 @@ func init() {
 	Mysql = &Config.Mysql
 	Server = &Config.Server
 	User = &Config.User
+	Redis = &Config.Redis
 }
