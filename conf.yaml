@@ -1,3 +1,4 @@
+# mysql
 mysql:
   ip: 60.204.235.74
   port: 3306
@@ -9,17 +10,33 @@ mysql:
   # 连接池最大打开连接数
   maxOpenConns: 100
 
-server:
-  port: 9000
-
-# 用户
-user:
-  # 默认密码
-  password: "123456"
-
 # redis
 redis:
   ip: 60.204.235.74
   port: 6379
   password: 123456
   database: 0
+
+# server
+server:
+  # port
+  port: 9000
+  # 模式，可选值：debug、test、release
+  mode: debug
+
+# 用户
+user:
+  # 默认密码
+  password: "123456"
+  # 密码最大错误次数
+  maxRetryCount: 5
+  # 密码锁定时间（默认10分钟）
+  lockTime: 10
+
+# token配置
+token:
+  header: Authorization
+  # 令牌密钥
+  secret: github.com/yx1126/go-admin
+  # 令牌有效期（默认30分钟）
+  expireTime: 30

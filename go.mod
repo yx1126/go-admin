@@ -9,6 +9,7 @@ require (
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.20.0
+	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/redis/go-redis/v9 v9.8.0
 	golang.org/x/crypto v0.37.0
 	gopkg.in/yaml.v3 v3.0.1

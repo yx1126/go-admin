@@ -11,10 +11,16 @@ import (
 )
 
 func main() {
+	// DB
 	DB.InitGorm()
 	DB.InitRedis()
+	// mode
+	gin.SetMode(config.Server.Mode)
 	r := gin.Default()
+	// validator
 	validator.RegisterValidator()
+	// router
 	router.Register(r)
+	// run
 	r.Run(":" + strconv.Itoa(config.Server.Port))
 }

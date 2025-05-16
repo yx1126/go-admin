@@ -2,12 +2,15 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/yx1126/go-admin/app/controller"
 	systemCtrl "github.com/yx1126/go-admin/app/controller/system"
 )
 
-func RegisterAdminRouters(g *gin.RouterGroup) {
+func RegisterAdminRouters(r *gin.RouterGroup) {
+	authCtrl := controller.AuthController{}
+	r.POST("/login", authCtrl.Login)
 	// 系统设置模块
-	system := g.Group("/system")
+	system := r.Group("/system")
 	{
 		// 用户管理
 		userCtrl := systemCtrl.UserController{}
