@@ -50,7 +50,7 @@ type DictDataListVo struct {
 }
 
 type CreateDictData struct {
-	DictId    int    `json:"dictId" binding:"required"`
+	DictId    int    `json:"dictId,string" binding:"required"`
 	Sort      int    `json:"sort"`
 	Label     string `json:"label" binding:"required"`
 	Value     string `json:"value" binding:"required"`
