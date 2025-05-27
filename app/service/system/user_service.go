@@ -19,7 +19,8 @@ func (*UserService) QueryUserList(params vo.UserPagingParam) (vo.PagingBackVo[vo
 	var userList = make([]vo.UserVo, 0)
 	query := DB.Gorm.Model(&sysmodel.SysUser{}).
 		Select("sys_user.*", "d.name as dept_name").
-		Joins("LEFT JOIN sys_dept as d ON sys_user.dept_id = d.id")
+		Joins("LEFT JOIN sys_dept as d ON sys_user.dept_id = d.id").
+		Order("updated_at DESC,created_at DESC,id DESC")
 	if params.UserName != "" {
 		query = query.Where("sys_user.user_name LIKE ?", "%"+params.UserName+"%")
 	}

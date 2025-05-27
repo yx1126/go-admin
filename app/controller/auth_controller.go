@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"encoding/base64"
-	"encoding/json"
 	"io"
 
 	"github.com/gin-gonic/gin"
@@ -19,18 +17,8 @@ func (*AuthController) Login(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	cipherData, err := base64.StdEncoding.DecodeString(string(body))
-	if err != nil {
-		response.NewError(err).Json(c)
-		return
-	}
-	bytes, err := crypto.Parse(cipherData)
-	if err != nil {
-		response.NewError(err).Json(c)
-		return
-	}
 	var loginInfo vo.LoginVo
-	if err := json.Unmarshal(bytes, &loginInfo); err != nil {
+	if err := crypto.BindParse(body, &loginInfo); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}

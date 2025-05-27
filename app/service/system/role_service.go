@@ -16,7 +16,7 @@ type RoleService struct{}
 func (*RoleService) QueryRoleList(param vo.RoleParam) (vo.PagingBackVo[vo.RoleVo], error) {
 	var roleList []vo.RoleVo
 	var count int64
-	query := DB.Gorm.Model(&sysmodel.SysRole{}).Scopes(service.SortScope)
+	query := DB.Gorm.Model(&sysmodel.SysRole{}).Order("sort,updated_at DESC,created_at DESC")
 	if param.Name != "" {
 		query.Where("name LIKE ?", "%"+param.Name+"%")
 	}

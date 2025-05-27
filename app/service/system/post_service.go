@@ -13,8 +13,7 @@ type PostService struct{}
 func (*PostService) QueryPostList(params vo.PostPagingParam) (vo.PagingBackVo[vo.PostVo], error) {
 	var postList []vo.PostVo
 	var count int64
-	query := DB.Gorm.Model(&sysmodel.SysPost{}).
-		Scopes(service.SortScope)
+	query := DB.Gorm.Model(&sysmodel.SysPost{}).Order("sort,updated_at DESC,created_at DESC")
 	if params.Name != "" {
 		query.Where("name LIKE ?", "%"+params.Name+"%")
 	}
