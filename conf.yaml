@@ -3,7 +3,7 @@ mysql:
   ip: 60.204.235.74
   # ip: 127.0.0.1
   port: 3306
-  user: go-admin
+  user: root
   password: 123456
   database: go-admin
   # 连接池最大连接数
