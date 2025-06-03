@@ -8,6 +8,7 @@ import (
 
 func RegisterAdminRouters(r *gin.RouterGroup) {
 	authCtrl := controller.AuthController{}
+	r.GET("/code", authCtrl.Code)
 	r.POST("/login", authCtrl.Login)
 	// 系统设置模块
 	system := r.Group("/system")

@@ -78,7 +78,7 @@ func Parse(value []byte) (string, error) {
 	return str, nil
 }
 
-func BindParse[T any](data []byte, value *T) error {
+func BindParse(data []byte, value any) error {
 	str, err := Parse(data)
 	if err != nil {
 		return err
