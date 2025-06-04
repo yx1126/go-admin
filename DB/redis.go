@@ -11,7 +11,7 @@ import (
 var Redis *redis.Client
 
 func InitRedis() {
-	Redis := redis.NewClient(&redis.Options{
+	Redis = redis.NewClient(&redis.Options{
 		Addr:     config.Redis.Ip + ":" + strconv.Itoa(config.Redis.Port),
 		Password: config.Redis.Password,
 		DB:       config.Redis.Database,
