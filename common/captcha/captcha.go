@@ -9,7 +9,7 @@ type Captcha struct {
 // 初始化验证码
 func NewCaptcha() *Captcha {
 
-	driver := base64Captcha.NewDriverDigit(40, 100, 4, 0.7, 1)
+	driver := base64Captcha.NewDriverDigit(38, 98, 4, 0, 1)
 
 	return &Captcha{
 		captcha: base64Captcha.NewCaptcha(driver, &Store{}),

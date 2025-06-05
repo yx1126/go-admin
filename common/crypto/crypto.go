@@ -11,7 +11,7 @@ import (
 )
 
 // 公钥
-const _ = `-----BEGIN PUBLIC KEY-----
+const publicKey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAimgQx3B2n6jQecToVqdm
 AUpaLnOT+0DoRdiIRncOkSUrDWR5oz3VrCE8kmhw4VaBzQs3nH9fXt3cMLGQq7MN
 lCYEx+pEbx2+etrRzPV7oW1hZdkd8SodS1LaFWGElTbPlhpqjZwFvFXa5rukLuqE
@@ -71,15 +71,11 @@ func Parse(value []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	var str string
-	if err := json.Unmarshal(data, &str); err != nil {
-		return "", err
-	}
-	return str, nil
+	return string(data), nil
 }
 
-func BindParse(data []byte, value any) error {
-	str, err := Parse(data)
+func Unmarshal(body []byte, value any) error {
+	str, err := Parse(body)
 	if err != nil {
 		return err
 	}

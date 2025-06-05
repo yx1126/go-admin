@@ -29,7 +29,11 @@ func (*AuthController) Login(c *gin.Context) {
 		return
 	}
 	var loginInfo vo.LoginVo
-	if err := crypto.BindParse(body, &loginInfo); err != nil {
+	if err := crypto.Unmarshal(body, &loginInfo); err != nil {
+		response.NewError(err).Json(c)
+		return
+	}
+	if err := loginInfo.Validate(); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
