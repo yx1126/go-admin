@@ -1,8 +1,6 @@
 package vo
 
-import (
-	"github.com/go-playground/validator/v10"
-)
+import "github.com/yx1126/go-admin/common/validator"
 
 type LoginVo struct {
 	Username string `json:"username" binding:"required"`
@@ -12,8 +10,7 @@ type LoginVo struct {
 }
 
 func (l *LoginVo) Validate() error {
-	v := validator.New(validator.WithRequiredStructEnabled())
-	return v.Struct(l)
+	return validator.Struct(l)
 }
 
 type RegisterVo struct {

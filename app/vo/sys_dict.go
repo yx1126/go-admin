@@ -32,7 +32,7 @@ type DictPagingParam struct {
 }
 
 type DictDataListVo struct {
-	DictId    int    `json:"dictId"`
+	DictId    int    `json:"dictId,string"`
 	Sort      int    `json:"sort"`
 	Label     string `json:"label"`
 	Value     string `json:"value"`
