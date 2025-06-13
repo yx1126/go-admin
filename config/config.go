@@ -6,6 +6,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// system
+
+type SystemConfig struct {
+	Name string `yaml:"name" json:"name"`
+}
+
 // mysql
 type MysqlConfig struct {
 	Ip           string `yaml:"ip" json:"ip"`
@@ -46,6 +52,7 @@ type TokenConfig struct {
 }
 
 type ConfigContext struct {
+	System SystemConfig `yaml:"system" json:"system"`
 	Mysql  MysqlConfig  `yaml:"mysql" json:"mysql"`
 	Server ServerConfig `yaml:"server" json:"server"`
 	User   UserConfig   `yaml:"user" json:"user"`
@@ -53,6 +60,7 @@ type ConfigContext struct {
 	Token  TokenConfig  `yaml:"token" json:"token"`
 }
 
+var System *SystemConfig
 var Mysql *MysqlConfig
 var Server *ServerConfig
 var User *UserConfig
@@ -69,6 +77,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	System = &Config.System
 	Mysql = &Config.Mysql
 	Server = &Config.Server
 	User = &Config.User

@@ -1,7 +1,6 @@
 package captcha
 
 import (
-	"context"
 	"time"
 
 	"github.com/yx1126/go-admin/DB"
@@ -11,18 +10,18 @@ import (
 type Store struct{}
 
 func (*Store) Set(id string, value string) error {
-	return DB.Redis.Set(context.Background(), redis.CaptchaCodeKey+id, value, time.Minute*5).Err()
+	return DB.Redis.Set(redis.CaptchaCodeKey+id, value, time.Minute*5).Err()
 }
 
 // Get returns stored digits for the captcha id. Clear indicates
 // whether the captcha must be deleted from the store.
 func (*Store) Get(id string, clear bool) string {
-	captcha, err := DB.Redis.Get(context.Background(), redis.CaptchaCodeKey+id).Result()
+	captcha, err := DB.Redis.Get(redis.CaptchaCodeKey + id).Result()
 	if err != nil {
 		return ""
 	}
 	if clear {
-		if err = DB.Redis.Del(context.Background(), redis.CaptchaCodeKey+id).Err(); err != nil {
+		if err = DB.Redis.Del(redis.CaptchaCodeKey + id).Err(); err != nil {
 			return ""
 		}
 	}
