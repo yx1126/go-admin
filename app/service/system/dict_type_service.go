@@ -15,6 +15,13 @@ func (*SysDictTypeService) QueryDictTypeAllList() ([]vo.DictTypeListVo, error) {
 	return dictTypeList, result.Error
 }
 
+// 字典查询
+func (*SysDictTypeService) QueryDictTypeById(id int) (vo.DictTypeListVo, error) {
+	var dictTypeList vo.DictTypeListVo
+	result := DB.Gorm.Model(&sysmodel.SysDictType{}).Where("id = ?", id).First(&dictTypeList)
+	return dictTypeList, result.Error
+}
+
 // 创建字典
 func (*SysDictTypeService) CreateDictType(dictType vo.CreateDictType) error {
 	return DB.Gorm.Model(&sysmodel.SysDictType{}).Create(&sysmodel.SysDictType{

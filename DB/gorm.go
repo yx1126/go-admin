@@ -1,7 +1,6 @@
 package DB
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -15,7 +14,6 @@ var Gorm *gorm.DB
 func InitGorm() {
 	ms := config.Mysql
 	dsn := ms.User + ":" + ms.Password + "@tcp(" + ms.Ip + ":" + strconv.Itoa(ms.Port) + ")/" + ms.Database + "?charset=utf8mb4&parseTime=True&loc=Local"
-	fmt.Println("dsn: ", dsn)
 	var err error
 	Gorm, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {

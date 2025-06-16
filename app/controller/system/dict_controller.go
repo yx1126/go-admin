@@ -79,7 +79,7 @@ func (*DictController) QueryDictDataListByType(c *gin.Context) {
 }
 
 // 字典数据新增
-func (*DictController) CreateData(c *gin.Context) {
+func (*DictController) CreateData(c *gin.Context) { 
 	var dictData vo.CreateDictData
 	err := bind.ShouldBindJSON(c, &dictData)
 	if err != nil {
