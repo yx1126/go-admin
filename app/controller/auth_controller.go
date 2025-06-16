@@ -29,12 +29,19 @@ func (*AuthController) Login(c *gin.Context) {
 		return
 	}
 	var loginInfo vo.LoginVo
+	// 解密
 	if err := crypto.Unmarshal(body, &loginInfo); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
+	// 字段校验
 	if err := loginInfo.Validate(); err != nil {
 		response.NewError(err).Json(c)
+		return
+	}
+	// 验证码校验
+	if ok := captcha.NewCaptcha().Verify(loginInfo.Uuid, loginInfo.Code); !ok {
+		response.NewError(nil).SetMsg("验证码错误").Json(c)
 		return
 	}
 	response.NewSuccess(loginInfo).Json(c)

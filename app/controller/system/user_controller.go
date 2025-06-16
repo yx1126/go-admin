@@ -108,5 +108,14 @@ func (*UserController) UpdatePwd(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
+	user, _ := (&systemservice.UserService{}).QueryUserPwdById(params.Id)
+	if user == nil {
+		response.NewError(nil).SetMsg("用户不存在或被禁用").Json(c)
+		return
+	}
+	if !password.Matches(params.Password, user.Password) {
+		response.NewError(nil).SetMsg("用户密码不正确").Json(c)
+		return
+	}
 	response.New(nil, (&systemservice.UserService{}).UpdatePwd(params.Id, params.Password)).Json(c)
 }

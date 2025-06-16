@@ -39,6 +39,12 @@ type UserVo struct {
 	model.BaseModel
 }
 
+type UserPwdVo struct {
+	UserName string `json:"userName"`
+	Password string `json:"password"`
+	model.BaseModel
+}
+
 // 详情
 type UserInfoVo struct {
 	PostIds *[]types.Long `json:"postIds"`
