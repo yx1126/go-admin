@@ -24,8 +24,8 @@ func GenToken(id int, username string) (string, error) {
 			Issuer:    "yx1126",
 		},
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
-	return token.SignedString(config.TokenConf.Secret)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(config.TokenConf.Secret))
 }
 
 func ParseToken(value string) (*CustomClaims, error) {

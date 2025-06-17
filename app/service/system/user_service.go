@@ -259,12 +259,11 @@ func (*UserService) DeleteUser(ids []int) error {
 	})
 }
 
-// 查询用户密码
+// 修改密码查询用户
 func (*UserService) QueryUserPwdById(id int) (*vo.UserPwdVo, error) {
 	var user vo.UserPwdVo
 	if err := DB.Gorm.Model(&sysmodel.SysUser{}).
-		Select("user_name,password").
-		Where("status = ?", constant.STATUS).
+		Select("user_name,password,status").
 		Where("id = ?", id).
 		First(&user).Error; err != nil {
 		return nil, err
@@ -272,12 +271,11 @@ func (*UserService) QueryUserPwdById(id int) (*vo.UserPwdVo, error) {
 	return &user, nil
 }
 
-// 查询用户密码
+// 登录查询用户
 func (*UserService) QueryUserPwdByUsername(username string) (*vo.UserPwdVo, error) {
 	var user vo.UserPwdVo
 	if err := DB.Gorm.Model(&sysmodel.SysUser{}).
-		Select("user_name,password").
-		Where("status = ?", constant.STATUS).
+		Select("user_name,password,status").
 		Where("user_name = ?", username).
 		First(&user).Error; err != nil {
 		return nil, err

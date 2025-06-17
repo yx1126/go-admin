@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	systemservice "github.com/yx1126/go-admin/app/service/system"
 	"github.com/yx1126/go-admin/app/vo"
+	"github.com/yx1126/go-admin/common/constant"
 	"github.com/yx1126/go-admin/common/password"
 	bind "github.com/yx1126/go-admin/common/should_bind"
 	"github.com/yx1126/go-admin/common/util"
@@ -108,13 +109,17 @@ func (*UserController) UpdatePwd(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	user, _ := (&systemservice.UserService{}).QueryUserPwdById(params.Id)
-	if user == nil {
-		response.NewError(nil).SetMsg("用户不存在或被禁用").Json(c)
+	user, err := (&systemservice.UserService{}).QueryUserPwdById(params.Id)
+	if err != nil {
+		response.NewError(nil).SetMsg("用户名或密码错误").Json(c)
+		return
+	}
+	if user.Status != constant.STATUS {
+		response.NewError(nil).SetMsg("用户已被禁用，请联系管理员").Json(c)
 		return
 	}
 	if !password.Matches(params.Password, user.Password) {
-		response.NewError(nil).SetMsg("用户密码不正确").Json(c)
+		response.NewError(nil).SetMsg("用户名或密码错误").Json(c)
 		return
 	}
 	response.New(nil, (&systemservice.UserService{}).UpdatePwd(params.Id, params.Password)).Json(c)

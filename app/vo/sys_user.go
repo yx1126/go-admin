@@ -42,6 +42,7 @@ type UserVo struct {
 type UserPwdVo struct {
 	UserName string `json:"userName"`
 	Password string `json:"password"`
+	Status   string `json:"status"`
 	model.BaseModel
 }
 
