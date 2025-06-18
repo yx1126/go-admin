@@ -65,7 +65,7 @@ var Mysql *MysqlConfig
 var Server *ServerConfig
 var User *UserConfig
 var Redis *RedisConfig
-var TokenConf *TokenConfig
+var Token *TokenConfig
 
 func init() {
 	var Config *ConfigContext
@@ -82,5 +82,5 @@ func init() {
 	Server = &Config.Server
 	User = &Config.User
 	Redis = &Config.Redis
-	TokenConf = &Config.Token
+	Token = &Config.Token
 }

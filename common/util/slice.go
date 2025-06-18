@@ -33,7 +33,7 @@ func Reduce[T any, R any](slice []T, cb func(acc R, item T, index int) R, initia
 	return
 }
 
-func SliceAt[T any](slice []T, index int) (T, bool) {
+func At[T any](slice []T, index int) (T, bool) {
 	var zero T
 	if index < 0 {
 		index = len(slice) + index

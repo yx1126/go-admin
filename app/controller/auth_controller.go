@@ -31,6 +31,15 @@ func (*AuthController) Code(c *gin.Context) {
 
 }
 
+func (*AuthController) Logout(c *gin.Context) {
+	tokenStr, err := token.ParseHeaderToken(c.GetHeader(config.Token.Header))
+	if err != nil {
+		response.NewError(err).Json(c)
+		return
+	}
+	response.New(nil, token.DeleteToken(tokenStr)).Json(c)
+}
+
 func (*AuthController) Login(c *gin.Context) {
 	body, err := io.ReadAll(c.Request.Body)
 	if err != nil {
