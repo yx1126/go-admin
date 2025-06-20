@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"io"
 	"time"
 
@@ -84,10 +83,8 @@ func (*AuthController) Login(c *gin.Context) {
 	}
 	// 登录成功，删除错误次数
 	DB.Redis.Ctx.Del(c.Request.Context(), redisKey)
-
 	token, err := token.GenToken(user.Id, user.UserName)
 	if err != nil {
-		fmt.Println("token -->", err.Error())
 		response.NewError(err).Json(c)
 		return
 	}

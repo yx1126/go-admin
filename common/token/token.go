@@ -14,18 +14,20 @@ import (
 
 type TokenClaims struct {
 	Uuid     string `json:"uuid"`
-	Id       int    `json:"id"`
+	UserId   int    `json:"userId"`
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
 
 // 生成token
 func GenToken(id int, username string) (string, error) {
+	expiration := time.Minute * time.Duration(config.Token.ExpireTime)
 	claims := TokenClaims{
 		Uuid:     uuid.New().String(),
-		Id:       id,
+		UserId:   id,
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expiration)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
 			Issuer:    "yx1126",
@@ -35,7 +37,7 @@ func GenToken(id int, username string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	err = DB.Redis.Set(redis.UserTokenKey+claims.Uuid, token, time.Minute*time.Duration(config.Token.ExpireTime)).Err()
+	err = DB.Redis.Set(redis.UserTokenKey+claims.Uuid, token, expiration).Err()
 	if err != nil {
 		return "", err
 	}

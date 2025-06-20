@@ -43,6 +43,12 @@ func (*UserController) QueryUserAllList(c *gin.Context) {
 	response.New((&systemservice.UserService{}).QueryUserAllList(params)).Json(c)
 }
 
+// 根据token获取用户信息
+func (*UserController) QueryUserInfo(c *gin.Context) {
+	id := c.GetInt("userId")
+	response.New((&systemservice.UserService{}).QueryUserById(id)).Json(c)
+}
+
 // 根据id获取用户信息
 func (*UserController) QueryUserInfoById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))

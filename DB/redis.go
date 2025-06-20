@@ -37,6 +37,18 @@ func (r *RedisContext) HDel(key string, fields ...string) *redis.IntCmd {
 	return r.Ctx.HDel(context.Background(), key, fields...)
 }
 
+func (r *RedisContext) Exists(key string) bool {
+	n, err := r.Ctx.Exists(context.Background(), key).Result()
+	if err != nil {
+		return false
+	}
+	if n == 1 {
+		return true
+	} else {
+		return false
+	}
+}
+
 var Redis *RedisContext
 
 func InitRedis() {

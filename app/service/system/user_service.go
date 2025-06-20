@@ -275,7 +275,7 @@ func (*UserService) QueryUserPwdById(id int) (*vo.UserPwdVo, error) {
 func (*UserService) QueryUserPwdByUsername(username string) (*vo.UserPwdVo, error) {
 	var user vo.UserPwdVo
 	if err := DB.Gorm.Model(&sysmodel.SysUser{}).
-		Select("user_name,password,status").
+		Select("id,user_name,password,status").
 		Where("user_name = ?", username).
 		First(&user).Error; err != nil {
 		return nil, err

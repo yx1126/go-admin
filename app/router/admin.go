@@ -3,7 +3,8 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yx1126/go-admin/app/controller"
-	systemCtrl "github.com/yx1126/go-admin/app/controller/system"
+	sys "github.com/yx1126/go-admin/app/controller/system"
+	mw "github.com/yx1126/go-admin/app/middleware"
 )
 
 func RegisterAdminRouters(r *gin.RouterGroup) {
@@ -11,11 +12,17 @@ func RegisterAdminRouters(r *gin.RouterGroup) {
 	r.GET("/code", authCtrl.Code)
 	r.POST("/login", authCtrl.Login)
 	r.POST("/logout", authCtrl.Logout)
+	r.Use(mw.AuthMiddleware())
+	// auth
+	auth := r.Group("/auth")
+	{
+		auth.GET("/getUserInfo", (&sys.UserController{}).QueryUserInfo)
+	}
 	// 系统设置模块
 	system := r.Group("/system")
 	{
 		// 用户管理
-		userCtrl := systemCtrl.UserController{}
+		userCtrl := sys.UserController{}
 		system.GET("/user", userCtrl.QueryUserList)
 		system.GET("/user/all", userCtrl.QueryUserAllList)
 		system.GET("/user/:id", userCtrl.QueryUserInfoById)
@@ -24,7 +31,7 @@ func RegisterAdminRouters(r *gin.RouterGroup) {
 		system.PUT("/user/reset/:id", userCtrl.ResetPwd)
 		system.DELETE("/user", userCtrl.Delete)
 		// 角色管理
-		roleCtrl := systemCtrl.RoleController{}
+		roleCtrl := sys.RoleController{}
 		system.GET("/role", roleCtrl.QueryRoleList)
 		system.GET("/role/all", roleCtrl.QueryRoleAllList)
 		system.GET("/role/:id", roleCtrl.QueryRoleInfoById)
@@ -32,7 +39,7 @@ func RegisterAdminRouters(r *gin.RouterGroup) {
 		system.PUT("/role", roleCtrl.Update)
 		system.DELETE("/role", roleCtrl.Delete)
 		// 菜单管理
-		menuCtrl := systemCtrl.MenuController{}
+		menuCtrl := sys.MenuController{}
 		system.GET("/menu", menuCtrl.QueryTree)
 		system.GET("/menu/all", menuCtrl.QueryAllTree)
 		system.GET("/menu/selectTree", menuCtrl.QuerySelectTree)
@@ -40,7 +47,7 @@ func RegisterAdminRouters(r *gin.RouterGroup) {
 		system.PUT("/menu", menuCtrl.Update)
 		system.DELETE("/menu", menuCtrl.Delete)
 		// 部门管理
-		deptCtrl := systemCtrl.DeptController{}
+		deptCtrl := sys.DeptController{}
 		system.GET("/dept", deptCtrl.QueryTree)
 		system.GET("/dept/all", deptCtrl.QuerySelectAllTree)
 		system.GET("/dept/selectTree", deptCtrl.QuerySelectTree)
@@ -48,14 +55,14 @@ func RegisterAdminRouters(r *gin.RouterGroup) {
 		system.PUT("/dept", deptCtrl.Update)
 		system.DELETE("/dept", deptCtrl.Delete)
 		// 岗位管理
-		postCtrl := systemCtrl.PostController{}
+		postCtrl := sys.PostController{}
 		system.GET("/post", postCtrl.QueryPostList)
 		system.GET("/post/all", postCtrl.QueryPostAllList)
 		system.POST("/post", postCtrl.Create)
 		system.PUT("/post", postCtrl.Update)
 		system.DELETE("/post", postCtrl.Delete)
 		// 字典类型
-		dictTypeCtrl := systemCtrl.DictController{}
+		dictTypeCtrl := sys.DictController{}
 		system.GET("/dict", dictTypeCtrl.QueryAllList)
 		system.POST("/dict", dictTypeCtrl.Create)
 		system.PUT("/dict", dictTypeCtrl.Update)
