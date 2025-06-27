@@ -14,6 +14,7 @@ import (
 	"github.com/yx1126/go-admin/common/password"
 	"github.com/yx1126/go-admin/common/redis"
 	"github.com/yx1126/go-admin/common/token"
+	"github.com/yx1126/go-admin/common/types"
 	"github.com/yx1126/go-admin/config"
 	"github.com/yx1126/go-admin/response"
 )
@@ -89,5 +90,12 @@ func (*AuthController) Login(c *gin.Context) {
 		return
 	}
 	// 更新登录的ip和时间
+	(&systemservice.UserService{}).UpdateUserLoginInfo(vo.UpdateUserLoginVo{
+		BaseVo: vo.BaseVo{
+			Id: user.Id,
+		},
+		LoginIp:   c.ClientIP(),
+		LoginDate: types.Datetime{Time: time.Now()},
+	})
 	response.NewSuccess(token).Json(c)
 }

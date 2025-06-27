@@ -14,11 +14,11 @@ func main() {
 	// DB
 	DB.InitGorm()
 	DB.InitRedis()
+	// validator
+	validator.RegisterValidator()
 	// mode
 	gin.SetMode(config.Server.Mode)
 	r := gin.Default()
-	// validator
-	validator.RegisterValidator()
 	// router
 	router.Register(r)
 	// run

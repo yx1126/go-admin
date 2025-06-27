@@ -15,17 +15,21 @@ func (*Store) Set(id string, value string) error {
 
 // Get returns stored digits for the captcha id. Clear indicates
 // whether the captcha must be deleted from the store.
-func (*Store) Get(id string, clear bool) string {
+func (s *Store) Get(id string, clear bool) string {
 	captcha, err := DB.Redis.Get(redis.CaptchaCodeKey + id).Result()
 	if err != nil {
 		return ""
 	}
 	if clear {
-		if err = DB.Redis.Del(redis.CaptchaCodeKey + id).Err(); err != nil {
+		if err = s.Del(id); err != nil {
 			return ""
 		}
 	}
 	return captcha
+}
+
+func (*Store) Del(id string) error {
+	return DB.Redis.Del(redis.CaptchaCodeKey + id).Err()
 }
 
 // Verify captcha's answer directly

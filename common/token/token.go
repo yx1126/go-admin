@@ -2,6 +2,7 @@ package token
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
@@ -50,7 +51,13 @@ func ParseToken(value string) (*TokenClaims, error) {
 		return []byte(config.Token.Secret), nil
 	})
 	if err != nil {
-		return nil, err
+		if errors.Is(err, jwt.ErrTokenExpired) {
+			return nil, fmt.Errorf("token已过期")
+		}
+		if errors.Is(err, jwt.ErrTokenNotValidYet) {
+			return nil, fmt.Errorf("token失效")
+		}
+		return nil, fmt.Errorf("token invalid: %w", err)
 	}
 	if claims, ok := token.Claims.(*TokenClaims); ok && token.Valid {
 		return claims, nil

@@ -1,6 +1,10 @@
 package captcha
 
-import "github.com/mojocn/base64Captcha"
+import (
+	"github.com/mojocn/base64Captcha"
+	"github.com/yx1126/go-admin/DB"
+	"github.com/yx1126/go-admin/common/redis"
+)
 
 type Captcha struct {
 	captcha *base64Captcha.Captcha
@@ -29,4 +33,9 @@ func (c *Captcha) Generate() (string, string) {
 // 验证验证码
 func (c *Captcha) Verify(id, answer string) bool {
 	return c.captcha.Verify(id, answer, true)
+}
+
+// 删除验证码
+func Del(id string) {
+	DB.Redis.Del(redis.CaptchaCodeKey + id).Err()
 }

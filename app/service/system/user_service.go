@@ -241,6 +241,17 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 	})
 }
 
+// 更新用户
+func (*UserService) UpdateUserLoginInfo(user vo.UpdateUserLoginVo) error {
+	return DB.Gorm.Model(&sysmodel.SysUser{}).
+		Select("login_ip", "login_date").
+		Where("id = ?", user.Id).
+		Updates(&sysmodel.SysUser{
+			LoginIp:   user.LoginIp,
+			LoginDate: user.LoginDate,
+		}).Error
+}
+
 // 删除用户
 func (*UserService) DeleteUser(ids []int) error {
 	return DB.Gorm.Transaction(func(tx *gorm.DB) error {

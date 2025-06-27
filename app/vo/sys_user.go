@@ -23,19 +23,19 @@ type UserPagingParam struct {
 
 // 列表
 type UserVo struct {
-	UserName  string      `json:"userName"`
-	LoginIp   string      `json:"loginIp"`
-	LoginDate string      `json:"loginDate"`
-	DeptId    *types.Long `json:"deptId"`
-	DeptName  string      `json:"deptName"`
-	NickName  string      `json:"nickName"`
-	UserType  string      `json:"userType"`
-	Email     string      `json:"email"`
-	Phone     string      `json:"phone"`
-	Sex       string      `json:"sex"`
-	Avatar    string      `json:"avatar"`
-	Status    string      `json:"status"`
-	Remark    string      `json:"remark"`
+	UserName  string         `json:"userName"`
+	LoginIp   string         `json:"loginIp"`
+	LoginDate types.Datetime `json:"loginDate"`
+	DeptId    *types.Long    `json:"deptId"`
+	DeptName  string         `json:"deptName"`
+	NickName  string         `json:"nickName"`
+	UserType  string         `json:"userType"`
+	Email     string         `json:"email"`
+	Phone     string         `json:"phone"`
+	Sex       string         `json:"sex"`
+	Avatar    string         `json:"avatar"`
+	Status    string         `json:"status"`
+	Remark    string         `json:"remark"`
 	model.BaseModel
 }
 
@@ -78,6 +78,12 @@ type CreateUserVo struct {
 type UpdateUserVo struct {
 	BaseVo
 	baseCUVo
+}
+
+type UpdateUserLoginVo struct {
+	BaseVo
+	LoginIp   string         `json:"loginIp"`
+	LoginDate types.Datetime `json:"loginDate"`
 }
 
 // 更新密码

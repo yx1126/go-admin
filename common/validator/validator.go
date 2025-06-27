@@ -43,23 +43,24 @@ func Struct(s any) error {
 
 // https://www.liwenzhou.com/posts/Go/validator-usages/
 func RegisterValidator() {
-	Validator = validator.New()
-	Validator.SetTagName("binding")
+	// Validator = validator.New()
+	// Validator.SetTagName("binding")
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		// is_code 注册自定义校验
-		v.RegisterValidation("is_code", ValidCode)
 		// 注册自定义校验信息
 		RegisterMessage("is_code", "请输入数字字母_-")
+		// is_code 注册自定义校验
+		v.RegisterValidation("is_code", ValidCode)
 		// gin trans zh
 		if err := InitTran(v, "zh"); err != nil {
 			fmt.Printf("init trans failed, err:%v\n", err)
 			return
 		}
+		Validator = v
 	}
 	// local
-	if err := InitTran(Validator, "zh"); err != nil {
-		fmt.Printf("init trans failed, err:%v\n", err)
-		return
-	}
+	// if err := InitTran(Validator, "zh"); err != nil {
+	// 	fmt.Printf("init trans failed, err:%v\n", err)
+	// 	return
+	// }
 }
