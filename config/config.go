@@ -51,6 +51,14 @@ type TokenConfig struct {
 	ExpireTime int    `yaml:"expireTime" json:"expireTime"`
 }
 
+// minio
+type MinioConfig struct {
+	Ip     string `yaml:"ip" json:"ip"`
+	Port   int    `yaml:"port" json:"port"`
+	Access string `yaml:"access" json:"access"`
+	Secret string `yaml:"secret" json:"secret"`
+}
+
 type ConfigContext struct {
 	System SystemConfig `yaml:"system" json:"system"`
 	Mysql  MysqlConfig  `yaml:"mysql" json:"mysql"`
@@ -58,6 +66,7 @@ type ConfigContext struct {
 	User   UserConfig   `yaml:"user" json:"user"`
 	Redis  RedisConfig  `yaml:"redis" json:"redis"`
 	Token  TokenConfig  `yaml:"token" json:"token"`
+	Minio  MinioConfig  `yaml:"minio" json:"minio"`
 }
 
 var System *SystemConfig
@@ -66,6 +75,7 @@ var Server *ServerConfig
 var User *UserConfig
 var Redis *RedisConfig
 var Token *TokenConfig
+var Minio *MinioConfig
 
 func init() {
 	var Config *ConfigContext
@@ -83,4 +93,5 @@ func init() {
 	User = &Config.User
 	Redis = &Config.Redis
 	Token = &Config.Token
+	Minio = &Config.Minio
 }

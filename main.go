@@ -14,6 +14,7 @@ func main() {
 	// DB
 	DB.InitGorm()
 	DB.InitRedis()
+	DB.InitMinio()
 	// validator
 	validator.RegisterValidator()
 	// mode

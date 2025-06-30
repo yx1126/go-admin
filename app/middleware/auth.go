@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yx1126/go-admin/DB"
@@ -39,7 +38,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			ctx.Abort()
 			return
 		}
-		if claims.ExpiresAt != nil && claims.ExpiresAt.Before(time.Now().Add(time.Minute*10)) {
+		if err := token.ValidToken(claims); err != nil {
 			token.RefreshToken(tokenStr)
 		}
 		ctx.Set("userId", claims.UserId)

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yx1126/go-admin/app/controller"
 	sys "github.com/yx1126/go-admin/app/controller/system"
+	uploadcontroller "github.com/yx1126/go-admin/app/controller/upload"
 	mw "github.com/yx1126/go-admin/app/middleware"
 )
 
@@ -13,6 +14,12 @@ func RegisterAdminRouters(r *gin.RouterGroup) {
 	r.POST("/login", authCtrl.Login)
 	r.POST("/logout", authCtrl.Logout)
 	r.Use(mw.AuthMiddleware())
+	// upload
+	upload := r.Group("/upload")
+	{
+		upload.POST("/avatar", (&uploadcontroller.UploadController{}).UploadAvatar)
+	}
+
 	// auth
 	auth := r.Group("/auth")
 	{

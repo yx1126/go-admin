@@ -8,6 +8,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	sourceRedis "github.com/redis/go-redis/v9"
 	"github.com/yx1126/go-admin/DB"
 	"github.com/yx1126/go-admin/common/redis"
 	"github.com/yx1126/go-admin/config"
@@ -28,7 +29,6 @@ func GenToken(id int, username string) (string, error) {
 		UserId:   id,
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expiration)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
 			Issuer:    "yx1126",
@@ -63,6 +63,17 @@ func ParseToken(value string) (*TokenClaims, error) {
 		return claims, nil
 	}
 	return nil, errors.New("invalid token")
+}
+
+func ValidToken(claims *TokenClaims) error {
+	_, err := DB.Redis.Get(redis.UserTokenKey + claims.Uuid).Result()
+	if err == sourceRedis.Nil {
+		return fmt.Errorf("token已过期")
+	}
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // 刷新token
