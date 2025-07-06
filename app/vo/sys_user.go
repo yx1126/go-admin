@@ -76,6 +76,7 @@ type CreateUserVo struct {
 }
 
 type UpdateUserVo struct {
+	Avatar string `json:"avatar"`
 	BaseVo
 	baseCUVo
 }

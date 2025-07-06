@@ -35,10 +35,10 @@ func UploadFile(bucket, folder string, userId int, fileHeader *multipart.FileHea
 		}
 	}
 	file, err := fileHeader.Open()
-	defer file.Close()
 	if err != nil {
 		return nil, err
 	}
+	defer file.Close()
 	filename := GenFileName(userId, fileHeader.Filename)
 	path := fmt.Sprintf("/%s/%s", folder, filename)
 	info, err := DB.Minio.PutObject(context.Background(), bucket, path, file, fileHeader.Size, minio.PutObjectOptions{
@@ -51,6 +51,10 @@ func UploadFile(bucket, folder string, userId int, fileHeader *multipart.FileHea
 		"fileName":     filename,
 		"size":         info.Size,
 		"lastModified": info.LastModified.Local().Format("2006-01-02 15:04:05"),
-		"path":         fmt.Sprintf("/%s%s", bucket, path),
+		"path":         path,
 	}, nil
+}
+
+func GetFileObject(bucket, filename string) (*minio.Object, error) {
+	return DB.Minio.GetObject(context.Background(), bucket, filename, minio.GetObjectOptions{})
 }

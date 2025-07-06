@@ -3,8 +3,8 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yx1126/go-admin/app/controller"
+	filecontroller "github.com/yx1126/go-admin/app/controller/file"
 	sys "github.com/yx1126/go-admin/app/controller/system"
-	uploadcontroller "github.com/yx1126/go-admin/app/controller/upload"
 	mw "github.com/yx1126/go-admin/app/middleware"
 )
 
@@ -15,9 +15,10 @@ func RegisterAdminRouters(r *gin.RouterGroup) {
 	r.POST("/logout", authCtrl.Logout)
 	r.Use(mw.AuthMiddleware())
 	// upload
-	upload := r.Group("/upload")
+	file := r.Group("/file")
 	{
-		upload.POST("/avatar", (&uploadcontroller.UploadController{}).UploadAvatar)
+		file.GET("/getFile", (&filecontroller.FileController{}).GetFileObject)
+		file.POST("/uploadAvatar", (&filecontroller.FileController{}).UploadAvatar)
 	}
 
 	// auth

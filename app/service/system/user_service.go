@@ -202,6 +202,7 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 				Sex:      user.Sex,
 				Status:   user.Status,
 				Remark:   user.Remark,
+				Avatar:   user.Avatar,
 			}).Error; err != nil {
 			return err
 		}
