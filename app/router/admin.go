@@ -13,11 +13,11 @@ func RegisterAdminRouters(r *gin.RouterGroup) {
 	r.GET("/code", authCtrl.Code)
 	r.POST("/login", authCtrl.Login)
 	r.POST("/logout", authCtrl.Logout)
+	r.GET("/file/getAvatar", (&filecontroller.FileController{}).GetFileObject)
 	r.Use(mw.AuthMiddleware())
 	// upload
 	file := r.Group("/file")
 	{
-		file.GET("/getFile", (&filecontroller.FileController{}).GetFileObject)
 		file.POST("/uploadAvatar", (&filecontroller.FileController{}).UploadAvatar)
 	}
 

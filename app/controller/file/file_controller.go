@@ -45,25 +45,19 @@ func (*FileController) UploadAvatar(c *gin.Context) {
 }
 
 func (*FileController) GetFileObject(c *gin.Context) {
-	filename := c.Query("filename")
-	fmt.Println("filename:", filename)
-	if filename == "" {
-		response.NewError(nil).SetMsg("filename 不能为空").Json(c)
+	path := c.Query("path")
+	if path == "" {
+		response.NewError(nil).SetMsg("path 不能为空").Json(c)
 		return
 	}
-	fmt.Println("1")
-	file, err := minio.GetFileObject(AvatarBucketName, filename)
+	file, err := minio.GetFileObject(AvatarBucketName, path)
 	if err != nil {
-		fmt.Println("2")
 		response.NewError(err).Json(c)
 		return
 	}
-	fmt.Println("3")
 	defer file.Close()
-	fmt.Println("4")
 
 	stat, err := file.Stat()
-	fmt.Println("stat", stat.Size)
 	if err != nil {
 		response.NewError(err).Json(c)
 		return

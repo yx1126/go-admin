@@ -55,6 +55,6 @@ func UploadFile(bucket, folder string, userId int, fileHeader *multipart.FileHea
 	}, nil
 }
 
-func GetFileObject(bucket, filename string) (*minio.Object, error) {
-	return DB.Minio.GetObject(context.Background(), bucket, filename, minio.GetObjectOptions{})
+func GetFileObject(bucket, path string) (*minio.Object, error) {
+	return DB.Minio.GetObject(context.Background(), bucket, path, minio.GetObjectOptions{})
 }
