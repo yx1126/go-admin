@@ -4,6 +4,7 @@ import (
 	"github.com/yx1126/go-admin/DB"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/vo"
+	"github.com/yx1126/go-admin/common/constant"
 	"github.com/yx1126/go-admin/common/util"
 )
 
@@ -96,6 +97,16 @@ func (*MenuService) IsHasSameName(name string, id *int) bool {
 	return count > 0
 }
 
-func (*MenuService) QueryAuthMenuList(id int) {
-
+func (*MenuService) QueryAuthMenuList(id int) ([]vo.MenuTreeVo, error) {
+	menuList := make([]vo.MenuTreeVo, 0)
+	query := DB.Gorm.Model(&sysmodel.SysMenu{}).Order("sys_menu.parent_id,sys_menu.sort,sys_menu.id")
+	if id != constant.ADMIN_ID {
+		query.Joins("LEFT JOIN sys_role_menu ON sys_menu.id = sys_role_menu.menu_id").
+			Joins("LEFT JOIN sys_role ON sys_role_menu.role_id = sys_role.id").
+			Joins("LEFT JOIN sys_user_role ON sys_role.id = sys_user_role.role_id").
+			Where("sys_user_role.user_id = ? AND sys_role.status = ?", id, constant.STATUS)
+	}
+	query.Where("sys_menu.status = ? AND sys_menu.menu_type IN ?", constant.STATUS, []string{"0", "1", "2"})
+	result := query.Find(&menuList)
+	return menuList, result.Error
 }

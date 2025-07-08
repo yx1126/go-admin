@@ -15,6 +15,7 @@ import (
 	"github.com/yx1126/go-admin/common/redis"
 	"github.com/yx1126/go-admin/common/token"
 	"github.com/yx1126/go-admin/common/types"
+	"github.com/yx1126/go-admin/common/util"
 	"github.com/yx1126/go-admin/config"
 	"github.com/yx1126/go-admin/response"
 )
@@ -98,4 +99,10 @@ func (*AuthController) Login(c *gin.Context) {
 		LoginDate: types.Datetime{Time: time.Now()},
 	})
 	response.NewSuccess(token).Json(c)
+}
+
+func (*AuthController) QueryAuthMenuList(c *gin.Context) {
+	id := c.GetInt("userId")
+	menuList, err := (&systemservice.MenuService{}).QueryAuthMenuList(id)
+	response.New(util.ListToTree(menuList, 0), err).Json(c)
 }
