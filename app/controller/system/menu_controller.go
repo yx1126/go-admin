@@ -38,7 +38,11 @@ func (*MenuController) Create(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
-	if (&systemservice.MenuService{}).IsHasSameName(menu.Name, nil) {
+	if err := menu.Valid(); err != nil {
+		response.NewError(err).Json(c)
+		return
+	}
+	if menu.Name != "" && (&systemservice.MenuService{}).IsHasSameName(menu.Name, nil) {
 		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
 		return
 	}
@@ -53,11 +57,15 @@ func (*MenuController) Update(c *gin.Context) {
 		response.NewError(err).Json(c)
 		return
 	}
+	if err := menu.Valid(); err != nil {
+		response.NewError(err).Json(c)
+		return
+	}
 	if menu.Id == menu.ParentId {
 		response.NewError(nil).SetMsg("请选择正确的父级菜单").Json(c)
 		return
 	}
-	if (&systemservice.MenuService{}).IsHasSameName(menu.Name, &menu.Id) {
+	if menu.Name != "" && (&systemservice.MenuService{}).IsHasSameName(menu.Name, &menu.Id) {
 		response.NewError(nil).SetMsg("组件名称已存在").Json(c)
 		return
 	}
@@ -79,3 +87,4 @@ func (*MenuController) Delete(c *gin.Context) {
 	}
 	response.New(nil, (&systemservice.MenuService{}).DeleteMenus(ids)).Json(c)
 }
+

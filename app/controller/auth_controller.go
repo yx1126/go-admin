@@ -101,8 +101,16 @@ func (*AuthController) Login(c *gin.Context) {
 	response.NewSuccess(token).Json(c)
 }
 
-func (*AuthController) QueryAuthMenuList(c *gin.Context) {
+func (*AuthController) QueryPermission(c *gin.Context) {
 	id := c.GetInt("userId")
 	menuList, err := (&systemservice.MenuService{}).QueryAuthMenuList(id)
-	response.New(util.ListToTree(menuList, 0), err).Json(c)
+	if err != nil {
+		response.NewError(err).Json(c)
+	}
+	perms := (&systemservice.MenuService{}).QueryPermsByUserId(id)
+
+	response.NewSuccess(gin.H{
+		"menus":      util.ListToTree(menuList, 0),
+		"permission": perms,
+	}).Json(c)
 }

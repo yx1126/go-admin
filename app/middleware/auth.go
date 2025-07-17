@@ -5,6 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yx1126/go-admin/DB"
+	systemservice "github.com/yx1126/go-admin/app/service/system"
+	"github.com/yx1126/go-admin/common/constant"
 	"github.com/yx1126/go-admin/common/redis"
 	"github.com/yx1126/go-admin/common/token"
 	"github.com/yx1126/go-admin/config"
@@ -43,6 +45,23 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 		ctx.Set("userId", claims.UserId)
 		ctx.Set("username", claims.Username)
+		ctx.Next()
+	}
+}
+
+func HasPerm(perms ...string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		userId := ctx.GetInt("userId")
+		if userId == constant.ADMIN_ID {
+			ctx.Next()
+			return
+		}
+
+		if hasPerm := (&systemservice.UserService{}).UserHasPerms(userId, perms); !hasPerm {
+			response.NewError(nil).SetCode(601).SetMsg("权限不足").Json(ctx)
+			ctx.Abort()
+			return
+		}
 		ctx.Next()
 	}
 }

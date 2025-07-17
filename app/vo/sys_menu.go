@@ -1,6 +1,8 @@
 package vo
 
 import (
+	"errors"
+
 	"github.com/yx1126/go-admin/app/model"
 )
 
@@ -47,19 +49,29 @@ func (m MenuTreeVo) SetChildren(children []MenuTreeVo) MenuTreeVo {
 
 type CreateMenuVo struct {
 	ParentId   int    `json:"parentId,string"`
-	Name       string `json:"name" binding:"required"`
+	Name       string `json:"name"`
 	Type       uint   `json:"type" binding:"required_with=0,omitempty,gte=0,lte=3"`
 	Link       string `json:"link" binding:"omitempty,url"`
 	Title      string `json:"title" binding:"required"`
 	IsCache    string `json:"isCache"`
 	Icon       string `json:"icon"`
-	Path       string `json:"path" binding:"required"`
+	Path       string `json:"path"`
 	IsIframe   string `json:"isIframe"`
 	Component  string `json:"component"`
 	Permission string `json:"permission"`
 	Sort       int    `json:"sort"`
 	Visible    string `json:"visible"`
 	Status     string `json:"status"`
+}
+
+func (c *CreateMenuVo) Valid() error {
+	if (c.Type == 0 || c.Type == 1) && c.Name == "" {
+		return errors.New("组件名称不能为空")
+	}
+	if c.Type != 3 && c.Path == "" {
+		return errors.New("组件路径不能为空")
+	}
+	return nil
 }
 
 type UpdateMenuVo struct {

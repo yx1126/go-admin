@@ -306,3 +306,18 @@ func (*UserService) IsHasSameName(name string) bool {
 	DB.Gorm.Model(&sysmodel.SysUser{}).Where("user_name = ?", name).Count(&count)
 	return count > 0
 }
+
+// 检验权限
+func (s *UserService) UserHasPerms(userId int, perms []string) bool {
+	var count int64
+
+	DB.Gorm.Model(sysmodel.SysUserRole{}).
+		Joins("JOIN sys_role ON sys_user_role.role_id = sys_role.id AND sys_role.status = ?", constant.STATUS).
+		Joins("JOIN sys_role_menu ON sys_role_menu.role_id = sys_role.id").
+		Joins("JOIN sys_menu ON sys_menu.id = sys_role_menu.menu_id AND sys_menu.status = ?", constant.STATUS).
+		Where("sys_role.deleted_at IS NULL AND sys_menu.deleted_at IS NULL").
+		Where("sys_user_role.user_id = ? AND sys_menu.permission IN ?", userId, perms).
+		Count(&count)
+
+	return count > 0
+}
