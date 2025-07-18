@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/yx1126/go-admin/DB"
+	"github.com/yx1126/go-admin/app/model"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
 	"github.com/yx1126/go-admin/app/vo"
@@ -75,6 +76,9 @@ func (*SysDictDataService) CreateDictData(dictData vo.CreateDictData) error {
 		IsDefault: dictData.IsDefault,
 		Status:    dictData.Status,
 		Remark:    dictData.Remark,
+		BaseModel: model.BaseModel{
+			CreatedBy: dictData.CreatedBy,
+		},
 	}).Error
 }
 
@@ -98,6 +102,9 @@ func (*SysDictDataService) UpdateDictData(dictData vo.UpdateDictData) error {
 			IsDefault: dictData.IsDefault,
 			Status:    dictData.Status,
 			Remark:    dictData.Remark,
+			BaseModel: model.BaseModel{
+				UpdatedBy: dictData.UpdatedBy,
+			},
 		}).Error
 }
 

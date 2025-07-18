@@ -2,6 +2,7 @@ package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
+	"github.com/yx1126/go-admin/app/model"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/vo"
 	"github.com/yx1126/go-admin/common/constant"
@@ -51,6 +52,9 @@ func (*MenuService) CreateMenu(menu vo.CreateMenuVo) error {
 		Permission: menu.Permission,
 		Sort:       menu.Sort,
 		Visible:    menu.Visible,
+		BaseModel: model.BaseModel{
+			CreatedBy: menu.CreatedBy,
+		},
 	}).Error
 }
 
@@ -71,6 +75,9 @@ func (*MenuService) UpdateMenu(menu vo.UpdateMenuVo) error {
 		Sort:       menu.Sort,
 		Visible:    menu.Visible,
 		Status:     menu.Status,
+		BaseModel: model.BaseModel{
+			UpdatedBy: menu.UpdatedBy,
+		},
 	}).Error
 }
 

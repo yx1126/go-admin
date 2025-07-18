@@ -55,14 +55,16 @@ func (d DeptTreeVo) SetChildren(children []DeptTreeVo) DeptTreeVo {
 }
 
 type CreateDeptVo struct {
-	ParentId int    `json:"parentId,string"`
-	Name     string `json:"name" binding:"required"`
-	Sort     int    `json:"sort"`
-	LeaderId *int   `json:"leaderId,string" binding:"omitempty"`
-	Status   string `json:"status"`
+	ParentId  int    `json:"parentId,string"`
+	Name      string `json:"name" binding:"required"`
+	Sort      int    `json:"sort"`
+	LeaderId  *int   `json:"leaderId,string" binding:"omitempty"`
+	Status    string `json:"status"`
+	CreatedBy string
 }
 
 type UpdateDeptVo struct {
 	BaseVo
 	CreateDeptVo
+	UpdatedBy string
 }

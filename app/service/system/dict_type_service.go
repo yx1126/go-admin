@@ -2,6 +2,7 @@ package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
+	"github.com/yx1126/go-admin/app/model"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/vo"
 )
@@ -30,6 +31,9 @@ func (*SysDictTypeService) CreateDictType(dictType vo.CreateDictType) error {
 		NodeType: dictType.NodeType,
 		Status:   dictType.Status,
 		Remark:   dictType.Remark,
+		BaseModel: model.BaseModel{
+			CreatedBy: dictType.CreatedBy,
+		},
 	}).Error
 }
 
@@ -41,6 +45,9 @@ func (*SysDictTypeService) UpdateDictType(dictType vo.UpdateDictType) error {
 		NodeType: dictType.NodeType,
 		Status:   dictType.Status,
 		Remark:   dictType.Remark,
+		BaseModel: model.BaseModel{
+			UpdatedBy: dictType.UpdatedBy,
+		},
 	}).Error
 }
 

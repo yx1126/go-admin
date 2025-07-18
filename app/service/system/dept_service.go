@@ -2,6 +2,7 @@ package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
+	"github.com/yx1126/go-admin/app/model"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
 	"github.com/yx1126/go-admin/app/vo"
@@ -45,6 +46,9 @@ func (*DeptService) CreateDept(dept vo.CreateDeptVo) error {
 		Sort:     dept.Sort,
 		LeaderId: dept.LeaderId,
 		Status:   dept.Status,
+		BaseModel: model.BaseModel{
+			CreatedBy: dept.CreatedBy,
+		},
 	}).Error
 }
 
@@ -58,6 +62,9 @@ func (*DeptService) UpdateDept(dept vo.UpdateDeptVo) error {
 		Sort:     dept.Sort,
 		LeaderId: dept.LeaderId,
 		Status:   dept.Status,
+		BaseModel: model.BaseModel{
+			UpdatedBy: dept.UpdatedBy,
+		},
 	}).Error
 }
 

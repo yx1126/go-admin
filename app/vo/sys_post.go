@@ -19,14 +19,16 @@ type PostVo struct {
 }
 
 type CreatePostVo struct {
-	Code   string `json:"code" binding:"required,is_code"`
-	Name   string `json:"name" binding:"required"`
-	Sort   int    `json:"sort"`
-	Status string `json:"status"`
-	Remark string `json:"remark"`
+	Code      string `json:"code" binding:"required,is_code"`
+	Name      string `json:"name" binding:"required"`
+	Sort      int    `json:"sort"`
+	Status    string `json:"status"`
+	Remark    string `json:"remark"`
+	CreatedBy string
 }
 
 type UpdatePostVo struct {
 	BaseVo
 	CreatePostVo
+	UpdatedBy string
 }

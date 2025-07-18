@@ -27,15 +27,17 @@ type RoleInfoVo struct {
 }
 
 type CreateRoleVo struct {
-	Name    string        `json:"name" binding:"required"`
-	Key     string        `json:"key" binding:"required,is_code"`
-	Sort    int           `json:"sort"`
-	Status  string        `json:"status"`
-	Remark  string        `json:"remark"`
-	MenuIds *[]types.Long `json:"menuIds"`
+	Name      string        `json:"name" binding:"required"`
+	Key       string        `json:"key" binding:"required,is_code"`
+	Sort      int           `json:"sort"`
+	Status    string        `json:"status"`
+	Remark    string        `json:"remark"`
+	MenuIds   *[]types.Long `json:"menuIds"`
+	CreatedBy string
 }
 
 type UpdateRoleVo struct {
 	BaseVo
 	CreateRoleVo
+	UpdatedBy string
 }

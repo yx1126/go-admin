@@ -62,6 +62,7 @@ type CreateMenuVo struct {
 	Sort       int    `json:"sort"`
 	Visible    string `json:"visible"`
 	Status     string `json:"status"`
+	CreatedBy  string
 }
 
 func (c *CreateMenuVo) Valid() error {
@@ -77,4 +78,5 @@ func (c *CreateMenuVo) Valid() error {
 type UpdateMenuVo struct {
 	BaseVo
 	CreateMenuVo
+	UpdatedBy string
 }

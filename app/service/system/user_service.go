@@ -2,6 +2,7 @@ package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
+	"github.com/yx1126/go-admin/app/model"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
 	"github.com/yx1126/go-admin/app/vo"
@@ -155,6 +156,9 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 			Password: pwd,
 			Status:   user.Status,
 			Remark:   user.Remark,
+			BaseModel: model.BaseModel{
+				CreatedBy: user.CreatedBy,
+			},
 		}
 		if err := tx.Model(&sysmodel.SysUser{}).Create(&sysUser).Error; err != nil {
 			return err
@@ -191,7 +195,7 @@ func (*UserService) CreateUser(user vo.CreateUserVo) error {
 func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 	return DB.Gorm.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&sysmodel.SysUser{}).
-			Select("dept_id", "nick_name", "user_type", "email", "phone", "sex", "avatar", "status", "remark").
+			Select("dept_id", "nick_name", "user_type", "email", "phone", "sex", "avatar", "status", "remark", "updated_by").
 			Where("id = ?", user.Id).
 			Updates(&sysmodel.SysUser{
 				DeptId:   user.DeptId,
@@ -200,9 +204,12 @@ func (*UserService) UpdateUser(user vo.UpdateUserVo) error {
 				Email:    user.Email,
 				Phone:    user.Phone,
 				Sex:      user.Sex,
+				Avatar:   user.Avatar,
 				Status:   user.Status,
 				Remark:   user.Remark,
-				Avatar:   user.Avatar,
+				BaseModel: model.BaseModel{
+					UpdatedBy: user.UpdatedBy,
+				},
 			}).Error; err != nil {
 			return err
 		}

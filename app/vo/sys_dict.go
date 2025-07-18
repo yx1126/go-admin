@@ -12,16 +12,18 @@ type DictTypeListVo struct {
 }
 
 type CreateDictType struct {
-	Name     string `json:"name" binding:"required"`
-	Type     string `json:"type" binding:"required,is_code"`
-	NodeType string `json:"nodeType"`
-	Status   string `json:"status"`
-	Remark   string `json:"remark"`
+	Name      string `json:"name" binding:"required"`
+	Type      string `json:"type" binding:"required,is_code"`
+	NodeType  string `json:"nodeType"`
+	Status    string `json:"status"`
+	Remark    string `json:"remark"`
+	CreatedBy string
 }
 
 type UpdateDictType struct {
 	BaseVo
 	CreateDictType
+	UpdatedBy string
 }
 
 type DictPagingParam struct {
@@ -60,9 +62,11 @@ type CreateDictData struct {
 	IsDefault string `json:"isDefault"`
 	Status    string `json:"status"`
 	Remark    string `json:"remark"`
+	CreatedBy string
 }
 
 type UpdateDictData struct {
 	BaseVo
 	CreateDictData
+	UpdatedBy string
 }

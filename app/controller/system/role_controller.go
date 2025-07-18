@@ -47,7 +47,7 @@ func (*RoleController) QueryRoleInfoById(c *gin.Context) {
 // 创建角色
 func (*RoleController) Create(c *gin.Context) {
 	var role vo.CreateRoleVo
-	if err := bind.ShouldBind(c, &role); err != nil {
+	if err := bind.ShouldBindJSON(c, &role); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
@@ -65,7 +65,7 @@ func (*RoleController) Create(c *gin.Context) {
 // 更新角色
 func (*RoleController) Update(c *gin.Context) {
 	var role vo.UpdateRoleVo
-	if err := bind.ShouldBind(c, &role); err != nil {
+	if err := bind.ShouldBindJSON(c, &role); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}

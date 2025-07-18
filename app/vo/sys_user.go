@@ -73,12 +73,14 @@ type baseCUVo struct {
 type CreateUserVo struct {
 	UserName string `json:"userName" binding:"required"`
 	baseCUVo
+	CreatedBy string
 }
 
 type UpdateUserVo struct {
-	Avatar string `json:"avatar"`
 	BaseVo
 	baseCUVo
+	Avatar    string `json:"avatar"`
+	UpdatedBy string
 }
 
 type UpdateUserLoginVo struct {

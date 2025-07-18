@@ -2,6 +2,7 @@ package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
+	"github.com/yx1126/go-admin/app/model"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
 	"github.com/yx1126/go-admin/app/vo"
@@ -63,6 +64,9 @@ func (*RoleService) CreateRole(role vo.CreateRoleVo) error {
 		Sort:   role.Sort,
 		Status: role.Status,
 		Remark: role.Remark,
+		BaseModel: model.BaseModel{
+			CreatedBy: role.CreatedBy,
+		},
 	}
 	if err := tx.Model(&sysmodel.SysRole{}).Create(&roleInfo).Error; err != nil {
 		tx.Rollback()
@@ -93,6 +97,9 @@ func (*RoleService) UpdateRole(role vo.UpdateRoleVo) error {
 		Sort:   role.Sort,
 		Status: role.Status,
 		Remark: role.Remark,
+		BaseModel: model.BaseModel{
+			UpdatedBy: role.UpdatedBy,
+		},
 	}).Error; err != nil {
 		tx.Rollback()
 		return err

@@ -40,9 +40,20 @@ func ShouldBind[T any](c *gin.Context, param *T) error {
 	return nil
 }
 
+// create/update 使用
 func ShouldBindJSON[T any](c *gin.Context, param *T) error {
 	if err := c.ShouldBindJSON(&param); err != nil {
 		return validator.TransErr(err)
+	}
+	username := c.GetString("username")
+	val := reflect.ValueOf(param).Elem()
+	// 设置 创建人
+	if field := val.FieldByName("CreatedBy"); field.IsValid() && field.CanSet() && field.Kind() == reflect.String {
+		field.SetString(username)
+	}
+	// 设置 更新人
+	if field := val.FieldByName("UpdatedBy"); field.IsValid() && field.CanSet() && field.Kind() == reflect.String {
+		field.SetString(username)
 	}
 	return nil
 }

@@ -2,6 +2,7 @@ package systemservice
 
 import (
 	"github.com/yx1126/go-admin/DB"
+	"github.com/yx1126/go-admin/app/model"
 	sysmodel "github.com/yx1126/go-admin/app/model/sys"
 	"github.com/yx1126/go-admin/app/service"
 	"github.com/yx1126/go-admin/app/vo"
@@ -49,6 +50,9 @@ func (*PostService) CreatePost(post vo.CreatePostVo) error {
 		Sort:   post.Sort,
 		Status: post.Status,
 		Remark: post.Remark,
+		BaseModel: model.BaseModel{
+			CreatedBy: post.CreatedBy,
+		},
 	}).Error
 }
 
@@ -63,6 +67,9 @@ func (*PostService) UpdatePost(post vo.UpdatePostVo) error {
 			Sort:   post.Sort,
 			Status: post.Status,
 			Remark: post.Remark,
+			BaseModel: model.BaseModel{
+				UpdatedBy: post.UpdatedBy,
+			},
 		}).Error
 }
 

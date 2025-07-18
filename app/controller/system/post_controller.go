@@ -54,7 +54,7 @@ func (*PostController) Create(c *gin.Context) {
 // 更新岗位
 func (*PostController) Update(c *gin.Context) {
 	var post vo.UpdatePostVo
-	if err := bind.ShouldBind(c, &post); err != nil {
+	if err := bind.ShouldBindJSON(c, &post); err != nil {
 		response.NewError(err).Json(c)
 		return
 	}
