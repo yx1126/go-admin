@@ -1,9 +1,10 @@
 package captcha
 
 import (
+	"go-admin/DB"
+	"go-admin/common/redis"
+
 	"github.com/mojocn/base64Captcha"
-	"github.com/yx1126/go-admin/DB"
-	"github.com/yx1126/go-admin/common/redis"
 )
 
 type Captcha struct {

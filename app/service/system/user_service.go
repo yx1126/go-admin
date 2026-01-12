@@ -1,16 +1,17 @@
 package systemservice
 
 import (
-	"github.com/yx1126/go-admin/DB"
-	"github.com/yx1126/go-admin/app/model"
-	sysmodel "github.com/yx1126/go-admin/app/model/sys"
-	"github.com/yx1126/go-admin/app/service"
-	"github.com/yx1126/go-admin/app/vo"
-	"github.com/yx1126/go-admin/common/constant"
-	"github.com/yx1126/go-admin/common/password"
-	"github.com/yx1126/go-admin/common/types"
-	"github.com/yx1126/go-admin/common/util"
-	"github.com/yx1126/go-admin/config"
+	"go-admin/DB"
+	"go-admin/app/model"
+	sysmodel "go-admin/app/model/sys"
+	"go-admin/app/service"
+	"go-admin/app/vo"
+	"go-admin/common/constant"
+	"go-admin/common/password"
+	"go-admin/common/types"
+	"go-admin/common/util"
+	"go-admin/config"
+
 	"gorm.io/gorm"
 )
 

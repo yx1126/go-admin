@@ -1,7 +1,7 @@
 package sysmodel
 
 import (
-	"github.com/yx1126/go-admin/app/model"
+	"go-admin/app/model"
 )
 
 type SysDictData struct {

@@ -6,12 +6,13 @@ import (
 	"strings"
 	"time"
 
+	"go-admin/DB"
+	"go-admin/common/redis"
+	"go-admin/config"
+
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	sourceRedis "github.com/redis/go-redis/v9"
-	"github.com/yx1126/go-admin/DB"
-	"github.com/yx1126/go-admin/common/redis"
-	"github.com/yx1126/go-admin/config"
 )
 
 type TokenClaims struct {

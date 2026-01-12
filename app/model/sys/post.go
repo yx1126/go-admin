@@ -1,6 +1,6 @@
 package sysmodel
 
-import "github.com/yx1126/go-admin/app/model"
+import "go-admin/app/model"
 
 type SysPost struct {
 	Code   string `json:"code"`

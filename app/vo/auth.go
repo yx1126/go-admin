@@ -1,6 +1,6 @@
 package vo
 
-import "github.com/yx1126/go-admin/common/validator"
+import "go-admin/common/validator"
 
 type LoginVo struct {
 	Username string `json:"username" binding:"required"`

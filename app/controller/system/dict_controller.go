@@ -1,11 +1,12 @@
 package systemcontroller
 
 import (
+	systemservice "go-admin/app/service/system"
+	"go-admin/app/vo"
+	bind "go-admin/common/should_bind"
+	"go-admin/response"
+
 	"github.com/gin-gonic/gin"
-	systemservice "github.com/yx1126/go-admin/app/service/system"
-	"github.com/yx1126/go-admin/app/vo"
-	bind "github.com/yx1126/go-admin/common/should_bind"
-	"github.com/yx1126/go-admin/response"
 )
 
 type DictController struct{}
@@ -79,7 +80,7 @@ func (*DictController) QueryDictDataListByType(c *gin.Context) {
 }
 
 // 字典数据新增
-func (*DictController) CreateData(c *gin.Context) { 
+func (*DictController) CreateData(c *gin.Context) {
 	var dictData vo.CreateDictData
 	err := bind.ShouldBindJSON(c, &dictData)
 	if err != nil {

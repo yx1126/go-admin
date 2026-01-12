@@ -3,15 +3,16 @@ package systemcontroller
 import (
 	"strconv"
 
+	systemservice "go-admin/app/service/system"
+	"go-admin/app/vo"
+	"go-admin/common/constant"
+	"go-admin/common/password"
+	bind "go-admin/common/should_bind"
+	"go-admin/common/util"
+	"go-admin/config"
+	"go-admin/response"
+
 	"github.com/gin-gonic/gin"
-	systemservice "github.com/yx1126/go-admin/app/service/system"
-	"github.com/yx1126/go-admin/app/vo"
-	"github.com/yx1126/go-admin/common/constant"
-	"github.com/yx1126/go-admin/common/password"
-	bind "github.com/yx1126/go-admin/common/should_bind"
-	"github.com/yx1126/go-admin/common/util"
-	"github.com/yx1126/go-admin/config"
-	"github.com/yx1126/go-admin/response"
 )
 
 type UserController struct{}

@@ -3,8 +3,8 @@ package captcha
 import (
 	"time"
 
-	"github.com/yx1126/go-admin/DB"
-	"github.com/yx1126/go-admin/common/redis"
+	"go-admin/DB"
+	"go-admin/common/redis"
 )
 
 type Store struct{}

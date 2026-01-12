@@ -4,7 +4,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/yx1126/go-admin/config"
+	"go-admin/config"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

@@ -1,8 +1,8 @@
 package vo
 
 import (
-	"github.com/yx1126/go-admin/app/model"
-	"github.com/yx1126/go-admin/common/types"
+	"go-admin/app/model"
+	"go-admin/common/types"
 )
 
 type RoleParam struct {

@@ -3,14 +3,15 @@ package middleware
 import (
 	"net/http"
 
+	"go-admin/DB"
+	systemservice "go-admin/app/service/system"
+	"go-admin/common/constant"
+	"go-admin/common/redis"
+	"go-admin/common/token"
+	"go-admin/config"
+	"go-admin/response"
+
 	"github.com/gin-gonic/gin"
-	"github.com/yx1126/go-admin/DB"
-	systemservice "github.com/yx1126/go-admin/app/service/system"
-	"github.com/yx1126/go-admin/common/constant"
-	"github.com/yx1126/go-admin/common/redis"
-	"github.com/yx1126/go-admin/common/token"
-	"github.com/yx1126/go-admin/config"
-	"github.com/yx1126/go-admin/response"
 )
 
 // 认证

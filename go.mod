@@ -1,4 +1,4 @@
-module github.com/yx1126/go-admin
+module go-admin
 
 go 1.23.0
 

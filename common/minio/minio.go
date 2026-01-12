@@ -8,10 +8,11 @@ import (
 	"strings"
 	"time"
 
+	"go-admin/DB"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/minio/minio-go/v7"
-	"github.com/yx1126/go-admin/DB"
 )
 
 func GenFileName(userId int, filename string) string {

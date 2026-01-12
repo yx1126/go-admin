@@ -1,13 +1,14 @@
 package systemcontroller
 
 import (
+	systemservice "go-admin/app/service/system"
+	"go-admin/app/vo"
+	"go-admin/common/constant"
+	bind "go-admin/common/should_bind"
+	"go-admin/common/util"
+	"go-admin/response"
+
 	"github.com/gin-gonic/gin"
-	systemservice "github.com/yx1126/go-admin/app/service/system"
-	"github.com/yx1126/go-admin/app/vo"
-	"github.com/yx1126/go-admin/common/constant"
-	bind "github.com/yx1126/go-admin/common/should_bind"
-	"github.com/yx1126/go-admin/common/util"
-	"github.com/yx1126/go-admin/response"
 )
 
 type DeptController struct{}

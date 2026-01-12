@@ -5,8 +5,9 @@ import (
 	"strconv"
 	"time"
 
+	"go-admin/config"
+
 	"github.com/redis/go-redis/v9"
-	"github.com/yx1126/go-admin/config"
 )
 
 type RedisContext struct {

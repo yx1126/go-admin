@@ -1,7 +1,8 @@
 package model
 
 import (
-	"github.com/yx1126/go-admin/common/types"
+	"go-admin/common/types"
+
 	"gorm.io/gorm"
 )
 

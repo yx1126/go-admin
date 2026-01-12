@@ -1,6 +1,6 @@
 package redis
 
-import "github.com/yx1126/go-admin/config"
+import "go-admin/config"
 
 var (
 	// 验证码

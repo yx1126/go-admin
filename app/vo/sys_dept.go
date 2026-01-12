@@ -1,6 +1,6 @@
 package vo
 
-import "github.com/yx1126/go-admin/app/model"
+import "go-admin/app/model"
 
 type DeptParam struct {
 	Name   string `json:"name"`

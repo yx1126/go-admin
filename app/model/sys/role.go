@@ -1,6 +1,6 @@
 package sysmodel
 
-import "github.com/yx1126/go-admin/app/model"
+import "go-admin/app/model"
 
 type SysRole struct {
 	Name string `json:"name"`

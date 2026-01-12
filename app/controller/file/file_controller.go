@@ -6,10 +6,11 @@ import (
 	"strings"
 	"time"
 
+	"go-admin/common/minio"
+	"go-admin/response"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/yx1126/go-admin/common/minio"
-	"github.com/yx1126/go-admin/response"
 )
 
 type FileController struct{}

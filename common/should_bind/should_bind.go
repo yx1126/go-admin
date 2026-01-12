@@ -5,8 +5,9 @@ import (
 	"reflect"
 	"strconv"
 
+	"go-admin/common/validator"
+
 	"github.com/gin-gonic/gin"
-	"github.com/yx1126/go-admin/common/validator"
 )
 
 // 绑定分页参数

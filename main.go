@@ -3,11 +3,12 @@ package main
 import (
 	"strconv"
 
+	"go-admin/DB"
+	"go-admin/app/router"
+	"go-admin/common/validator"
+	"go-admin/config"
+
 	"github.com/gin-gonic/gin"
-	"github.com/yx1126/go-admin/DB"
-	"github.com/yx1126/go-admin/app/router"
-	"github.com/yx1126/go-admin/common/validator"
-	"github.com/yx1126/go-admin/config"
 )
 
 func main() {

@@ -1,9 +1,9 @@
 package vo
 
 import (
-	"github.com/yx1126/go-admin/app/model"
-	sysmodel "github.com/yx1126/go-admin/app/model/sys"
-	"github.com/yx1126/go-admin/common/types"
+	"go-admin/app/model"
+	sysmodel "go-admin/app/model/sys"
+	"go-admin/common/types"
 )
 
 // 列表查询

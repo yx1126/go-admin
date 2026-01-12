@@ -1,12 +1,12 @@
 package systemservice
 
 import (
-	"github.com/yx1126/go-admin/DB"
-	"github.com/yx1126/go-admin/app/model"
-	sysmodel "github.com/yx1126/go-admin/app/model/sys"
-	"github.com/yx1126/go-admin/app/service"
-	"github.com/yx1126/go-admin/app/vo"
-	"github.com/yx1126/go-admin/common/util"
+	"go-admin/DB"
+	"go-admin/app/model"
+	sysmodel "go-admin/app/model/sys"
+	"go-admin/app/service"
+	"go-admin/app/vo"
+	"go-admin/common/util"
 )
 
 type DeptService struct{}

@@ -1,11 +1,12 @@
 package router
 
 import (
+	"go-admin/app/controller"
+	filecontroller "go-admin/app/controller/file"
+	sys "go-admin/app/controller/system"
+	mw "go-admin/app/middleware"
+
 	"github.com/gin-gonic/gin"
-	"github.com/yx1126/go-admin/app/controller"
-	filecontroller "github.com/yx1126/go-admin/app/controller/file"
-	sys "github.com/yx1126/go-admin/app/controller/system"
-	mw "github.com/yx1126/go-admin/app/middleware"
 )
 
 func RegisterAdminRouters(r *gin.RouterGroup) {

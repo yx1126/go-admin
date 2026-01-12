@@ -3,7 +3,7 @@ package vo
 import (
 	"errors"
 
-	"github.com/yx1126/go-admin/app/model"
+	"go-admin/app/model"
 )
 
 type MenuParam struct {
